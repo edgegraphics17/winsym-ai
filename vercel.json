@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "name": "winsym-ai",
+  "buildCommand": "node scripts/inject-env.js",
+  "outputDirectory": ".",
+  "routes": [
+    { "src": "/",                   "dest": "/winsymai.html" },
+    { "src": "/about",              "dest": "/karim-identity.html" },
+    { "src": "/projects",           "dest": "/projects-showcase.html" },
+    { "src": "/winsymai",           "dest": "/winsymai.html" },
+    { "src": "/karim",              "dest": "/karim-identity.html" },
+    { "src": "/(.*)\\.html",        "dest": "/$1.html" },
+    { "src": "/js/(.*)",            "dest": "/js/$1" },
+    { "src": "/supabase/(.*)",      "dest": "/supabase/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options",        "value": "DENY" },
+        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}

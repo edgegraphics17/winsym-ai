@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karim Azzaoui — AI Coach & Speaker · winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Inject credentials from Vercel env (replaced at build/runtime via _headers or inline)
+  window.SUPABASE_URL     = '%%SUPABASE_URL%%';
+  window.SUPABASE_ANON_KEY = '%%SUPABASE_ANON_KEY%%';
+</script>
+<style>
+  :root {
+    --black: #080808;
+    --orange: #C45A1A;
+    --orange-bright: #E06820;
+    --orange-dim: #7a3010;
+    --orange-glow: rgba(196,90,26,0.15);
+    --white: #F5F2EE;
+    --gray: #888;
+    --gray-dim: #333;
+    --gray-mid: #555;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    text-decoration: none;
+    border: 1px solid var(--orange-dim);
+    padding: 0.5rem 1.2rem;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+  .nav-cta:hover { background: var(--orange); color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8rem 4rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .hero-name .last { color: var(--orange); display: block; }
+
+  .hero-title {
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    font-weight: 400;
+    margin-bottom: 2.5rem;
+    border-left: 2px solid var(--orange);
+    padding-left: 1rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    color: #aaa;
+    max-width: 380px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--black);
+    padding: 0.9rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--orange-bright); transform: translateY(-1px); }
+
+  .btn-ghost {
+    color: var(--gray);
+    padding: 0.9rem 1.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    border: 1px solid var(--gray-dim);
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { color: var(--white); border-color: var(--gray); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-visual {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0800 0%, #0d0400 40%, #080808 100%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Animated vertical bars like in the business card */
+  .bar-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .bar {
+    flex: 1;
+    background: linear-gradient(180deg, transparent 0%, rgba(196,90,26,0.3) 50%, transparent 100%);
+    animation: barPulse 3s ease-in-out infinite;
+    transform-origin: bottom;
+  }
+  .bar:nth-child(1) { animation-delay: 0s; opacity: 0.3; }
+  .bar:nth-child(2) { animation-delay: 0.3s; opacity: 0.5; background: linear-gradient(180deg, transparent 0%, rgba(196,90,26,0.6) 50%, transparent 100%); }
+  .bar:nth-child(3) { animation-delay: 0.6s; opacity: 0.4; }
+  .bar:nth-child(4) { animation-delay: 0.2s; opacity: 0.6; background: linear-gradient(180deg, transparent 0%, rgba(160,60,10,0.5) 50%, transparent 100%); }
+  .bar:nth-child(5) { animation-delay: 0.8s; opacity: 0.3; }
+  .bar:nth-child(6) { animation-delay: 0.4s; opacity: 0.5; }
+  .bar:nth-child(7) { animation-delay: 1s; opacity: 0.2; }
+
+  @keyframes barPulse {
+    0%, 100% { transform: scaleY(0.6); opacity: 0.2; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    z-index: 3;
+    text-align: right;
+  }
+  .hero-badge-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .hero-badge-text {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .hero-stats {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 3rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .hero-stat-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .hero-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--orange-dim), transparent);
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--orange);
+    padding: 0.7rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    animation: tickerScroll 20s linear infinite;
+    gap: 0;
+  }
+  .ticker-item {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    color: var(--black);
+    padding: 0 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .ticker-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTION LAYOUT */
+  section {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title .accent { color: var(--orange); }
+
+  /* ABOUT / SPEAKER SECTION */
+  .about-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-frame {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #1a0800, #0d0400);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-frame-bars {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: 3px;
+  }
+
+  .about-bar {
+    flex: 1;
+    background: linear-gradient(180deg, transparent 20%, rgba(196,90,26,0.4) 60%, transparent 100%);
+    animation: barPulse 4s ease-in-out infinite;
+  }
+  .about-bar:nth-child(odd) { animation-delay: 0.5s; }
+
+  .about-frame-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.7) 0%, transparent 50%);
+  }
+
+  .about-frame-label {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+  }
+  .about-frame-name {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1;
+  }
+  .about-frame-role {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+  }
+
+  .about-accent-box {
+    position: absolute;
+    top: -1.5rem;
+    right: -1.5rem;
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--orange);
+    z-index: -1;
+  }
+  .about-accent-box2 {
+    position: absolute;
+    bottom: -1.5rem;
+    left: -1.5rem;
+    width: 120px;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .about-content { }
+
+  .about-quote {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: var(--white);
+    font-weight: 300;
+    margin-bottom: 2rem;
+    font-style: italic;
+    border-left: 2px solid var(--orange);
+    padding-left: 1.5rem;
+  }
+
+  .about-body {
+    color: #999;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+  }
+
+  .credential-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .credential {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    border: 1px solid var(--orange-dim);
+    padding: 0.4rem 0.8rem;
+  }
+
+  .about-numbers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    border-top: 1px solid var(--gray-dim);
+    padding-top: 2rem;
+  }
+  .about-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .about-num-label {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* WHAT I DO */
+  .pillars-section {
+    background: #0d0d0d;
+    padding: 7rem 0;
+  }
+  .pillars-inner {
+    padding: 0 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .pillars-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+    align-items: end;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--gray-dim);
+  }
+
+  .pillar-card {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--gray-dim);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .pillar-card:last-child { border-right: none; }
+  .pillar-card:hover { background: rgba(196,90,26,0.05); }
+
+  .pillar-num {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: var(--gray-dim);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+  .pillar-card:hover .pillar-num { color: var(--orange-dim); }
+
+  .pillar-icon {
+    width: 40px;
+    height: 2px;
+    background: var(--orange);
+    margin-bottom: 1rem;
+  }
+
+  .pillar-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+
+  .pillar-desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+    line-height: 1.8;
+  }
+
+  /* COMPANY BRAIN SECTION */
+  .brain-section {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .brain-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 5rem;
+  }
+
+  .brain-flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+
+  .brain-step {
+    text-align: center;
+    padding: 2rem 1rem;
+    position: relative;
+  }
+
+  .brain-step-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .brain-step-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .brain-step-desc {
+    font-size: 0.75rem;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  .brain-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange-dim);
+    font-size: 1.5rem;
+  }
+
+  /* PRICE CALCULATOR */
+  .calculator-section {
+    background: #0a0a0a;
+    border-top: 1px solid var(--gray-dim);
+    border-bottom: 1px solid var(--gray-dim);
+  }
+
+  .calculator-inner {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .calc-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+    margin-bottom: 4rem;
+  }
+
+  .calc-subtitle {
+    color: #999;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    margin-top: 1.5rem;
+  }
+
+  .calc-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .calc-options { }
+
+  .calc-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  .calc-label:first-child { margin-top: 0; }
+
+  .calc-toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .calc-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--gray-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    color: var(--gray);
+    user-select: none;
+    position: relative;
+  }
+  .calc-toggle:hover { border-color: var(--orange-dim); color: var(--white); }
+  .calc-toggle.active {
+    border-color: var(--orange);
+    background: rgba(196,90,26,0.08);
+    color: var(--white);
+  }
+
+  .calc-toggle-check {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--gray-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .calc-toggle.active .calc-toggle-check {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+  .calc-toggle-check::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--black);
+    display: none;
+  }
+  .calc-toggle.active .calc-toggle-check::after { display: block; }
+
+  .calc-toggle-price {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--orange);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .calc-toggle.active .calc-toggle-price { opacity: 1; }
+
+  /* Result panel */
+  .calc-result {
+    background: linear-gradient(135deg, #120800, #0a0a0a);
+    border: 1px solid var(--orange-dim);
+    padding: 2.5rem;
+    position: sticky;
+    top: 6rem;
+  }
+
+  .result-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .result-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.85rem;
+  }
+  .result-line-name { color: var(--gray); }
+  .result-line-price {
+    font-family: var(--font-mono);
+    color: var(--white);
+    font-size: 0.8rem;
+  }
+
+  .result-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--orange-dim);
+  }
+  .result-total-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .result-total-num {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .result-total-curr {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-savings {
+    background: rgba(196,90,26,0.1);
+    border: 1px solid rgba(196,90,26,0.2);
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    color: var(--orange);
+    margin-top: 1rem;
+    display: none;
+  }
+  .result-savings.visible { display: block; }
+
+  .result-cta {
+    width: 100%;
+    background: var(--orange);
+    color: var(--black);
+    border: none;
+    padding: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.2s;
+  }
+  .result-cta:hover { background: var(--orange-bright); }
+
+  .result-empty {
+    text-align: center;
+    color: var(--gray-mid);
+    font-size: 0.85rem;
+    padding: 2rem 0;
+    line-height: 1.8;
+  }
+
+  .result-timeline {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .result-timeline-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .result-timeline-bar {
+    height: 3px;
+    background: var(--gray-dim);
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  .result-timeline-fill {
+    height: 100%;
+    background: var(--orange);
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .result-timeline-weeks {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--orange);
+  }
+
+  /* SPEAKING SECTION */
+  .speaking-section {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .speaking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 2.5rem;
+  }
+
+  .speaking-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--gray-dim);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .speaking-item:hover .speaking-item-arrow { color: var(--orange); transform: translateX(4px); }
+
+  .speaking-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--orange-dim);
+    line-height: 1;
+    min-width: 2rem;
+    margin-top: 2px;
+  }
+
+  .speaking-item-body { flex: 1; }
+  .speaking-item-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .speaking-item-desc {
+    font-size: 0.8rem;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  .speaking-item-arrow {
+    color: var(--gray-mid);
+    font-size: 1.1rem;
+    margin-top: 4px;
+    transition: all 0.2s;
+  }
+
+  .speaking-visual {
+    position: relative;
+  }
+
+  .speaking-card {
+    background: #111;
+    border: 1px solid var(--gray-dim);
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .speaking-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--orange);
+  }
+
+  .speaking-quote {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+
+  .speaking-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+  .speaking-meta::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  .speaking-formats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--gray-dim);
+    border: 1px solid var(--gray-dim);
+    margin-top: 2rem;
+  }
+
+  .speaking-format {
+    background: #0a0a0a;
+    padding: 1.5rem;
+  }
+  .speaking-format-icon {
+    font-size: 1.2rem;
+    color: var(--orange);
+    margin-bottom: 0.5rem;
+  }
+  .speaking-format-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.25rem;
+  }
+  .speaking-format-desc {
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+
+  /* PROCESS SECTION */
+  .process-section {
+    background: #0d0d0d;
+    padding: 7rem 0;
+  }
+  .process-inner {
+    padding: 0 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+    border-left: 1px solid var(--gray-dim);
+  }
+  .process-step {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--gray-dim);
+    border-bottom: 1px solid var(--gray-dim);
+    border-top: 1px solid var(--gray-dim);
+    position: relative;
+  }
+  .process-step-num {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: #1a1a1a;
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    line-height: 1;
+  }
+  .process-step-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .process-step-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+  }
+  .process-step-desc {
+    font-size: 0.8rem;
+    color: var(--gray);
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* CONTACT / CTA */
+  .cta-section {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-body {
+    color: #999;
+    font-size: 0.95rem;
+    line-height: 1.9;
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    background: #111;
+    border: 1px solid var(--gray-dim);
+    color: var(--white);
+    padding: 0.85rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--orange);
+  }
+  .form-select option { background: #111; }
+  .form-textarea { resize: vertical; min-height: 100px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-submit {
+    background: var(--orange);
+    color: var(--black);
+    border: none;
+    padding: 1rem 2rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-start;
+    position: relative;
+    min-width: 180px;
+  }
+  .form-submit:hover { background: var(--orange-bright); }
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .form-notice {
+    padding: 0.85rem 1rem;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: none;
+  }
+  .form-notice.success {
+    background: rgba(60,160,60,0.08);
+    border: 1px solid rgba(60,160,60,0.25);
+    color: #6c6;
+    display: block;
+  }
+  .form-notice.error {
+    background: rgba(196,90,26,0.08);
+    border: 1px solid var(--orange-dim);
+    color: var(--orange-bright);
+    display: block;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #050505;
+    border-top: 1px solid var(--gray-dim);
+    padding: 4rem;
+  }
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+  .footer-logo span { color: var(--orange); }
+  .footer-tagline {
+    font-size: 0.8rem;
+    color: var(--gray);
+    line-height: 1.8;
+    max-width: 250px;
+  }
+  .footer-col-title {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--gray-mid);
+  }
+  .footer-partners { display: flex; gap: 1rem; }
+  .partner-badge {
+    border: 1px solid var(--gray-dim);
+    padding: 0.3rem 0.7rem;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  /* Scroll animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Orange glow line */
+  .glow-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--orange), transparent);
+    margin: 0;
+  }
+
+  /* HAMBURGER */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1px;
+    background: var(--white);
+    transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* MOBILE MENU OVERLAY */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,8,0.98);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover, .mobile-menu a.active { color: var(--orange); }
+  .mobile-menu-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--orange-dim);
+  }
+  .mobile-menu-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mobile-menu-sub a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--gray);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+  }
+  .mobile-menu-sub a:hover { color: var(--orange); }
+
+  /* NAV ACTIVE STATE */
+  .nav-links a.active { color: var(--orange); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    section, .brain-section, .calculator-inner, .speaking-section, .cta-section, .process-inner, .pillars-inner { padding: 4rem 1.5rem; }
+    .about-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+    .pillars-header { grid-template-columns: 1fr; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .pillar-card { border-right: none; border-bottom: 1px solid var(--gray-dim); }
+    .brain-flow { grid-template-columns: 1fr; }
+    .brain-arrow { transform: rotate(90deg); }
+    .calc-header, .calc-body { grid-template-columns: 1fr; gap: 2rem; }
+    .speaking-section { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .cta-section { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .about-numbers { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="winsymai.html" class="active">Home</a>
+  <a href="karim-identity.html">About Karim</a>
+  <a href="projects-showcase.html">Projects</a>
+  <div class="mobile-menu-divider"></div>
+  <div class="mobile-menu-sub">
+    <a href="#about">The System</a>
+    <a href="#speaking">Speaking</a>
+    <a href="#calculator">Work with me</a>
+    <a href="#contact">Contact</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
+  <ul class="nav-links">
+    <li><a href="winsymai.html" class="active">Home</a></li>
+    <li><a href="karim-identity.html">About Karim</a></li>
+    <li><a href="projects-showcase.html">Projects</a></li>
+    <li><a href="#speaking">Speaking</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book a session →</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding: 0; max-width: 100%;">
+  <div class="hero-left">
+    <div class="hero-eyebrow">AI Coach · Speaker · Translator</div>
+    <h1 class="hero-name">
+      Karim
+      <span class="last">Azzaoui</span>
+    </h1>
+    <div class="hero-title">Winning Systems · Backed by AI</div>
+    <p class="hero-desc">
+      I bridge the gap between business and AI — helping Asian companies build their AI Operating System, from first prompt to full integration.
+    </p>
+    <div class="hero-actions">
+      <a href="#calculator" class="btn-primary">Build my AI system</a>
+      <a href="#speaking" class="btn-ghost">Speaking topics</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="bar-container">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">200+</div>
+          <div class="hero-stat-label">Businesses coached</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-label">Years in marketing</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">2</div>
+          <div class="hero-stat-label">Certified partnerships</div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-label">Based in</div>
+        <div class="hero-badge-text">KL, Malaysia</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Company Brain<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Meta Partner<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Kuala Lumpur · Malaysia<span class="ticker-dot"></span></span>
+    <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Company Brain<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Meta Partner<span class="ticker-dot"></span></span>
+    <span class="ticker-item">Kuala Lumpur · Malaysia<span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about-section fade-up" id="about">
+  <div class="about-visual">
+    <div class="about-frame">
+      <div class="about-frame-bars">
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+        <div class="about-bar"></div>
+      </div>
+      <div class="about-frame-overlay"></div>
+      <div class="about-frame-label">
+        <div class="about-frame-name">KARIM<br>AZZAOUI</div>
+        <div class="about-frame-role">AI Coach · Speaker · winsym.ai</div>
+      </div>
+    </div>
+    <div class="about-accent-box"></div>
+    <div class="about-accent-box2"></div>
+  </div>
+  <div class="about-content">
+    <div class="section-tag">About Karim</div>
+    <h2 class="section-title">I translate<br><span class="accent">Business</span><br>into AI</h2>
+    <p class="about-quote">"Most companies don't need more AI tools — they need someone who can build the right system around their real business goals."</p>
+    <p class="about-body">
+      With over a decade in marketing, design and digital systems — and certified partnerships with both Google and Meta — I've seen exactly where companies get stuck when trying to adopt AI. It's never about the technology. It's about the translation layer between business logic and AI capability.<br><br>
+      I work with KMUs across Malaysia and Asia to build what I call a Company Brain: a complete AI operating system tailored to your workflows, your team, and your market.
+    </p>
+    <div class="credential-row">
+      <div class="credential">✦ Google Partner</div>
+      <div class="credential">✦ Meta Partner</div>
+      <div class="credential">✦ AI Integration</div>
+      <div class="credential">✦ KL · Germany</div>
+    </div>
+    <div class="about-numbers">
+      <div>
+        <div class="about-num">10+</div>
+        <div class="about-num-label">Years experience</div>
+      </div>
+      <div>
+        <div class="about-num">3</div>
+        <div class="about-num-label">Markets served</div>
+      </div>
+      <div>
+        <div class="about-num">∞</div>
+        <div class="about-num-label">Systems built</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glow-line"></div>
+
+<!-- PILLARS / WHAT I DO -->
+<div class="pillars-section">
+  <div class="pillars-inner">
+    <div class="pillars-header fade-up">
+      <div>
+        <div class="section-tag">What I do</div>
+        <h2 class="section-title">Five ways<br>I help you<br><span class="accent">win</span></h2>
+      </div>
+      <div style="padding-bottom: 0.5rem;">
+        <p style="color: #999; font-size: 0.95rem; line-height: 1.9;">
+          From design to automation to AI coaching — every service is designed to work together as one system. Not isolated projects. A winning operation.
+        </p>
+      </div>
+    </div>
+    <div class="pillars-grid fade-up">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div class="pillar-icon"></div>
+        <div class="pillar-title">AI Coaching & Strategy</div>
+        <p class="pillar-desc">Build your personal AI muscle. From zero to confident — I coach you and your team to think, plan, and execute with AI as a core tool.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div class="pillar-icon"></div>
+        <div class="pillar-title">Company Brain Build</div>
+        <p class="pillar-desc">Your full AI Operating System. Knowledge base, internal AI, automated workflows — all designed around how your business actually works.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div class="pillar-icon"></div>
+        <div class="pillar-title">Commercial Design & Animation</div>
+        <p class="pillar-desc">AI-powered creative production. Campaigns, visuals, motion — built faster, smarter, and with a coherent brand identity.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">04</div>
+        <div class="pillar-icon"></div>
+        <div class="pillar-title">Web Development & Apps</div>
+        <p class="pillar-desc">From websites to web apps — built with AI-assisted development that cuts timelines and costs without cutting quality.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">05</div>
+        <div class="pillar-icon"></div>
+        <div class="pillar-title">Marketing Hub Leadership</div>
+        <p class="pillar-desc">As a certified Google and Meta partner, I connect your AI systems to your paid channels for a fully integrated marketing machine.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SPEAKING -->
+<div class="speaking-section fade-up" id="speaking">
+  <div>
+    <div class="section-tag">Speaking & Training</div>
+    <h2 class="section-title">Book Karim<br>for your<br><span class="accent">event</span></h2>
+    <p style="color: #999; font-size: 0.95rem; line-height: 1.9; margin: 1.5rem 0 2rem;">
+      I speak at corporate events, summits, and private workshops — in English and German — helping business leaders understand AI in practical, non-technical terms.
+    </p>
+    <div class="speaking-list">
+      <div class="speaking-item">
+        <div class="speaking-num">01</div>
+        <div class="speaking-item-body">
+          <div class="speaking-item-title">The Company Brain — Building Your AI Operating System</div>
+          <div class="speaking-item-desc">A practical framework for SMEs to integrate AI into every layer of their business operations.</div>
+        </div>
+        <div class="speaking-item-arrow">→</div>
+      </div>
+      <div class="speaking-item">
+        <div class="speaking-num">02</div>
+        <div class="speaking-item-body">
+          <div class="speaking-item-title">AI for Non-Technical Leaders</div>
+          <div class="speaking-item-desc">How CEOs and managers can lead AI adoption without needing to understand the technology.</div>
+        </div>
+        <div class="speaking-item-arrow">→</div>
+      </div>
+      <div class="speaking-item">
+        <div class="speaking-num">03</div>
+        <div class="speaking-item-body">
+          <div class="speaking-item-title">From Prompt to Profit — AI in Marketing</div>
+          <div class="speaking-item-desc">Combining Google/Meta advertising intelligence with AI-powered creative to dominate digital channels.</div>
+        </div>
+        <div class="speaking-item-arrow">→</div>
+      </div>
+      <div class="speaking-item">
+        <div class="speaking-num">04</div>
+        <div class="speaking-item-body">
+          <div class="speaking-item-title">Rapid AI Integration Workshop</div>
+          <div class="speaking-item-desc">A full-day hands-on workshop where teams build their first AI workflows from scratch.</div>
+        </div>
+        <div class="speaking-item-arrow">→</div>
+      </div>
+    </div>
+  </div>
+  <div class="speaking-visual">
+    <div class="speaking-card">
+      <p class="speaking-quote">"Karim doesn't just explain AI — he shows you exactly how to build systems that work for your business from day one."</p>
+      <div class="speaking-meta">Corporate Event · Kuala Lumpur 2024</div>
+    </div>
+    <div class="speaking-formats">
+      <div class="speaking-format">
+        <div class="speaking-format-icon">◈</div>
+        <div class="speaking-format-title">Keynote</div>
+        <div class="speaking-format-desc">45–90 min. English or German. Corporate & conferences.</div>
+      </div>
+      <div class="speaking-format">
+        <div class="speaking-format-icon">◉</div>
+        <div class="speaking-format-title">Workshop</div>
+        <div class="speaking-format-desc">Half or full day. Hands-on. Max 30 participants.</div>
+      </div>
+      <div class="speaking-format">
+        <div class="speaking-format-icon">◫</div>
+        <div class="speaking-format-title">Panel</div>
+        <div class="speaking-format-desc">AI, marketing & business transformation topics.</div>
+      </div>
+      <div class="speaking-format">
+        <div class="speaking-format-icon">◬</div>
+        <div class="speaking-format-title">Private Training</div>
+        <div class="speaking-format-desc">Leadership teams. Customized to your business.</div>
+      </div>
+    </div>
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <a href="#contact" class="btn-primary" style="display: inline-block;">Book a speaking slot →</a>
+    </div>
+  </div>
+</div>
+
+<div class="glow-line"></div>
+
+<!-- COMPANY BRAIN -->
+<div class="brain-section fade-up" id="company-brain">
+  <div class="brain-header">
+    <div class="section-tag" style="justify-content: center;">The Framework</div>
+    <h2 class="section-title" style="text-align: center;">The <span class="accent">Company<br>Brain</span> Method</h2>
+    <p style="color: #999; font-size: 0.9rem; line-height: 1.9; text-align: center; margin-top: 1rem;">A proven 5-phase process for building your full AI Operating System — from audit to autonomous operation.</p>
+  </div>
+  <div class="brain-flow">
+    <div class="brain-step">
+      <div class="brain-step-num">01</div>
+      <div class="brain-step-title">Audit</div>
+      <div class="brain-step-desc">Map your business processes, data flows, and team structure to find the highest-value AI opportunities.</div>
+    </div>
+    <div class="brain-arrow">→</div>
+    <div class="brain-step">
+      <div class="brain-step-num">02</div>
+      <div class="brain-step-title">Blueprint</div>
+      <div class="brain-step-desc">Design your custom AI OS — which tools, which workflows, which knowledge gets captured first.</div>
+    </div>
+    <div class="brain-arrow">→</div>
+    <div class="brain-step">
+      <div class="brain-step-num">03</div>
+      <div class="brain-step-title">Build</div>
+      <div class="brain-step-desc">We build together — knowledge base, automations, AI assistants, design pipelines, and integrations.</div>
+    </div>
+    <div class="brain-arrow">→</div>
+    <div class="brain-step">
+      <div class="brain-step-num">04</div>
+      <div class="brain-step-title">Train</div>
+      <div class="brain-step-desc">Your team learns to use, adapt, and extend the system. No dependency on external consultants.</div>
+    </div>
+    <div class="brain-arrow">→</div>
+    <div class="brain-step">
+      <div class="brain-step-num">05</div>
+      <div class="brain-step-title">Scale</div>
+      <div class="brain-step-desc">Monthly optimization, new integrations, and expanding the brain as your business grows.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS / HOW WE WORK -->
+<div class="process-section" id="process">
+  <div class="process-inner">
+    <div class="fade-up">
+      <div class="section-tag">How we work</div>
+      <h2 class="section-title">From first call<br>to <span class="accent">live system</span></h2>
+    </div>
+    <div class="process-grid fade-up">
+      <div class="process-step">
+        <div class="process-step-num">1</div>
+        <div class="process-step-tag">Week 1</div>
+        <div class="process-step-title">Discovery Call</div>
+        <div class="process-step-desc">Free 30-minute session. I understand your business, your team, and your biggest pain points. No pitch — just listening.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">2</div>
+        <div class="process-step-tag">Week 1–2</div>
+        <div class="process-step-title">AI Audit & Blueprint</div>
+        <div class="process-step-desc">Deep dive into your operations. I map your processes and deliver a custom AI OS blueprint with clear priorities.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">3</div>
+        <div class="process-step-tag">Week 2–5</div>
+        <div class="process-step-title">Build Together</div>
+        <div class="process-step-desc">We build your Company Brain in real time. Weekly sessions, async support, and constant iteration.</div>
+      </div>
+      <div class="process-step">
+        <div class="process-step-num">4</div>
+        <div class="process-step-tag">Ongoing</div>
+        <div class="process-step-title">Launch & Grow</div>
+        <div class="process-step-desc">Your system goes live. Optional retainer for ongoing optimization, new automations, and team coaching.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE CALCULATOR -->
+<div class="calculator-section" id="calculator">
+  <div class="calculator-inner">
+    <div class="calc-header fade-up">
+      <div>
+        <div class="section-tag">Build your package</div>
+        <h2 class="section-title">Design your<br><span class="accent">AI system</span></h2>
+      </div>
+      <div>
+        <p class="calc-subtitle">
+          Every business is different. Select the components you need — the calculator builds your custom package in real time and shows you exactly what you're getting and when.
+        </p>
+      </div>
+    </div>
+    <div class="calc-body fade-up">
+      <div class="calc-options">
+
+        <div class="calc-label">Entry point</div>
+        <div class="calc-toggle-group" id="group-entry">
+          <div class="calc-toggle" data-price="2500" data-id="jumpstart" data-weeks="2" data-group="entry" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Jumpstart Session</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">2-day intensive · AI audit + quick wins + tool stack</div>
+            </div>
+            <span class="calc-toggle-price">MYR 2,500</span>
+          </div>
+        </div>
+
+        <div class="calc-label">Core build</div>
+        <div class="calc-toggle-group" id="group-core">
+          <div class="calc-toggle" data-price="12000" data-id="brain30" data-weeks="4" data-group="core" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Company Brain — 30 Days</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Full AI OS · knowledge base · 3 automations · team training</div>
+            </div>
+            <span class="calc-toggle-price">MYR 12,000</span>
+          </div>
+          <div class="calc-toggle" data-price="4800" data-id="course" data-weeks="8" data-group="core" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Leader — 8-Week Programme</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Cohort-based · live sessions · prompt mastery · workflows</div>
+            </div>
+            <span class="calc-toggle-price">MYR 4,800</span>
+          </div>
+        </div>
+
+        <div class="calc-label">Add-ons</div>
+        <div class="calc-toggle-group">
+          <div class="calc-toggle" data-price="3500" data-id="retainer" data-weeks="0" data-group="addon" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Monthly Retainer</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Ongoing AI partner · monthly strategy · new integrations · async support</div>
+            </div>
+            <span class="calc-toggle-price">MYR 3,500/mo</span>
+          </div>
+          <div class="calc-toggle" data-price="2000" data-id="design" data-weeks="2" data-group="addon" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Design & Content Pack</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Brand assets · AI-generated campaign visuals · animation</div>
+            </div>
+            <span class="calc-toggle-price">MYR 2,000</span>
+          </div>
+          <div class="calc-toggle" data-price="1500" data-id="web" data-weeks="3" data-group="addon" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Website or App Build</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">AI-assisted development · landing page or web app</div>
+            </div>
+            <span class="calc-toggle-price">from MYR 1,500</span>
+          </div>
+          <div class="calc-toggle" data-price="3000" data-id="speaking" data-weeks="0" data-group="addon" onclick="toggleCalc(this)">
+            <div class="calc-toggle-check"></div>
+            <div>
+              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Speaking / Workshop Booking</div>
+              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Keynote or half-day workshop for your team or event</div>
+            </div>
+            <span class="calc-toggle-price">from MYR 3,000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULT PANEL -->
+      <div class="calc-result">
+        <div class="result-label">Your custom package</div>
+        <div id="result-items">
+          <div class="result-empty">Select the components above<br>to build your package.</div>
+        </div>
+        <div id="result-footer" style="display:none;">
+          <div class="result-savings" id="result-savings"></div>
+          <div class="result-total-row">
+            <div>
+              <div class="result-total-label">Total investment</div>
+              <div class="result-total-curr">MYR</div>
+            </div>
+            <div class="result-total-num" id="result-total">0</div>
+          </div>
+          <div class="result-timeline" id="result-timeline">
+            <div class="result-timeline-label">Estimated timeline</div>
+            <div class="result-timeline-bar">
+              <div class="result-timeline-fill" id="timeline-fill"></div>
+            </div>
+            <div class="result-timeline-weeks" id="timeline-weeks"></div>
+          </div>
+          <button class="result-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+            Book a discovery call →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA / CONTACT -->
+<div class="cta-section fade-up" id="contact">
+  <div>
+    <div class="section-tag">Let's talk</div>
+    <h2 class="cta-title">Ready to build<br>your <span class="accent">AI OS?</span></h2>
+    <p class="cta-body">
+      The first call is free. No pitch, no pressure — just a real conversation about where AI can create the most value in your business. We'll figure out together if and how I can help.
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
+        <span style="color: var(--orange);">✦</span> Karim@azzaoui.de
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
+        <span style="color: var(--orange);">✦</span> +60 112 4487055 (Malaysia)
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
+        <span style="color: var(--orange);">✦</span> +49 162 2035499 (Germany)
+      </div>
+    </div>
+  </div>
+  <div>
+    <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First name</label>
+          <input type="text" id="cf-name" class="form-input" placeholder="Ahmad" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input type="text" id="cf-company" class="form-input" placeholder="Your company">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="cf-email" class="form-input" placeholder="you@company.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">I'm interested in</label>
+        <select id="cf-service" class="form-select">
+          <option value="">Select a service...</option>
+          <option>AI Jumpstart Session</option>
+          <option>Company Brain — 30 Days</option>
+          <option>AI Leader Programme</option>
+          <option>Speaking / Workshop</option>
+          <option>Retainer / Ongoing Partnership</option>
+          <option>I'm not sure yet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell me about your business</label>
+        <textarea id="cf-message" class="form-textarea" placeholder="What does your company do? What's your biggest challenge right now?"></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="cf-submit">Send message →</button>
+      <div class="form-notice" id="cf-notice"></div>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">win<span>sym</span>.ai</div>
+      <p class="footer-tagline">Winning Systems Backed by AI. Helping Asian businesses build their AI Operating System — from concept to full integration.</p>
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+        <div class="partner-badge">Google Partner</div>
+        <div class="partner-badge">Meta Partner</div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Services</div>
+      <ul class="footer-links">
+        <li><a href="#company-brain">Company Brain</a></li>
+        <li><a href="#speaking">AI Coaching</a></li>
+        <li><a href="#calculator">Web Development</a></li>
+        <li><a href="#calculator">Design & Animation</a></li>
+        <li><a href="#calculator">Marketing Hubs</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Pages</div>
+      <ul class="footer-links">
+        <li><a href="winsymai.html">Home</a></li>
+        <li><a href="karim-identity.html">About Karim</a></li>
+        <li><a href="projects-showcase.html">Projects</a></li>
+        <li><a href="#speaking">Speaking</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links">
+        <li><a href="mailto:Karim@azzaoui.de">Karim@azzaoui.de</a></li>
+        <li><a href="tel:+601124487055">+60 112 4487055</a></li>
+        <li><a href="tel:+491622035499">+49 162 2035499</a></li>
+        <li><a href="winsymai.html">winsym.ai</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Karim Azzaoui · winsym.ai · All rights reserved</span>
+    <span>Kuala Lumpur · Malaysia · Germany</span>
+  </div>
+</footer>
+
+<script>
+  // HAMBURGER MENU
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    var burger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    burger.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+  // close on link click
+  document.querySelectorAll('.mobile-menu a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // PRICE CALCULATOR
+  const selected = {};
+
+  const labels = {
+    jumpstart: 'AI Jumpstart Session',
+    brain30: 'Company Brain — 30 Days',
+    course: 'AI Leader Programme (8-week)',
+    retainer: 'Monthly Retainer',
+    design: 'AI Design & Content Pack',
+    web: 'Website / App Build',
+    speaking: 'Speaking / Workshop'
+  };
+
+  const prices = {
+    jumpstart: 2500,
+    brain30: 12000,
+    course: 4800,
+    retainer: 3500,
+    design: 2000,
+    web: 1500,
+    speaking: 3000
+  };
+
+  const weekMap = {
+    jumpstart: 2,
+    brain30: 4,
+    course: 8,
+    design: 2,
+    web: 3,
+    retainer: 0,
+    speaking: 0
+  };
+
+  function toggleCalc(el) {
+    const id = el.dataset.id;
+    const group = el.dataset.group;
+
+    if (group === 'entry' || group === 'core') {
+      // radio-like within group
+      document.querySelectorAll('[data-group="' + group + '"]').forEach(function(item) {
+        if (item !== el) {
+          item.classList.remove('active');
+          delete selected[item.dataset.id];
+        }
+      });
+    }
+
+    if (el.classList.contains('active')) {
+      el.classList.remove('active');
+      delete selected[id];
+    } else {
+      el.classList.add('active');
+      selected[id] = { price: prices[id], weeks: weekMap[id] };
+    }
+
+    updateResult();
+  }
+
+  function updateResult() {
+    const keys = Object.keys(selected);
+    const itemsEl = document.getElementById('result-items');
+    const footerEl = document.getElementById('result-footer');
+    const totalEl = document.getElementById('result-total');
+    const savingsEl = document.getElementById('result-savings');
+    const timelineFill = document.getElementById('timeline-fill');
+    const timelineWeeks = document.getElementById('timeline-weeks');
+
+    if (keys.length === 0) {
+      itemsEl.innerHTML = '<div class="result-empty">Select the components above<br>to build your package.</div>';
+      footerEl.style.display = 'none';
+      return;
+    }
+
+    let html = '';
+    let total = 0;
+    let maxWeeks = 0;
+
+    keys.forEach(function(k) {
+      const suffix = k === 'retainer' ? '/mo' : '';
+      html += '<div class="result-line"><span class="result-line-name">' + labels[k] + '</span><span class="result-line-price">MYR ' + selected[k].price.toLocaleString() + suffix + '</span></div>';
+      total += selected[k].price;
+      if (selected[k].weeks > maxWeeks) maxWeeks = selected[k].weeks;
+    });
+
+    itemsEl.innerHTML = html;
+    totalEl.textContent = total.toLocaleString();
+    footerEl.style.display = 'block';
+
+    // Bundle discount
+    if (keys.includes('brain30') && keys.includes('jumpstart')) {
+      savingsEl.textContent = '✦ Bundle: Jumpstart credited toward Company Brain build.';
+      savingsEl.classList.add('visible');
+    } else if (keys.length >= 3) {
+      savingsEl.textContent = '✦ Multi-service packages may qualify for a custom discount. Mention this when you book.';
+      savingsEl.classList.add('visible');
+    } else {
+      savingsEl.classList.remove('visible');
+    }
+
+    // Timeline
+    if (maxWeeks > 0) {
+      const pct = Math.min((maxWeeks / 10) * 100, 100);
+      setTimeout(function() { timelineFill.style.width = pct + '%'; }, 100);
+      timelineWeeks.textContent = maxWeeks + ' weeks estimated';
+    } else {
+      timelineFill.style.width = '10%';
+      timelineWeeks.textContent = 'Flexible / ongoing';
+    }
+  }
+
+  // SCROLL ANIMATIONS
+  const observers = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observers.forEach(function(el) { io.observe(el); });
+
+  // NAV background on scroll
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      navEl.style.background = 'rgba(8,8,8,0.97)';
+    } else {
+      navEl.style.background = 'linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%)';
+    }
+  });
+</script>
+
+<!-- Supabase Client -->
+<script src="js/supabase-client.js"></script>
+
+<script>
+  // ── CONTACT FORM HANDLER ──────────────────────────────────
+  async function handleContactSubmit(e) {
+    e.preventDefault();
+    var btn    = document.getElementById('cf-submit');
+    var notice = document.getElementById('cf-notice');
+
+    var firstName = document.getElementById('cf-name').value.trim();
+    var company   = document.getElementById('cf-company').value.trim();
+    var email     = document.getElementById('cf-email').value.trim();
+    var service   = document.getElementById('cf-service').value;
+    var message   = document.getElementById('cf-message').value.trim();
+
+    if (!firstName || !email) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    notice.className = 'form-notice';
+    notice.style.display = 'none';
+
+    try {
+      await submitContact({ firstName, company, email, service, message });
+      trackEvent('home', 'form_submit', { service: service });
+
+      notice.className = 'form-notice success';
+      notice.textContent = '✦ Message sent. I\'ll be in touch within 24 hours.';
+      document.getElementById('contact-form').reset();
+    } catch (err) {
+      notice.className = 'form-notice error';
+      notice.textContent = '✦ Something went wrong. Please email Karim@azzaoui.de directly.';
+      console.error('Contact form error:', err);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Send message →';
+  }
+
+  // ── CALCULATOR BOOKING ────────────────────────────────────
+  // Override the existing result CTA to also save to Supabase
+  document.querySelector('.result-cta') && (function() {
+    var origCta = document.querySelector('.result-cta');
+    origCta.addEventListener('click', function() {
+      var keys = Object.keys(window.selected || {});
+      if (keys.length === 0) return;
+      var total = parseInt(document.getElementById('result-total').textContent.replace(/,/g,''), 10);
+      var items = {};
+      keys.forEach(function(k) { items[k] = window.selected[k]; });
+
+      // Save booking intent silently
+      submitBooking({
+        name: 'Calculator Lead',
+        email: 'unknown@pending.com',
+        service: keys.join(', '),
+        packageTotal: total,
+        packageItems: items
+      }).catch(function() {});
+
+      trackEvent('home', 'cta_click', { element: 'calculator_book', total: total });
+    });
+  })();
+
+  // ── CTA CLICK TRACKING ────────────────────────────────────
+  document.querySelectorAll('.btn-primary, .btn-ghost, .nav-cta').forEach(function(el) {
+    el.addEventListener('click', function() {
+      trackEvent('home', 'cta_click', { text: el.textContent.trim() });
+    });
+  });
+</script>
+</body>
+</html>

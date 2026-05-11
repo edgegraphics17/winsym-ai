@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — winsym.ai</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  window.SUPABASE_URL      = '%%SUPABASE_URL%%';
+  window.SUPABASE_ANON_KEY = '%%SUPABASE_ANON_KEY%%';
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --black: #070707;
+  --orange: #C45A1A;
+  --orange-bright: #E07030;
+  --orange-dim: #6a2e08;
+  --orange-glow: rgba(196,90,26,0.12);
+  --white: #F0EDE8;
+  --gray: #666;
+  --gray-mid: #333;
+  --gray-light: #aaa;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--body);
+  font-weight: 300;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9000;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── HEADER ── */
+.page-header {
+  padding: 8rem 5rem 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.section-tag::before { content:''; width:20px; height:1px; background:var(--orange); }
+
+.page-title {
+  font-family: var(--display);
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: .9;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+.page-title .accent { color: var(--orange); }
+
+.header-right {
+  max-width: 340px;
+  padding-bottom: .5rem;
+}
+.header-desc {
+  font-size: .9rem;
+  color: var(--gray-light);
+  line-height: 1.85;
+}
+.project-count {
+  font-family: var(--display);
+  font-size: 5rem;
+  color: var(--gray-mid);
+  line-height: 1;
+  margin-bottom: .5rem;
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  max-width: 1400px;
+  margin: 3.5rem auto 0;
+  padding: 0 5rem;
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-btn {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  border: 1px solid var(--gray-mid);
+  background: none;
+  padding: .5rem 1rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn:hover { color: var(--white); border-color: var(--gray); }
+.filter-btn.active { color: var(--orange); border-color: var(--orange); background: var(--orange-glow); }
+.filter-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--gray-mid);
+  margin: 0 .5rem;
+}
+
+/* ── GLOW LINE ── */
+.glow-hr {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--orange-dim), transparent);
+  border: none;
+  margin: 3rem 5rem;
+  max-width: calc(1400px - 10rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── PROJECTS GRID ── */
+.projects-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 5rem 6rem;
+}
+
+/* FEATURED PROJECT (index 0) — full width */
+.project-featured {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--gray-mid);
+  margin-bottom: 1px;
+  cursor: pointer;
+  transition: border-color .3s;
+  text-decoration: none;
+  color: inherit;
+}
+.project-featured:hover { border-color: var(--orange-dim); }
+
+.pf-visual {
+  position: relative;
+  min-height: 480px;
+  overflow: hidden;
+}
+.pf-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform .6s ease;
+}
+.project-featured:hover .pf-bg { transform: scale(1.03); }
+
+.pf-content {
+  background: #0d0d0d;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid var(--gray-mid);
+  transition: background .3s;
+}
+.project-featured:hover .pf-content { background: #110900; }
+
+/* GRID — 3 cols for remaining projects */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--gray-mid);
+  border: 1px solid var(--gray-mid);
+  border-top: none;
+}
+
+.project-card {
+  background: var(--black);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: background .25s;
+  position: relative;
+  overflow: hidden;
+}
+.project-card:hover { background: #0e0800; }
+
+.pc-visual {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.pc-bg {
+  position: absolute;
+  inset: 0;
+  transition: transform .5s ease;
+}
+.project-card:hover .pc-bg { transform: scale(1.05); }
+
+.pc-content {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border-top: 1px solid var(--gray-mid);
+}
+
+/* ── SHARED PROJECT CONTENT STYLES ── */
+.p-eyebrow {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: .6rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.p-eyebrow::before { content:''; width:12px; height:1px; background:var(--orange); }
+
+.p-num {
+  font-family: var(--display);
+  font-size: 5rem;
+  color: #1a1a1a;
+  line-height: 1;
+  margin-bottom: -.5rem;
+}
+
+.p-title {
+  font-family: var(--display);
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: .75rem;
+}
+.pf-content .p-title { font-size: 3rem; }
+
+.p-tagline {
+  font-style: italic;
+  font-size: .82rem;
+  color: var(--orange);
+  margin-bottom: .75rem;
+  font-weight: 300;
+}
+
+.p-desc {
+  font-size: .82rem;
+  color: var(--gray-light);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.p-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-top: 1.2rem;
+}
+.p-tag {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 1px;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: .2rem .55rem;
+  text-transform: uppercase;
+}
+
+.p-link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #1e1e1e;
+}
+.p-link-url {
+  font-family: var(--mono);
+  font-size: .58rem;
+  color: var(--gray);
+  letter-spacing: 1px;
+}
+.p-link-arrow {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--orange-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--orange);
+  font-size: .9rem;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.project-featured:hover .p-link-arrow,
+.project-card:hover .p-link-arrow {
+  background: var(--orange);
+  color: var(--black);
+  border-color: var(--orange);
+}
+
+/* Featured-only bottom bar */
+.pf-bottom {
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #1e1e1e;
+  margin-top: 2rem;
+}
+.pf-stat { }
+.pf-stat-num {
+  font-family: var(--display);
+  font-size: 2rem;
+  color: var(--orange);
+  line-height: 1;
+}
+.pf-stat-label {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 2px;
+  color: var(--gray);
+  text-transform: uppercase;
+  margin-top: .2rem;
+}
+
+/* ── VISUAL BACKGROUNDS (CSS-generated per project) ── */
+
+/* Raumrasen — green + clean lines */
+.bg-raumrasen {
+  background: linear-gradient(135deg, #0a1a08 0%, #061006 40%, #030803 100%);
+}
+.bg-raumrasen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(60,120,30,.07) 29px),
+    repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(60,120,30,.05) 29px);
+}
+.bg-raumrasen::after {
+  content: 'RR';
+  position: absolute;
+  bottom: -1rem;
+  right: 1rem;
+  font-family: var(--display);
+  font-size: 9rem;
+  color: rgba(60,120,30,.06);
+  line-height: 1;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+.rr-bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 3px;
+  opacity: .2;
+}
+.rr-bar {
+  flex: 1;
+  background: linear-gradient(180deg, transparent 20%, rgba(80,160,40,.6) 60%, transparent 95%);
+  animation: rrbarpulse 3.5s ease-in-out infinite;
+}
+.rr-bar:nth-child(2){animation-delay:.4s}
+.rr-bar:nth-child(3){animation-delay:.8s}
+.rr-bar:nth-child(4){animation-delay:.2s}
+.rr-bar:nth-child(5){animation-delay:1.1s}
+@keyframes rrbarpulse { 0%,100%{transform:scaleY(.5);opacity:.3}50%{transform:scaleY(1);opacity:1} }
+
+.rr-label {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 2;
+}
+.rr-label-main {
+  font-family: var(--display);
+  font-size: 3.5rem;
+  color: rgba(255,255,255,.9);
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.rr-label-sub {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: 3px;
+  color: rgba(80,160,40,.7);
+  text-transform: uppercase;
+  margin-top: .4rem;
+}
+
+.rr-badge {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 2px;
+  color: rgba(80,160,40,.6);
+  border: 1px solid rgba(80,160,40,.2);
+  padding: .3rem .7rem;
+  text-transform: uppercase;
+}
+
+/* Tuak Alus — warm amber rice wine */
+.bg-tuak {
+  background: linear-gradient(135deg, #1a0f02 0%, #120900 45%, #0a0600 100%);
+}
+.bg-tuak::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 60%, rgba(180,100,20,.18) 0%, transparent 60%);
+}
+.bg-tuak::after {
+  content: 'TA';
+  position: absolute;
+  bottom: -1.5rem;
+  right: .5rem;
+  font-family: var(--display);
+  font-size: 10rem;
+  color: rgba(180,100,20,.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.tuak-lines {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.tuak-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(200,120,20,.15), transparent);
+  animation: tuakwave 4s ease-in-out infinite;
+}
+.tuak-line:nth-child(1){top:25%;animation-delay:0s}
+.tuak-line:nth-child(2){top:45%;animation-delay:.7s;opacity:.7}
+.tuak-line:nth-child(3){top:65%;animation-delay:1.4s;opacity:.5}
+.tuak-line:nth-child(4){top:80%;animation-delay:.3s;opacity:.4}
+@keyframes tuakwave { 0%,100%{opacity:.2;transform:scaleX(.6)}50%{opacity:1;transform:scaleX(1)} }
+
+.tuak-label {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 2;
+}
+.tuak-label-main {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: rgba(220,160,60,.9);
+  line-height: 1.1;
+}
+.tuak-label-sub {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 3px;
+  color: rgba(180,100,20,.6);
+  text-transform: uppercase;
+  margin-top: .4rem;
+}
+.tuak-bottle {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1rem;
+  font-size: 3.5rem;
+  opacity: .3;
+}
+
+/* Edge Bookings — electric violet, 3D portal */
+.bg-edge {
+  background: linear-gradient(135deg, #08020f 0%, #050008 40%, #030005 100%);
+}
+.bg-edge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 40%, rgba(130,60,200,.15) 0%, transparent 55%);
+}
+.bg-edge::after {
+  content: 'EB';
+  position: absolute;
+  bottom: -1rem;
+  right: .5rem;
+  font-family: var(--display);
+  font-size: 9rem;
+  color: rgba(130,60,200,.05);
+  line-height: 1;
+  pointer-events: none;
+}
+.edge-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(130,60,200,.06) 21px),
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(130,60,200,.04) 21px);
+}
+.edge-glow {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(130,60,200,.2);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  filter: blur(40px);
+  animation: edgepulse 3s ease-in-out infinite;
+}
+@keyframes edgepulse { 0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(.8)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)} }
+
+.edge-label {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 2;
+}
+.edge-label-main {
+  font-family: var(--display);
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: rgba(180,130,240,.9);
+  line-height: 1;
+}
+.edge-label-sub {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 3px;
+  color: rgba(130,60,200,.6);
+  text-transform: uppercase;
+  margin-top: .4rem;
+}
+.edge-portal {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(130,60,200,.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(180,130,240,.5);
+  font-size: 1.3rem;
+  z-index: 2;
+  animation: edgespin 8s linear infinite;
+}
+@keyframes edgespin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+/* Songlab — dark music studio */
+.bg-songlab {
+  background: linear-gradient(135deg, #030309 0%, #020206 40%, #010104 100%);
+}
+.bg-songlab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(40,80,200,.15) 0%, transparent 55%);
+}
+.bg-songlab::after {
+  content: 'SL';
+  position: absolute;
+  bottom: -1rem;
+  right: .5rem;
+  font-family: var(--display);
+  font-size: 9rem;
+  color: rgba(40,80,200,.05);
+  line-height: 1;
+  pointer-events: none;
+}
+.songlab-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 0 1rem;
+  z-index: 1;
+}
+.sw-bar {
+  flex: 1;
+  background: rgba(60,120,240,.3);
+  border-radius: 2px 2px 0 0;
+  animation: swpulse 1.5s ease-in-out infinite;
+  min-height: 4px;
+}
+.sw-bar:nth-child(1){height:20%;animation-delay:0s}
+.sw-bar:nth-child(2){height:60%;animation-delay:.1s}
+.sw-bar:nth-child(3){height:40%;animation-delay:.2s}
+.sw-bar:nth-child(4){height:80%;animation-delay:.15s}
+.sw-bar:nth-child(5){height:30%;animation-delay:.35s}
+.sw-bar:nth-child(6){height:70%;animation-delay:.05s}
+.sw-bar:nth-child(7){height:50%;animation-delay:.25s}
+.sw-bar:nth-child(8){height:90%;animation-delay:.4s}
+.sw-bar:nth-child(9){height:45%;animation-delay:.3s}
+.sw-bar:nth-child(10){height:65%;animation-delay:.1s}
+.sw-bar:nth-child(11){height:25%;animation-delay:.45s}
+.sw-bar:nth-child(12){height:55%;animation-delay:.2s}
+@keyframes swpulse { 0%,100%{transform:scaleY(.4);opacity:.3} 50%{transform:scaleY(1);opacity:1} }
+
+.songlab-label {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 2;
+}
+.songlab-label-main {
+  font-family: var(--display);
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: rgba(140,180,255,.9);
+  line-height: 1;
+}
+.songlab-label-dot {
+  color: rgba(60,120,240,.7);
+}
+.songlab-label-sub {
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 3px;
+  color: rgba(60,120,240,.6);
+  text-transform: uppercase;
+  margin-top: .4rem;
+}
+.songlab-badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: .55rem;
+  letter-spacing: 2px;
+  color: rgba(60,120,240,.5);
+  border: 1px solid rgba(60,120,240,.2);
+  padding: .25rem .6rem;
+  text-transform: uppercase;
+}
+
+/* ── HOVER OVERLAY ── */
+.p-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(196,90,26,.04);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+  z-index: 3;
+}
+.project-featured:hover .p-hover-overlay,
+.project-card:hover .p-hover-overlay { opacity: 1; }
+
+/* ── BOTTOM CTA ── */
+.projects-cta {
+  max-width: 1400px;
+  margin: 4rem auto;
+  padding: 0 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  border: 1px solid var(--gray-mid);
+  padding: 2.5rem 3rem;
+}
+.cta-text { }
+.cta-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.cta-headline {
+  font-family: var(--display);
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  color: var(--white);
+  line-height: .95;
+}
+.cta-btn {
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 1rem 2.2rem;
+  font-family: var(--body);
+  font-size: .72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.cta-btn:hover { background: var(--orange-bright); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.vis { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: .1s; }
+.reveal-d2 { transition-delay: .2s; }
+.reveal-d3 { transition-delay: .3s; }
+
+/* ── SHARED NAV ── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: linear-gradient(to bottom, rgba(7,7,7,0.97) 0%, transparent 100%);
+  backdrop-filter: blur(2px);
+  transition: background 0.3s;
+}
+.site-nav.scrolled { background: rgba(7,7,7,0.98); }
+
+.nav-logo {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-family: var(--mono);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a.active { color: var(--orange); }
+
+.nav-cta {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  text-decoration: none;
+  border: 1px solid rgba(196,90,26,0.4);
+  padding: 0.5rem 1.2rem;
+  transition: all 0.2s;
+  font-family: var(--mono);
+}
+.nav-cta:hover { background: var(--orange); color: var(--black); }
+
+/* HAMBURGER */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--white);
+  transition: all 0.3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* MOBILE MENU */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(7,7,7,0.98);
+  z-index: 150;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--display);
+  font-size: 2.5rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover, .mobile-menu a.active { color: var(--orange); }
+.mobile-menu-divider { width: 40px; height: 1px; background: rgba(196,90,26,0.4); }
+.mobile-menu-sub { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.mobile-menu-sub a {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--gray);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.mobile-menu-sub a:hover { color: var(--orange); }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: #050505;
+  border-top: 1px solid #1a1a1a;
+  padding: 4rem;
+}
+.site-footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 4rem;
+}
+.footer-logo {
+  font-family: var(--display);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.footer-logo span { color: var(--orange); }
+.footer-tagline { font-size: 0.8rem; color: var(--gray); line-height: 1.8; max-width: 250px; }
+.footer-col-title {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+.footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-links-list a { font-size: 0.8rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.footer-links-list a:hover { color: var(--white); }
+.footer-bottom {
+  max-width: 1400px;
+  margin: 3rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.7rem;
+  color: #555;
+}
+.partner-badge-f {
+  border: 1px solid #333;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: var(--gray);
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .site-nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-cta { display: none; }
+  .page-header { padding: 5rem 1.5rem 0; flex-direction: column; gap: 1rem; }
+  .filter-bar { padding: 0 1.5rem; }
+  .glow-hr { margin: 2rem 1.5rem; }
+  .projects-wrapper { padding: 1rem 1.5rem 4rem; }
+  .project-featured { grid-template-columns: 1fr; }
+  .pf-visual { min-height: 260px; }
+  .pf-content { border-left: none; border-top: 1px solid var(--gray-mid); }
+  .projects-grid { grid-template-columns: 1fr; }
+  .projects-cta { flex-direction: column; text-align: center; }
+  .header-right { max-width: 100%; }
+  .site-footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .site-footer { padding: 3rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="winsymai.html">Home</a>
+  <a href="karim-identity.html">About Karim</a>
+  <a href="projects-showcase.html" class="active">Projects</a>
+  <div class="mobile-menu-divider"></div>
+  <div class="mobile-menu-sub">
+    <a href="#" onclick="filterProjects('ai', document.querySelector('[data-filter=ai]')); return false;">AI Products</a>
+    <a href="#" onclick="filterProjects('web', document.querySelector('[data-filter=web]')); return false;">Web</a>
+    <a href="winsymai.html#contact">Contact</a>
+  </div>
+</div>
+
+<!-- SHARED NAV -->
+<nav class="site-nav" id="siteNav">
+  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
+  <ul class="nav-links">
+    <li><a href="winsymai.html">Home</a></li>
+    <li><a href="karim-identity.html">About Karim</a></li>
+    <li><a href="projects-showcase.html" class="active">Projects</a></li>
+    <li><a href="winsymai.html#speaking">Speaking</a></li>
+    <li><a href="winsymai.html#contact">Contact</a></li>
+  </ul>
+  <a href="winsymai.html#contact" class="nav-cta">Book a session →</a>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<header class="page-header reveal" style="padding-top: 7rem;">
+  <div>
+    <div class="section-tag">Selected work · winsym.ai</div>
+    <h1 class="page-title">
+      Project<br>
+      <span class="accent">References</span>
+    </h1>
+  </div>
+  <div class="header-right">
+    <div class="project-count">04</div>
+    <p class="header-desc">
+      From 5-minute business websites to AI music machines — every project is a live proof of what's possible when you combine design thinking with rapid AI execution.
+    </p>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar reveal">
+  <button class="filter-btn active" onclick="filterProjects('all', this)">All projects</button>
+  <div class="filter-divider"></div>
+  <button class="filter-btn" onclick="filterProjects('web', this)">Web</button>
+  <button class="filter-btn" onclick="filterProjects('ai', this)">AI Product</button>
+  <button class="filter-btn" onclick="filterProjects('brand', this)">Brand</button>
+  <button class="filter-btn" onclick="filterProjects('software', this)">Software</button>
+</div>
+
+<hr class="glow-hr">
+
+<!-- ── PROJECTS ── -->
+<div class="projects-wrapper">
+
+  <!-- FEATURED: SONGLAB (most impressive AI product) -->
+  <a class="project-featured reveal" href="https://songlag.vercel.app" target="_blank" rel="noopener" data-category="ai">
+    <div class="pf-visual">
+      <div class="pf-bg bg-songlab">
+        <div class="songlab-wave">
+          <div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div>
+          <div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div>
+          <div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div>
+          <div class="sw-bar"></div><div class="sw-bar"></div><div class="sw-bar"></div>
+        </div>
+        <div class="songlab-label">
+          <div class="songlab-label-main">songlab<span class="songlab-label-dot">.</span></div>
+          <div class="songlab-label-sub">AI Music Studio</div>
+        </div>
+        <div class="songlab-badge">AI · Southeast Asia</div>
+      </div>
+      <div class="p-hover-overlay"></div>
+    </div>
+    <div class="pf-content">
+      <div>
+        <div class="p-num">01</div>
+        <div class="p-eyebrow">AI Product · Music</div>
+        <div class="p-title">SONGLAB.<br>AI MUSIC STUDIO</div>
+        <div class="p-tagline">"We build AI tracks. Your story is next."</div>
+        <p class="p-desc">
+          A fully automated AI music production platform targeting Southeast Asia's creator economy. Users configure genre, mood, language, and vocal direction — the AI delivers a mastered track within 24 hours.<br><br>
+          Covers 15+ genres from Bollywood to C-Pop, K-Pop, Afrobeats, and Synthwave. Built with a full configurator UI, order flow, and real-time delivery system.
+        </p>
+        <div class="p-tags">
+          <span class="p-tag">AI Automation</span>
+          <span class="p-tag">Music Production</span>
+          <span class="p-tag">SE Asia</span>
+          <span class="p-tag">15+ Genres</span>
+          <span class="p-tag">24h Delivery</span>
+        </div>
+      </div>
+      <div>
+        <div class="pf-bottom">
+          <div class="pf-stat">
+            <div class="pf-stat-num">15+</div>
+            <div class="pf-stat-label">Genres covered</div>
+          </div>
+          <div class="pf-stat">
+            <div class="pf-stat-num">24h</div>
+            <div class="pf-stat-label">Delivery time</div>
+          </div>
+          <div class="pf-stat">
+            <div class="pf-stat-num">6+</div>
+            <div class="pf-stat-label">Languages</div>
+          </div>
+        </div>
+        <div class="p-link-row">
+          <div class="p-link-url">songlag.vercel.app</div>
+          <div class="p-link-arrow">↗</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- GRID: 3 remaining projects -->
+  <div class="projects-grid">
+
+    <!-- RAUMRASEN -->
+    <a class="project-card reveal reveal-d1" href="https://raumrasen.vercel.app" target="_blank" rel="noopener" data-category="web">
+      <div class="pc-visual">
+        <div class="pc-bg bg-raumrasen">
+          <div class="rr-bars">
+            <div class="rr-bar"></div><div class="rr-bar"></div><div class="rr-bar"></div>
+            <div class="rr-bar"></div><div class="rr-bar"></div>
+          </div>
+          <div class="rr-label">
+            <div class="rr-label-main">RAUM<br>&amp; RASEN</div>
+            <div class="rr-label-sub">winsym framework</div>
+          </div>
+          <div class="rr-badge">5-min build</div>
+        </div>
+        <div class="p-hover-overlay"></div>
+      </div>
+      <div class="pc-content">
+        <div class="p-eyebrow">Web · Local Business</div>
+        <div class="p-title">RAUM &amp;<br>RASEN</div>
+        <div class="p-tagline">"Sauber. Grün. Verlässlich."</div>
+        <p class="p-desc">A complete business website for a German cleaning &amp; garden service — built in under 5 minutes using the winsym.ai rapid framework. Proof that professional web presence doesn't need weeks of development.</p>
+        <div class="p-tags">
+          <span class="p-tag">winsym Framework</span>
+          <span class="p-tag">5-min build</span>
+          <span class="p-tag">Local Business</span>
+        </div>
+        <div class="p-link-row">
+          <div class="p-link-url">raumrasen.vercel.app</div>
+          <div class="p-link-arrow">↗</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- TUAK ALUS -->
+    <a class="project-card reveal reveal-d2" href="https://tuak-alus.vercel.app" target="_blank" rel="noopener" data-category="brand">
+      <div class="pc-visual">
+        <div class="pc-bg bg-tuak">
+          <div class="tuak-lines">
+            <div class="tuak-line"></div><div class="tuak-line"></div>
+            <div class="tuak-line"></div><div class="tuak-line"></div>
+          </div>
+          <div class="tuak-label">
+            <div class="tuak-label-main">Tuak Alus</div>
+            <div class="tuak-label-sub">Sarawak Rice Wine</div>
+          </div>
+          <div class="tuak-bottle">🍶</div>
+        </div>
+        <div class="p-hover-overlay"></div>
+      </div>
+      <div class="pc-content">
+        <div class="p-eyebrow">Brand · Lifestyle</div>
+        <div class="p-title">TUAK<br>ALUS</div>
+        <div class="p-tagline">"Born from Sarawak. Made for the World."</div>
+        <p class="p-desc">Premium digital brand presence for a traditional Sarawakian rice wine label — Tuak Alus by Kenyalang Alus Sdn Bhd. Bridging indigenous Borneo heritage with global premium spirits positioning.</p>
+        <div class="p-tags">
+          <span class="p-tag">Brand Identity</span>
+          <span class="p-tag">Lifestyle</span>
+          <span class="p-tag">Malaysia</span>
+          <span class="p-tag">Borneo</span>
+        </div>
+        <div class="p-link-row">
+          <div class="p-link-url">tuak-alus.vercel.app</div>
+          <div class="p-link-arrow">↗</div>
+        </div>
+      </div>
+    </a>
+
+    <!-- EDGE BOOKINGS -->
+    <a class="project-card reveal reveal-d3" href="https://edge-bookings.vercel.app" target="_blank" rel="noopener" data-category="software">
+      <div class="pc-visual">
+        <div class="pc-bg bg-edge">
+          <div class="edge-grid"></div>
+          <div class="edge-glow"></div>
+          <div class="edge-label">
+            <div class="edge-label-main">EDGE</div>
+            <div class="edge-label-sub">3D Order Portal</div>
+          </div>
+          <div class="edge-portal">⊕</div>
+        </div>
+        <div class="p-hover-overlay"></div>
+      </div>
+      <div class="pc-content">
+        <div class="p-eyebrow">Software · Events</div>
+        <div class="p-title">EDGE<br>BOOKINGS</div>
+        <div class="p-tagline">"EDGE Eventmarketing — 3D Order Portal"</div>
+        <p class="p-desc">A custom booking and order portal for a high-end event design company — featuring a 3D configurator interface that lets clients build, visualize, and book event setups directly online.</p>
+        <div class="p-tags">
+          <span class="p-tag">Booking System</span>
+          <span class="p-tag">3D Portal</span>
+          <span class="p-tag">Event Design</span>
+          <span class="p-tag">Web App</span>
+        </div>
+        <div class="p-link-row">
+          <div class="p-link-url">edge-bookings.vercel.app</div>
+          <div class="p-link-arrow">↗</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ── BOTTOM CTA ── -->
+<div style="max-width:1400px;margin:0 auto 5rem;padding:0 5rem;" class="reveal">
+  <div class="projects-cta">
+    <div class="cta-text">
+      <div class="cta-label">Your project could be next</div>
+      <div class="cta-headline">Let's build<br>something real</div>
+    </div>
+    <a href="winsymai.html#contact" class="cta-btn">Start a project →</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="footer-logo">win<span>sym</span>.ai</div>
+      <p class="footer-tagline">Winning Systems Backed by AI. Helping Asian businesses build their AI Operating System — from concept to full integration.</p>
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+        <div class="partner-badge-f">Google Partner</div>
+        <div class="partner-badge-f">Meta Partner</div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Pages</div>
+      <ul class="footer-links-list">
+        <li><a href="winsymai.html">Home</a></li>
+        <li><a href="karim-identity.html">About Karim</a></li>
+        <li><a href="projects-showcase.html">Projects</a></li>
+        <li><a href="winsymai.html#speaking">Speaking</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Projects</div>
+      <ul class="footer-links-list">
+        <li><a href="https://songlag.vercel.app" target="_blank">Songlab — AI Music</a></li>
+        <li><a href="https://raumrasen.vercel.app" target="_blank">Raum & Rasen</a></li>
+        <li><a href="https://tuak-alus.vercel.app" target="_blank">Tuak Alus</a></li>
+        <li><a href="https://edge-bookings.vercel.app" target="_blank">Edge Bookings</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <ul class="footer-links-list">
+        <li><a href="mailto:Karim@azzaoui.de">Karim@azzaoui.de</a></li>
+        <li><a href="tel:+601124487055">+60 112 4487055</a></li>
+        <li><a href="tel:+491622035499">+49 162 2035499</a></li>
+        <li><a href="winsymai.html#contact">Book a session</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Karim Azzaoui · winsym.ai · All rights reserved</span>
+    <span>Kuala Lumpur · Malaysia · Germany</span>
+  </div>
+</footer>
+
+<script>
+  // HAMBURGER MENU
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    var burger = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    burger.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+  document.querySelectorAll('.mobile-menu a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+  // Nav scroll
+  var nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+<script>
+// FILTER
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  var all = document.querySelectorAll('[data-category]');
+  all.forEach(function(el) {
+    if (cat === 'all' || el.dataset.category === cat) {
+      el.style.display = '';
+      el.style.opacity = '1';
+    } else {
+      el.style.opacity = '0.2';
+      el.style.pointerEvents = 'none';
+      el.style.display = '';
+      setTimeout(function(){ if(el.style.opacity==='0.2') el.style.pointerEvents='none'; }, 300);
+    }
+  });
+
+  // restore pointer events for matching
+  all.forEach(function(el) {
+    if (cat === 'all' || el.dataset.category === cat) {
+      el.style.pointerEvents = '';
+    }
+  });
+}
+
+// REVEAL on scroll
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); }
+  });
+}, {threshold: 0.08});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+</script>
+<script src="js/supabase-client.js"></script>
+<script>
+  // Track project card clicks
+  document.querySelectorAll('.project-card, .project-featured').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var url = el.getAttribute('href') || '';
+      trackEvent('projects', 'project_click', { url: url });
+    });
+  });
+  // Track filter usage
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      trackEvent('projects', 'filter_click', { filter: btn.textContent.trim() });
+    });
+  });
+</script>
+</body>
+</html>
