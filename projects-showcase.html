@@ -777,9 +777,10 @@ body::after {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,0.04);
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.35s cubic-bezier(0.4,0,0.2,1);
 }
 .site-nav.scrolled { background: rgba(7,7,7,0.99); }
+.site-nav.nav-hidden { transform: translateY(-100%); }
 
 .nav-logo {
   font-family: var(--display);
@@ -1250,10 +1251,25 @@ body::after {
       document.body.style.overflow = '';
     });
   });
-  // Nav scroll
+  // NAV: scrolled background + hide-on-scroll-down
   var nav = document.getElementById('siteNav');
+  var lastScrollY = window.scrollY;
+  var ticking = false;
   window.addEventListener('scroll', function() {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        var current = window.scrollY;
+        nav.classList.toggle('scrolled', current > 50);
+        if (current > lastScrollY && current > 80) {
+          nav.classList.add('nav-hidden');
+        } else {
+          nav.classList.remove('nav-hidden');
+        }
+        lastScrollY = current;
+        ticking = false;
+      });
+      ticking = true;
+    }
   });
 </script>
 
