@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academy — Higgsfield + Claude · winsym.ai</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080808;
+  --orange: #C45A1A;
+  --orange-bright: #E06820;
+  --orange-dim: #7a3010;
+  --orange-glow: rgba(196,90,26,0.15);
+  --white: #F5F2EE;
+  --gray: #888;
+  --gray-dim: #2a2a2a;
+  --gray-mid: #555;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.12);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NOISE ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 4rem;
+  background: rgba(8,8,8,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+nav.nav-hidden { transform: translateY(-100%); }
+.nav-logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 2px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--orange); }
+.nav-back { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; border: 1px solid var(--gray-dim); padding: 0.45rem 1rem; transition: all 0.2s; }
+.nav-back:hover { color: var(--white); border-color: var(--gray-mid); }
+.nav-badge { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); border: 1px solid var(--orange-dim); padding: 0.3rem 0.75rem; }
+
+/* ── HERO ── */
+.course-hero {
+  padding: 9rem 4rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+.hero-tag .badge {
+  background: var(--orange);
+  color: var(--black);
+  padding: 0.15rem 0.6rem;
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+}
+.course-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+.course-hero h1 .accent { color: var(--orange); }
+.course-hero .subtitle {
+  font-size: 1.05rem;
+  color: #aaa;
+  max-width: 560px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.meta-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+
+/* ── OUTCOMES ── */
+.outcomes-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--gray-dim);
+  margin-bottom: 0;
+}
+.outcome-item {
+  padding: 1.5rem 1.75rem;
+  border-right: 1px solid var(--gray-dim);
+  position: relative;
+}
+.outcome-item:last-child { border-right: none; }
+.outcome-item::before {
+  content: '✓';
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--green);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.outcome-item p { font-size: 0.82rem; color: var(--gray); line-height: 1.6; }
+
+/* ── LAYOUT ── */
+.course-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 80vh;
+  border-top: 1px solid var(--gray-dim);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-right: 1px solid var(--gray-dim);
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-dim) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--gray-dim); }
+
+.sidebar-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--gray-dim);
+}
+.sidebar-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+}
+
+/* Progress bar */
+.progress-wrap { margin-bottom: 0; }
+.progress-bar-bg {
+  height: 2px;
+  background: var(--gray-dim);
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--orange);
+  transition: width 0.5s ease;
+  width: 0%;
+}
+.progress-text {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--gray);
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-nav { padding: 0.75rem 0; }
+.step-nav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  color: inherit;
+}
+.step-nav-item:hover { background: rgba(255,255,255,0.03); }
+.step-nav-item.active {
+  background: rgba(196,90,26,0.07);
+  border-left-color: var(--orange);
+}
+.step-nav-item.completed { opacity: 0.7; }
+.step-nav-item.completed .step-num { background: var(--green); color: var(--black); border-color: var(--green); }
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--gray-dim);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--gray);
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.3s;
+}
+.step-nav-item.active .step-num {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--black);
+}
+.step-nav-label {
+  font-size: 0.78rem;
+  color: var(--gray);
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.step-nav-item.active .step-nav-label { color: var(--white); }
+.step-nav-sublabel {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: block;
+  margin-top: 0.15rem;
+}
+
+/* ── MAIN CONTENT ── */
+.course-main { padding: 3rem 4rem; }
+
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeInUp 0.4s ease; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--gray-dim);
+}
+.step-big-num {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 0.85;
+  color: var(--gray-dim);
+  flex-shrink: 0;
+  letter-spacing: -2px;
+}
+.step-header-text {}
+.step-header-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+.step-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+.step-intro {
+  color: #aaa;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  max-width: 640px;
+}
+
+/* ── CONTENT BLOCKS ── */
+.content-section { margin-bottom: 2.5rem; }
+.content-section h3 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.content-section h3::after { content: ''; flex: 1; height: 1px; background: var(--gray-dim); }
+
+/* Requirements list */
+.req-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.req-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--gray-dim);
+  font-size: 0.85rem;
+  color: #bbb;
+}
+.req-item .req-icon { color: var(--orange); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* Step list (numbered instructions) */
+.instruction-block {
+  background: #0d0d0d;
+  border: 1px solid var(--gray-dim);
+  margin-bottom: 1.25rem;
+}
+.instruction-block-header {
+  padding: 0.85rem 1.25rem;
+  background: rgba(196,90,26,0.06);
+  border-bottom: 1px solid var(--gray-dim);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.instruction-list { padding: 0.5rem 0; }
+.instruction-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.85rem;
+  color: #bbb;
+  align-items: flex-start;
+}
+.instruction-item:last-child { border-bottom: none; }
+.instr-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--orange);
+  flex-shrink: 0;
+  width: 18px;
+  margin-top: 2px;
+}
+
+/* Code block / prompt box */
+.prompt-box {
+  background: #0a0a0a;
+  border: 1px solid var(--gray-dim);
+  border-left: 3px solid var(--orange);
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+  position: relative;
+}
+.prompt-box-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+}
+.prompt-box pre {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ccc;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--gray-dim);
+  border: none;
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { background: var(--orange); color: var(--black); }
+.copy-btn.copied { background: var(--green); color: var(--black); }
+
+/* Permission table */
+.perm-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.perm-table th {
+  padding: 0.65rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(196,90,26,0.06);
+  border: 1px solid var(--gray-dim);
+  text-align: left;
+}
+.perm-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--gray-dim);
+  color: #bbb;
+}
+.perm-table .allow { color: var(--green); font-weight: 500; }
+.perm-table .warn { color: #f59e0b; font-weight: 500; }
+
+/* Model cards grid */
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--gray-dim);
+  border: 1px solid var(--gray-dim);
+  margin: 1rem 0;
+}
+.model-card {
+  background: #0a0a0a;
+  padding: 1.5rem 1.25rem;
+  transition: background 0.2s;
+}
+.model-card:hover { background: rgba(196,90,26,0.05); }
+.model-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.model-use {
+  font-size: 0.78rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+.model-tag {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.2rem 0.5rem;
+}
+
+/* Warning box */
+.warning-box {
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-left: 3px solid #f59e0b;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-size: 0.83rem;
+  color: #d4a847;
+  line-height: 1.7;
+}
+.warning-box strong { color: #f59e0b; }
+
+.tip-box {
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-left: 3px solid var(--green);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-size: 0.83rem;
+  color: #86efac;
+  line-height: 1.7;
+}
+.tip-box strong { color: var(--green); }
+
+/* Comparison block */
+.compare-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--gray-dim);
+  margin: 1rem 0;
+}
+.compare-col {
+  background: #0a0a0a;
+  padding: 1.25rem;
+}
+.compare-col.bad .compare-label { color: #ef4444; }
+.compare-col.good .compare-label { color: var(--green); }
+.compare-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.compare-col p { font-size: 0.82rem; color: #bbb; line-height: 1.7; }
+
+/* Mistake list */
+.mistake-list { display: flex; flex-direction: column; gap: 1px; background: var(--gray-dim); }
+.mistake-item {
+  background: #0a0a0a;
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+.mistake-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--gray-dim);
+  line-height: 1;
+}
+.mistake-title { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.35rem; }
+.mistake-fix { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+.mistake-fix span { color: var(--green); }
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--gray-dim);
+  margin: 1rem 0;
+}
+.stat-cell {
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--gray-dim);
+  text-align: center;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.stat-label { font-size: 0.75rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-mono); }
+
+/* Stage flow */
+.stage-flow { display: flex; flex-direction: column; gap: 1px; background: var(--gray-dim); margin: 1rem 0; }
+.stage-item {
+  background: #0a0a0a;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  transition: background 0.2s;
+  cursor: default;
+}
+.stage-item:hover { background: rgba(196,90,26,0.05); }
+.stage-num {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--orange);
+  flex-shrink: 0;
+  width: 20px;
+  padding-top: 3px;
+}
+.stage-title { font-size: 0.85rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; }
+.stage-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
+
+/* Scaling table */
+.scale-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.scale-table th {
+  padding: 0.65rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(196,90,26,0.06);
+  border: 1px solid var(--gray-dim);
+  text-align: left;
+}
+.scale-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--gray-dim);
+  color: #bbb;
+}
+
+/* Summary system box */
+.system-box {
+  background: #0d0d0d;
+  border: 1px solid var(--gray-dim);
+  padding: 2rem 2rem;
+}
+.system-box-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.system-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--orange-dim);
+}
+.system-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+.system-list li {
+  font-size: 0.78rem;
+  color: var(--gray);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+.system-list li::before { content: '→'; color: var(--orange); flex-shrink: 0; margin-top: 1px; }
+
+/* ── COMPLETION / NAVIGATION ── */
+.step-nav-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-dim);
+}
+.btn-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--gray-dim);
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-step:hover { color: var(--white); border-color: var(--gray-mid); }
+.btn-step.primary {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--black);
+}
+.btn-step.primary:hover { background: var(--orange-bright); }
+.btn-step:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.mark-done-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mark-done-btn:hover { background: var(--green-dim); }
+.mark-done-btn.done { background: var(--green-dim); opacity: 0.6; cursor: default; }
+
+/* ── FLOATING WHATSAPP ── */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9400;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 1.4rem;
+  border-radius: 50px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  transition: all 0.25s;
+}
+.wa-float:hover { background: #1ebe5d; transform: translateY(-3px); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.25rem; }
+  .course-hero { padding: 7rem 1.25rem 3rem; }
+  .outcomes-bar { grid-template-columns: 1fr 1fr; }
+  .outcome-item:nth-child(2) { border-right: none; }
+  .course-layout { grid-template-columns: 1fr; }
+  .sidebar { position: relative; height: auto; top: 0; border-right: none; border-bottom: 1px solid var(--gray-dim); }
+  .step-nav { display: flex; overflow-x: auto; padding: 0.5rem; gap: 0; }
+  .step-nav-item { flex-direction: column; align-items: center; text-align: center; padding: 0.75rem 0.75rem; min-width: 80px; border-left: none; border-bottom: 2px solid transparent; }
+  .step-nav-item.active { border-bottom-color: var(--orange); border-left-color: transparent; }
+  .step-nav-sublabel { display: none; }
+  .course-main { padding: 2rem 1.25rem; }
+  .model-grid { grid-template-columns: 1fr 1fr; }
+  .compare-block { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr; }
+  .stat-cell { border-right: none; border-bottom: 1px solid var(--gray-dim); }
+  .stat-cell:last-child { border-bottom: none; }
+  .system-box-grid { grid-template-columns: 1fr; }
+  .hero-meta { gap: 1.25rem; }
+  .wa-float { padding: 1rem; border-radius: 50%; }
+  .wa-float span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
+  <span class="nav-badge">Academy</span>
+  <a href="winsymai.html" class="nav-back">← Back to home</a>
+</nav>
+
+<!-- HERO -->
+<div class="course-hero">
+  <div class="hero-tag">
+    <span class="badge">Course 01</span>
+    winsym.ai Academy
+  </div>
+  <h1>Higgsfield<br>+ <span class="accent">Claude</span></h1>
+  <p class="subtitle">Your AI Creative System — from first connection to fully automated content production. No coding required.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><span class="dot"></span> 11 Steps</div>
+    <div class="meta-item"><span class="dot"></span> Beginner Friendly</div>
+    <div class="meta-item"><span class="dot"></span> ~45 min</div>
+    <div class="meta-item"><span class="dot"></span> Verified May 2026</div>
+  </div>
+  <div class="outcomes-bar">
+    <div class="outcome-item"><p>Connect Higgsfield to Claude via MCP</p></div>
+    <div class="outcome-item"><p>Generate professional images & videos through conversation</p></div>
+    <div class="outcome-item"><p>Build a content tracking system</p></div>
+    <div class="outcome-item"><p>Automate your entire production pipeline</p></div>
+  </div>
+</div>
+
+<!-- COURSE LAYOUT -->
+<div class="course-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Your Progress</div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-text"><span id="progressLabel">0 of 11 complete</span><span id="progressPct">0%</span></div>
+      </div>
+    </div>
+    <nav class="step-nav">
+      <a class="step-nav-item active" data-step="1" onclick="goToStep(1); return false;" href="#">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-nav-label">Make the Connection</div>
+          <span class="step-nav-sublabel">Setup · MCP · Permissions</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="2" onclick="goToStep(2); return false;" href="#">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-nav-label">Install Skills</div>
+          <span class="step-nav-sublabel">Knowledge files</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="3" onclick="goToStep(3); return false;" href="#">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-nav-label">Know the Models</div>
+          <span class="step-nav-sublabel">Which tool for what</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="4" onclick="goToStep(4); return false;" href="#">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-nav-label">Your First Project</div>
+          <span class="step-nav-sublabel">Quick start prompt</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="5" onclick="goToStep(5); return false;" href="#">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-nav-label">Create Videos</div>
+          <span class="step-nav-sublabel">Seedance 2.0 workflow</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="6" onclick="goToStep(6); return false;" href="#">
+        <div class="step-num">6</div>
+        <div>
+          <div class="step-nav-label">Handle Errors</div>
+          <span class="step-nav-sublabel">Blocks · Style drift</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="7" onclick="goToStep(7); return false;" href="#">
+        <div class="step-num">7</div>
+        <div>
+          <div class="step-nav-label">Marketing System</div>
+          <span class="step-nav-sublabel">5-stage content factory</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="8" onclick="goToStep(8); return false;" href="#">
+        <div class="step-num">8</div>
+        <div>
+          <div class="step-nav-label">Build Your Skills</div>
+          <span class="step-nav-sublabel">Custom skill files</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="9" onclick="goToStep(9); return false;" href="#">
+        <div class="step-num">9</div>
+        <div>
+          <div class="step-nav-label">Tracking System</div>
+          <span class="step-nav-sublabel">Google Sheet setup</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="10" onclick="goToStep(10); return false;" href="#">
+        <div class="step-num">10</div>
+        <div>
+          <div class="step-nav-label">Set Up Automation</div>
+          <span class="step-nav-sublabel">Weekly routines</span>
+        </div>
+      </a>
+      <a class="step-nav-item" data-step="11" onclick="goToStep(11); return false;" href="#">
+        <div class="step-num">11</div>
+        <div>
+          <div class="step-nav-label">What NOT To Do</div>
+          <span class="step-nav-sublabel">7 critical mistakes</span>
+        </div>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="course-main">
+
+    <!-- ══ STEP 1 ══ -->
+    <div class="step-panel active" id="step-1">
+      <div class="step-header">
+        <div class="step-big-num">01</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Getting Started</div>
+          <h2>Make the Connection</h2>
+          <p class="step-intro">Connect Higgsfield to Claude using MCP — the bridge that lets them talk to each other. This is the foundation everything else depends on.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Before We Start</h3>
+        <p style="font-size:0.85rem;color:#aaa;margin-bottom:1.25rem;line-height:1.8;">Three tools, three roles. Understanding what each one does makes the rest of this course obvious.</p>
+        <div class="model-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="model-card">
+            <div class="model-name">Higgsfield</div>
+            <div class="model-use">The platform. Holds all AI image and video generation models in one place. You pay with credits.</div>
+            <div class="model-tag">Production Studio</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Claude</div>
+            <div class="model-use">The intelligence. Thinks, plans, writes prompts, and controls Higgsfield. Your Creative Director.</div>
+            <div class="model-tag">Creative Director</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">MCP</div>
+            <div class="model-use">The bridge. Connects Claude and Higgsfield so they can communicate and work together.</div>
+            <div class="model-tag">The Bridge</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>What You Need</h3>
+        <div class="req-list">
+          <div class="req-item"><span class="req-icon">◆</span> Higgsfield account with an active <strong style="color:var(--white)">paid subscription</strong> — Free tier does not work</div>
+          <div class="req-item"><span class="req-icon">◆</span> Claude account — <strong style="color:var(--white)">Pro or Max</strong> — Free tier does not work</div>
+          <div class="req-item"><span class="req-icon">◆</span> About <strong style="color:var(--white)">10 minutes</strong></div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Connect Higgsfield to Claude</h3>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 In Higgsfield</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> Click <strong style="color:var(--white)">"MCP and CLI"</strong> in the top menu</div>
+            <div class="instruction-item"><span class="instr-num">2.</span> Make sure <strong style="color:var(--white)">Claude</strong> is selected</div>
+            <div class="instruction-item"><span class="instr-num">3.</span> <strong style="color:var(--orange)">Copy the link</strong> shown on that page</div>
+          </div>
+        </div>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 In Claude</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> Top left <strong style="color:var(--white)">Sidebar Menu → "Customize" → "Connectors"</strong></div>
+            <div class="instruction-item"><span class="instr-num">2.</span> Click <strong style="color:var(--white)">"+"</strong> → <strong style="color:var(--white)">"Add Custom Connector"</strong></div>
+            <div class="instruction-item"><span class="instr-num">3.</span> Name it: <code style="color:var(--orange);font-family:var(--font-mono)">Higgsfield</code></div>
+            <div class="instruction-item"><span class="instr-num">4.</span> Paste the copied link → Click <strong style="color:var(--white)">"Add"</strong></div>
+            <div class="instruction-item"><span class="instr-num">5.</span> A login window opens → Sign in with your Higgsfield account</div>
+            <div class="instruction-item"><span class="instr-num">6.</span> <strong style="color:var(--green)">✓ Done.</strong> Higgsfield now appears in your connector list.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Set Permissions — The Most Important Step</h3>
+        <p style="font-size:0.85rem;color:#aaa;margin-bottom:1rem;line-height:1.8;">Right after connecting, you'll see a permissions list. These decide what Claude can do on its own.</p>
+        <table class="perm-table">
+          <thead><tr><th>What Claude Can Do</th><th>Setting</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>View generations</td><td class="allow">✅ Always Allow</td><td style="color:var(--gray);font-size:0.78rem">Safe — read-only</td></tr>
+            <tr><td>Explore models</td><td class="allow">✅ Always Allow</td><td style="color:var(--gray);font-size:0.78rem">Safe — read-only</td></tr>
+            <tr><td><strong style="color:var(--white)">Generate images</strong></td><td class="warn">⚠️ Ask Permission</td><td style="color:var(--gray);font-size:0.78rem">Costs credits</td></tr>
+            <tr><td><strong style="color:var(--white)">Generate videos</strong></td><td class="warn">⚠️ Ask Permission</td><td style="color:var(--gray);font-size:0.78rem">Costs more credits</td></tr>
+          </tbody>
+        </table>
+        <div class="warning-box"><strong>⚠ Why this matters:</strong> There is no credit counter visible inside Claude. If Claude has full permission, it can fire off dozens of expensive generations in a single long chat — and you won't notice until your credits are gone. This is a real, documented mistake.<br><br><strong>Rule:</strong> Read-only = Always Allow. Generating = Always Ask.</div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" disabled>← Previous</button>
+        <button class="mark-done-btn" id="done-1" onclick="markDone(1)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(2)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 2 ══ -->
+    <div class="step-panel" id="step-2">
+      <div class="step-header">
+        <div class="step-big-num">02</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Knowledge Files</div>
+          <h2>Install Skills</h2>
+          <p class="step-intro">A skill is a knowledge file Claude reads before a task. Think of it as handing Claude a professional textbook — afterwards, the prompts it writes are dramatically better.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Skills vs. No Skills</h3>
+        <div class="compare-block">
+          <div class="compare-col bad">
+            <div class="compare-label">✗ Without Skill</div>
+            <p>Claude writes generic, short prompts → average, forgettable videos with no cinematic quality.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-label">✓ With Skill</div>
+            <p>Claude writes detailed, professional prompts with cinematic terminology, timing, and lighting → significantly better results.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>How to Install Any Skill</h3>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 Always the Same Steps</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> Download the skill file (<code style="color:var(--orange);font-family:var(--font-mono)">.md</code> or <code style="color:var(--orange);font-family:var(--font-mono)">.txt</code>)</div>
+            <div class="instruction-item"><span class="instr-num">2.</span> In Claude: <strong style="color:var(--white)">Customize → Skills → + → Create Skill → Upload a Skill</strong></div>
+            <div class="instruction-item"><span class="instr-num">3.</span> Select the file → Open</div>
+            <div class="instruction-item"><span class="instr-num">4.</span> <strong style="color:var(--green)">✓ Skill appears in your skill list</strong></div>
+          </div>
+        </div>
+        <div class="tip-box"><strong>Confirmation:</strong> When Claude uses a skill, you'll see in its response: <em>"Reading the [Skill Name] skill."</em></div>
+      </div>
+
+      <div class="content-section">
+        <h3>Recommended Skills</h3>
+        <div class="model-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="model-card">
+            <div class="model-name" style="font-size:0.95rem;">Content Factory Skill</div>
+            <div style="font-size:0.65rem;font-family:var(--font-mono);color:var(--orange);margin-bottom:0.5rem;letter-spacing:1px;">BY HIGGSFIELD — RECOMMENDED FOR MARKETING</div>
+            <div class="model-use">Controls the full process: Research → Content plan → Generation → Publishing. Best for marketing campaigns.</div>
+            <div class="model-tag">Full Pipeline</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name" style="font-size:0.95rem;">Seedance Director Skill</div>
+            <div style="font-size:0.65rem;font-family:var(--font-mono);color:var(--orange);margin-bottom:0.5rem;letter-spacing:1px;">BY GENHQ — RECOMMENDED FOR VIDEOS</div>
+            <div class="model-use">Optimized for Seedance 2.0. Includes cinematic terminology, lighting design, timestamp breakdowns, VFX vocabulary.</div>
+            <div class="model-tag">Video Prompts</div>
+          </div>
+        </div>
+        <div class="tip-box" style="margin-top:1rem;"><strong>Where to find them:</strong> Download links are in the description of official Higgsfield videos and GenHQ Seedance tutorials on YouTube.</div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(1)">← Previous</button>
+        <button class="mark-done-btn" id="done-2" onclick="markDone(2)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(3)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 3 ══ -->
+    <div class="step-panel" id="step-3">
+      <div class="step-header">
+        <div class="step-big-num">03</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Model Selection</div>
+          <h2>Know the Models</h2>
+          <p class="step-intro">Higgsfield contains different models. Each is optimised for different tasks. Always tell Claude explicitly which model to use — never let it decide on its own.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Model Lineup</h3>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-name">Nano Banana Pro</div>
+            <div class="model-use">Product photos, studio shots, character reference sheets.</div>
+            <div class="model-tag">Images</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">GPT Image 2</div>
+            <div class="model-use">Ad creatives, mockups, images with text overlays.</div>
+            <div class="model-tag">Ad Creatives</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Cinema Studio 2.5</div>
+            <div class="model-use">Storyboard images, cinematic scenes, film-style shots.</div>
+            <div class="model-tag">Cinematic</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Seedance 2.0</div>
+            <div class="model-use">All videos — product videos, animations, VFX effects.</div>
+            <div class="model-tag">Video</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Marketing Studio</div>
+            <div class="model-use">Ready-made UGC formats: interview, unboxing, review, ASMR.</div>
+            <div class="model-tag">UGC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Always Name the Model</h3>
+        <div class="compare-block">
+          <div class="compare-col bad">
+            <div class="compare-label">✗ Wrong</div>
+            <p><em style="color:#aaa;">"Create a product photo."</em><br><br>Claude decides on its own — often picks the wrong model.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-label">✓ Correct</div>
+            <p><em style="color:#aaa;">"Use <strong style="color:var(--white)">Nano Banana Pro</strong> for the product photo."</em><br><br>Claude uses the right model every time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(2)">← Previous</button>
+        <button class="mark-done-btn" id="done-3" onclick="markDone(3)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(4)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 4 ══ -->
+    <div class="step-panel" id="step-4">
+      <div class="step-header">
+        <div class="step-big-num">04</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">First Generation</div>
+          <h2>Your First Project</h2>
+          <p class="step-intro">The fastest way to see what the system can do. One prompt builds an entire brand from scratch — market research, branding, products, and all visual assets.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Quick Start — Build a Brand in One Prompt</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Paste this into Claude</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Build me a [product category] brand from scratch.
+
+1. Do market research
+2. Create the branding (name, positioning, target audience, visual identity)
+3. Build a product catalog with 3 products
+4. For each product, generate via Higgsfield:
+   - A product photo (use Nano Banana Pro)
+   - An Instagram ad (use GPT Image 2)
+   - A UGC video (use Higgsfield Marketing Studio)</pre>
+        </div>
+        <div class="tip-box"><strong>What happens:</strong> Claude researches, develops the brand, selects the right models, and generates all assets — you approve each generation individually.<br><br><strong>Real example:</strong> For a headphone brand, one chat produced: full branding, 3 products, 9 assets (photo + ad + video per product).</div>
+      </div>
+
+      <div class="content-section">
+        <h3>Reference Images — The Most Important Habit</h3>
+        <div class="compare-block">
+          <div class="compare-col bad">
+            <div class="compare-label">✗ Without Reference</div>
+            <p>Claude only has text to describe your product → Higgsfield generates some random product that barely resembles yours. Different color, wrong shape, wrong label every time.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-label">✓ With Reference</div>
+            <p>Exact product appearing consistently across all videos — same color, text, and shape every time. Proven in practice.</p>
+          </div>
+        </div>
+        <div class="prompt-box" style="margin-top:1.25rem;">
+          <div class="prompt-box-label">Upload a product photo and send this</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>This is the reference image for our product.
+For ALL future generations: the product must look EXACTLY like this.
+Same color, same label, same shape. Do not change anything.</pre>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(3)">← Previous</button>
+        <button class="mark-done-btn" id="done-4" onclick="markDone(4)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(5)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 5 ══ -->
+    <div class="step-panel" id="step-5">
+      <div class="step-header">
+        <div class="step-big-num">05</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Video Production</div>
+          <h2>Create Videos Properly</h2>
+          <p class="step-intro">Seedance 2.0 is the most powerful video model in Higgsfield. Knowing how to use it correctly is the difference between mediocre and professional results.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Seedance 2.0 Capabilities</h3>
+        <div class="stats-row">
+          <div class="stat-cell"><div class="stat-num">15s</div><div class="stat-label">Max per generation</div></div>
+          <div class="stat-cell"><div class="stat-num">1080p</div><div class="stat-label">Max resolution</div></div>
+          <div class="stat-cell"><div class="stat-num">3000</div><div class="stat-label">Max prompt chars</div></div>
+        </div>
+        <div class="tip-box" style="margin-top:1rem;">Seedance can create multiple camera angles and cuts from a single prompt, combine real footage with AI animations, and generate transitions between two exact images.</div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Most Common Beginner Mistake</h3>
+        <div class="compare-block">
+          <div class="compare-col bad">
+            <div class="compare-label">✗ Short Prompt</div>
+            <p><em style="color:#aaa;">"A headphone floating in a room."</em><br><br>→ Mediocre, lifeless result. No movement, no atmosphere.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-label">✓ Detailed Prompt</div>
+            <p><em style="color:#aaa;">"0–3s: Camera slowly pushes toward the headphone, soft bokeh background, warm white studio light. 3–6s: Slow 360° rotation, metal reflections visible..."</em><br><br>→ Professional result.</p>
+          </div>
+        </div>
+        <div class="warning-box" style="margin-top:0.75rem;"><strong>Solution:</strong> Always let Claude write the prompts using the Seedance Skill. Never write Seedance prompts yourself.</div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Seedance Workflow — Step by Step</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Step 1 — Ask Claude to write the prompt</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Write me a Seedance 2.0 video prompt.
+[Describe what should happen]
+Duration: [e.g. 10 seconds]
+Include detailed camera movements, lighting, and atmosphere.</pre>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Step 2 — If Claude says it's too long</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Make this prompt under 3000 characters, keep all key details.</pre>
+        </div>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 Steps 3–4: In Higgsfield</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">3.</span> Copy only from <strong style="color:var(--white)">"Shot 1:"</strong> to the end — skip Master Effects and Effects Density sections</div>
+            <div class="instruction-item"><span class="instr-num">4.</span> Navigate to <strong style="color:var(--white)">Seedance 2.0</strong> → Upload start frame image (optional) → Paste prompt → Set duration → <strong style="color:var(--orange)">Generate</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Multi-Shot vs. Single-Shot</h3>
+        <div class="compare-block">
+          <div class="compare-col bad">
+            <div class="compare-label">✗ Single-Shot (Wrong)</div>
+            <p>Generate each 2-second scene individually → inconsistent results, much more effort, worse quality overall.</p>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-label">✓ Multi-Shot (Correct)</div>
+            <p>Claude writes one 15-second prompt with multiple scenes → Seedance handles cuts and transitions automatically.</p>
+          </div>
+        </div>
+        <div class="prompt-box" style="margin-top:1rem;">
+          <div class="prompt-box-label">Multi-shot prompt template</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Write a Seedance prompt for a 15-second video with 3–4 different shots/cuts.
+Seedance should handle the transitions. [Describe the content]</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Combining Real Footage with AI</h3>
+        <p style="font-size:0.85rem;color:#aaa;margin-bottom:1rem;line-height:1.8;">Film yourself → AI picks up exactly where you left off → seamless transition. Great for portals, explosions, transformations, VFX overlays.</p>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 Workflow</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> Record your video on your phone</div>
+            <div class="instruction-item"><span class="instr-num">2.</span> Export the exact frame as a still image where the AI effect begins</div>
+            <div class="instruction-item"><span class="instr-num">3.</span> Upload the still to Claude with the prompt below</div>
+            <div class="instruction-item"><span class="instr-num">4.</span> Upload the still as <strong style="color:var(--white)">Start Frame</strong> in Seedance → paste prompt → Generate</div>
+            <div class="instruction-item"><span class="instr-num">5.</span> Place the AI video directly after your real footage in your editor</div>
+          </div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Prompt for real footage transition</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Write a Seedance prompt where [DESCRIBE EFFECT] happens.
+Make sure the start frame is IDENTICAL to the reference image provided.
+Same lighting, same character position, same environment.</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Music — Important Limitation</h3>
+        <div class="warning-box"><strong>⚠ Problem:</strong> Seedance automatically adds music. If you have multiple scenes, the music between Scene 1 and Scene 2 will not be consistent.<br><br><strong>Solution:</strong> Always tell Claude/Seedance "No music in the video. Sound design and ambient sounds only." — then add music separately in CapCut or DaVinci Resolve.</div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(4)">← Previous</button>
+        <button class="mark-done-btn" id="done-5" onclick="markDone(5)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(6)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 6 ══ -->
+    <div class="step-panel" id="step-6">
+      <div class="step-header">
+        <div class="step-big-num">06</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Troubleshooting</div>
+          <h2>Handle Errors</h2>
+          <p class="step-intro">Content blocks and style drift are the two most common problems. Neither is permanent — here's exactly how to fix each one.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Content Blocks</h3>
+        <p style="font-size:0.85rem;color:#aaa;margin-bottom:1rem;line-height:1.8;">Sometimes Higgsfield rejects a generation. For images, credits are refunded. For videos, you may see "Rights Verification Required."</p>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 Fix: Rights Verification Required</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> Open <strong style="color:var(--white)">higgsfield.ai</strong> directly (not Claude)</div>
+            <div class="instruction-item"><span class="instr-num">2.</span> Go to <strong style="color:var(--white)">Video Generations</strong></div>
+            <div class="instruction-item"><span class="instr-num">3.</span> Find the entry with that status → click through and confirm</div>
+            <div class="instruction-item"><span class="instr-num">4.</span> Go back to Claude → reload the conversation → video now appears</div>
+          </div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Fix: Rejected Prompt</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>This generation was blocked. Please analyze the prompt, identify
+which words or phrases likely caused the issue, rewrite the prompt
+without those elements and try again.</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Style Consistency Lost</h3>
+        <div class="warning-box"><strong>Problem:</strong> After 3–4 scenes, the images suddenly look different from the first ones.<br><br><strong>Cause:</strong> Claude continued without an explicit style reference.</div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Fix: Restore Style Consistency</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>The style changed. Use image 2 as the visual style reference
+for all remaining generations. Regenerate the ones that don't match.</pre>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(5)">← Previous</button>
+        <button class="mark-done-btn" id="done-6" onclick="markDone(6)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(7)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 7 ══ -->
+    <div class="step-panel" id="step-7">
+      <div class="step-header">
+        <div class="step-big-num">07</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Advanced</div>
+          <h2>The Marketing System</h2>
+          <p class="step-intro">The complete 5-stage content factory. The Higgsfield Content Factory Skill controls everything from research to publishing — this is where the real scale happens.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The 5 Stages</h3>
+        <div class="stage-flow">
+          <div class="stage-item">
+            <div class="stage-num">01</div>
+            <div>
+              <div class="stage-title">Research</div>
+              <div class="stage-desc">Claude pulls live data from TikTok, Instagram, YouTube. Output: trend table, competitor analysis, hook patterns, 20 ready-made video ideas with full parameters.</div>
+            </div>
+          </div>
+          <div class="stage-item">
+            <div class="stage-num">02</div>
+            <div>
+              <div class="stage-title">Content Plan</div>
+              <div class="stage-desc">Claude auto-creates a production calendar. For 100 videos: 100 rows, split across 5 formats, with date, format, and all parameters pre-filled. Zero clicks from you.</div>
+            </div>
+          </div>
+          <div class="stage-item">
+            <div class="stage-num">03</div>
+            <div>
+              <div class="stage-title">Generation</div>
+              <div class="stage-desc">Claude generates in batches. Before each batch: "May I generate the next 20 videos?" — you stay in full control of your credits at all times.</div>
+            </div>
+          </div>
+          <div class="stage-item">
+            <div class="stage-num">04</div>
+            <div>
+              <div class="stage-title">Publishing</div>
+              <div class="stage-desc">The skill connects to the Meta MCP. Videos get uploaded directly into your ad campaigns — no manual downloading or uploading.</div>
+            </div>
+          </div>
+          <div class="stage-item">
+            <div class="stage-num">05</div>
+            <div>
+              <div class="stage-title">Cost Analysis</div>
+              <div class="stage-desc">Full credit breakdown. Calculate what the same scope would have cost traditionally and document your savings.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Start the Skill</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Run this in Claude</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>/content-factory
+
+MCP connected? → Yes
+Where to start? → Stage 1 (beginning)
+How many videos? → [your number, e.g. 100]
+Product image → [upload image]</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Real Numbers — Verified May 2026</h3>
+        <div class="stats-row">
+          <div class="stat-cell">
+            <div class="stat-num" style="font-size:1.8rem;">$900</div>
+            <div class="stat-label">100 UGC videos with AI<br><span style="color:var(--orange)">~15,000 credits</span></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num" style="font-size:1.8rem;">$28K</div>
+            <div class="stat-label">100 UGC videos traditionally<br><span style="color:var(--gray)">cheapest option</span></div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num" style="font-size:1.8rem;">$99K</div>
+            <div class="stat-label">100 UGC videos traditionally<br><span style="color:var(--gray)">full production</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(6)">← Previous</button>
+        <button class="mark-done-btn" id="done-7" onclick="markDone(7)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(8)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 8 ══ -->
+    <div class="step-panel" id="step-8">
+      <div class="step-header">
+        <div class="step-big-num">08</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Custom Skills</div>
+          <h2>Build Your Own Skills</h2>
+          <p class="step-intro">When you've produced a result you want to reproduce consistently — turn it into a skill. A skill is the recipe for Claude: without it, results vary every time.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The 5-Step Process</h3>
+        <div class="instruction-block">
+          <div class="instruction-block-header">📌 How to Build a Skill</div>
+          <div class="instruction-list">
+            <div class="instruction-item"><span class="instr-num">1.</span> <strong style="color:var(--white)">Find your best result</strong> — look through all generated assets, pick your favorite</div>
+            <div class="instruction-item"><span class="instr-num">2.</span> <strong style="color:var(--white)">Copy the exact prompt</strong> from your tracking sheet</div>
+            <div class="instruction-item"><span class="instr-num">3.</span> <strong style="color:var(--white)">Let Claude write the skill</strong> — use the prompt below</div>
+            <div class="instruction-item"><span class="instr-num">4.</span> <strong style="color:var(--white)">Test the skill</strong> — open a new chat, call the skill, generate an asset, verify the style matches</div>
+            <div class="instruction-item"><span class="instr-num">5.</span> <strong style="color:var(--white)">Improve the skill</strong> — give Claude feedback on what you liked and didn't like</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Skill Creation Prompts</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Step 3 — Create the Skill</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>This prompt above is my best result from Higgsfield Marketing Studio.
+It was a Hypermotion-style product video – fast cuts, professional details.
+
+Turn this into a skill and save it under .claude/skills/hypermotion-video.md
+
+The skill should:
+- Always reproduce this style
+- Ask 1–2 clarifying questions before starting (model in video? UGC or product-only?)
+- Avoid phrases that have caused content blocks in the past</pre>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Step 5 — Improve the Skill</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>You just generated 5 ads with this skill.
+I like A, B, C. I don't like D, E.
+Update the skill so future generations are more like A, B, C.</pre>
+        </div>
+        <div class="tip-box"><strong>Note:</strong> After creating a skill, you may need to restart the app for it to appear in the slash-command menu.</div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(7)">← Previous</button>
+        <button class="mark-done-btn" id="done-8" onclick="markDone(8)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(9)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 9 ══ -->
+    <div class="step-panel" id="step-9">
+      <div class="step-header">
+        <div class="step-big-num">09</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Operations</div>
+          <h2>Build a Tracking System</h2>
+          <p class="step-intro">Without tracking you don't know which prompts worked, which videos were already generated, or what separates your best ads from your worst. The Status column is everything.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Create Your Google Sheet</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Send this to Claude</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Look at all the assets we've generated in Higgsfield.
+Create a Google Sheet using the GWS CLI with these tabs:
+
+Tab 1 "Generations": Job ID, Product, Format, Type (image/video),
+Model, Prompt, Result URL, Status, Date
+
+Tab 2 "By Product": Overview per product
+
+Tab 3 "Planning": Upcoming generations with Priority column
+and Status column (Planned / In Progress / Done / Review)
+
+Tab 4 "Performance": Space for Meta/TikTok data</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Status Column</h3>
+        <div class="warning-box"><strong>⚠ Critical:</strong> Without a Status column, automation will generate things twice. The Status column is the only thing that tells automation what has already been done.<br><br>Status values: <strong style="color:var(--white)">Planned → In Progress → Done → Review</strong></div>
+        <div class="model-grid" style="grid-template-columns:repeat(4,1fr);margin-top:1rem;">
+          <div class="model-card" style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--orange);letter-spacing:2px;margin-bottom:0.5rem;">STATUS</div>
+            <div class="model-name" style="font-size:0.85rem;">Planned</div>
+            <div class="model-use" style="font-size:0.75rem;">Queued for generation</div>
+          </div>
+          <div class="model-card" style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--orange);letter-spacing:2px;margin-bottom:0.5rem;">STATUS</div>
+            <div class="model-name" style="font-size:0.85rem;">In Progress</div>
+            <div class="model-use" style="font-size:0.75rem;">Currently generating</div>
+          </div>
+          <div class="model-card" style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--green);letter-spacing:2px;margin-bottom:0.5rem;">STATUS</div>
+            <div class="model-name" style="font-size:0.85rem;">Done</div>
+            <div class="model-use" style="font-size:0.75rem;">URL saved, complete</div>
+          </div>
+          <div class="model-card" style="text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:0.6rem;color:#f59e0b;letter-spacing:2px;margin-bottom:0.5rem;">STATUS</div>
+            <div class="model-name" style="font-size:0.85rem;">Review</div>
+            <div class="model-use" style="font-size:0.75rem;">Needs your approval</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(8)">← Previous</button>
+        <button class="mark-done-btn" id="done-9" onclick="markDone(9)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(10)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 10 ══ -->
+    <div class="step-panel" id="step-10">
+      <div class="step-header">
+        <div class="step-big-num">10</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Automation</div>
+          <h2>Set Up Automation</h2>
+          <p class="step-intro">Routines are scheduled prompts. Claude executes them automatically — without you being present. Set them up once and your pipeline runs itself every week.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Weekly Cycle</h3>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Sunday 8 PM — Planning Routine (Set Up Once)</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Every Sunday at 8 PM:
+1. Open the Google Sheet and analyze all past generations
+2. Read the advertising knowledge file
+3. Create 50 new generation ideas for the week
+4. Add them to the sheet with Status "Planned"</pre>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-box-label">Monday 6 AM — Production Routine (Set Up Once)</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+          <pre>Every Monday at 6 AM:
+1. Open the Google Sheet
+2. Select 30 entries with Status "Planned" (highest priority first)
+3. Build the prompts using the skill files
+4. Generate all 30 via Higgsfield
+5. Mark each as "Done" when the URL is returned
+6. Save all Job IDs and result URLs in the sheet</pre>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>Scaling Phases</h3>
+        <table class="scale-table">
+          <thead><tr><th>Phase</th><th>Weekly Output</th><th>Your Effort</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:var(--white)">Start</strong></td><td>20–30 assets</td><td>Review every asset</td></tr>
+            <tr><td><strong style="color:var(--white)">Growth</strong></td><td>50–75 assets</td><td>Spot-check samples</td></tr>
+            <tr><td><strong style="color:var(--white)">Scale</strong></td><td>100+ assets</td><td>Weekly review only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(9)">← Previous</button>
+        <button class="mark-done-btn" id="done-10" onclick="markDone(10)">✓ Mark Complete</button>
+        <button class="btn-step primary" onclick="goToStep(11)">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- ══ STEP 11 ══ -->
+    <div class="step-panel" id="step-11">
+      <div class="step-header">
+        <div class="step-big-num">11</div>
+        <div class="step-header-text">
+          <div class="step-header-tag">Critical Mistakes</div>
+          <h2>What NOT To Do</h2>
+          <p class="step-intro">These mistakes come directly from documented real-world practice. Every single one of them has cost someone real money or real time.</p>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The 7 Critical Mistakes</h3>
+        <div class="mistake-list">
+          <div class="mistake-item">
+            <div class="mistake-num">01</div>
+            <div>
+              <div class="mistake-title">Set All Permissions to "Always Allow"</div>
+              <div class="mistake-fix">Credits disappear without you noticing. <span>Fix: Keep generation permissions on "Ask Permission" always.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">02</div>
+            <div>
+              <div class="mistake-title">Not Providing a Reference Image</div>
+              <div class="mistake-fix">Your product looks different in every video. <span>Fix: Always include the reference image for every project.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">03</div>
+            <div>
+              <div class="mistake-title">Writing Short Prompts for Seedance</div>
+              <div class="mistake-fix">Lifeless, generic videos every time. <span>Fix: Always let Claude write the prompts using the Seedance Skill.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">04</div>
+            <div>
+              <div class="mistake-title">Single-Shots Instead of Multi-Shot</div>
+              <div class="mistake-fix">More work, worse results, inconsistent style. <span>Fix: Write one 15-second multi-shot prompt instead.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">05</div>
+            <div>
+              <div class="mistake-title">Leaving Music On in Multi-Scene Videos</div>
+              <div class="mistake-fix">Music is inconsistent between scenes. <span>Fix: Always specify "no music," add it separately in post.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">06</div>
+            <div>
+              <div class="mistake-title">No Tracking System</div>
+              <div class="mistake-fix">Duplicate generations in automation waste credits. <span>Fix: Always maintain the Status column in your tracking sheet.</span></div>
+            </div>
+          </div>
+          <div class="mistake-item">
+            <div class="mistake-num">07</div>
+            <div>
+              <div class="mistake-title">Never Using Higgsfield Directly First</div>
+              <div class="mistake-fix">You don't understand credit costs and make expensive mistakes. <span>Fix: Spend 1–2 weeks in Higgsfield directly before adding Claude.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h3>The Full System at a Glance</h3>
+        <div class="system-box">
+          <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:0.5rem;">Complete Overview</div>
+          <div class="system-box-grid">
+            <div>
+              <div class="system-col-title">Connection & Skills</div>
+              <ul class="system-list">
+                <li>Higgsfield → Claude (MCP)</li>
+                <li>Generation = Ask Permission</li>
+                <li>Content Factory Skill</li>
+                <li>Seedance Director Skill</li>
+                <li>Your custom skills</li>
+              </ul>
+            </div>
+            <div>
+              <div class="system-col-title">Models</div>
+              <ul class="system-list">
+                <li>Nano Banana Pro → Product photos</li>
+                <li>GPT Image 2 → Ad creatives</li>
+                <li>Cinema Studio 2.5 → Storyboards</li>
+                <li>Seedance 2.0 → All videos</li>
+                <li>Marketing Studio → UGC</li>
+              </ul>
+            </div>
+            <div>
+              <div class="system-col-title">Operations</div>
+              <ul class="system-list">
+                <li>Always upload reference image</li>
+                <li>Google Sheet + Status column</li>
+                <li>Sunday: 50 ideas planned</li>
+                <li>Monday: 30 videos generated</li>
+                <li>Weekly review only at scale</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-nav-controls">
+        <button class="btn-step" onclick="goToStep(10)">← Previous</button>
+        <button class="mark-done-btn" id="done-11" onclick="markDone(11)">✓ Mark Complete</button>
+        <button class="btn-step primary" style="background:var(--green);border-color:var(--green);" onclick="showCompletion()">🎓 Finish Course</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+<script>
+const TOTAL = 11;
+let completed = new Set();
+let current = 1;
+
+function goToStep(n) {
+  // Hide current
+  document.getElementById('step-' + current).classList.remove('active');
+  document.querySelector('.step-nav-item[data-step="' + current + '"]').classList.remove('active');
+
+  // Show new
+  current = n;
+  document.getElementById('step-' + n).classList.add('active');
+
+  const navItems = document.querySelectorAll('.step-nav-item');
+  navItems.forEach(item => {
+    const s = parseInt(item.dataset.step);
+    item.classList.remove('active');
+    item.classList.toggle('completed', completed.has(s));
+  });
+  document.querySelector('.step-nav-item[data-step="' + n + '"]').classList.add('active');
+
+  // Scroll to top of main
+  document.querySelector('.course-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  updateProgress();
+}
+
+function markDone(n) {
+  completed.add(n);
+  const btn = document.getElementById('done-' + n);
+  btn.textContent = '✓ Complete';
+  btn.classList.add('done');
+  btn.disabled = true;
+
+  // Update sidebar
+  const navItem = document.querySelector('.step-nav-item[data-step="' + n + '"]');
+  navItem.classList.add('completed');
+  const num = navItem.querySelector('.step-num');
+  num.textContent = '✓';
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((completed.size / TOTAL) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = completed.size + ' of ' + TOTAL + ' complete';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function copyPrompt(btn) {
+  const box = btn.closest('.prompt-box');
+  const text = box.querySelector('pre').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function showCompletion() {
+  markDone(11);
+  setTimeout(() => {
+    alert('🎓 Course Complete!\n\nYou now have everything you need to run a professional AI content production pipeline with Higgsfield + Claude.\n\nHead to winsym.ai to book a coaching session if you want to go deeper.');
+  }, 300);
+}
+
+// Nav hide on scroll
+var lastY = window.scrollY;
+var ticking = false;
+var navEl = document.getElementById('mainNav');
+window.addEventListener('scroll', function() {
+  if (!ticking) {
+    window.requestAnimationFrame(function() {
+      var cur = window.scrollY;
+      if (cur > lastY && cur > 80) navEl.classList.add('nav-hidden');
+      else navEl.classList.remove('nav-hidden');
+      lastY = cur;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+</script>
+</body>
+</html>
