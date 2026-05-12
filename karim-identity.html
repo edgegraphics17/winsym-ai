@@ -887,11 +887,13 @@ body::after {
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 4rem;
-  background: linear-gradient(to bottom, rgba(7,7,7,0.97) 0%, transparent 100%);
-  backdrop-filter: blur(2px);
+  background: rgba(7,7,7,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
   transition: background 0.3s;
 }
-.site-nav.scrolled { background: rgba(7,7,7,0.98); }
+.site-nav.scrolled { background: rgba(7,7,7,0.99); }
 
 .nav-logo {
   font-family: var(--display);
@@ -1048,6 +1050,7 @@ body::after {
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
   .nav-cta { display: none; }
+  .wa-nav-btn { display: none; }
   .opening { grid-template-columns: 1fr; }
   .opening-right { display: none; }
   .opening-left { padding: 6rem 2rem 5rem; }
