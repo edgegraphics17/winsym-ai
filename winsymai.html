@@ -1126,6 +1126,180 @@
     z-index: 1;
   }
 
+  /* ACADEMY TEASER */
+  .academy-teaser {
+    padding: 7rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .academy-inner {
+    background: #0d0d0d;
+    border: 1px solid var(--gray-dim);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .academy-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--orange), var(--orange-bright), transparent);
+  }
+  .academy-content {
+    padding: 4rem;
+    position: relative;
+    z-index: 2;
+  }
+  .academy-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .academy-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--orange);
+  }
+  .academy-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 1.25rem;
+    color: var(--white);
+  }
+  .academy-heading .accent { color: var(--orange); }
+  .academy-desc {
+    font-size: 0.95rem;
+    color: #999;
+    line-height: 1.85;
+    margin-bottom: 2rem;
+    max-width: 420px;
+  }
+  .academy-modules {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  .academy-module {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 0.82rem;
+    color: var(--gray);
+  }
+  .academy-module-num {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--orange);
+    letter-spacing: 1px;
+    background: rgba(196,90,26,0.1);
+    border: 1px solid var(--orange-dim);
+    padding: 0.15rem 0.4rem;
+    min-width: 2rem;
+    text-align: center;
+  }
+  .academy-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--orange);
+    color: var(--black);
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .academy-cta:hover { background: var(--orange-bright); transform: translateY(-1px); }
+  .academy-cta svg { transition: transform 0.2s; }
+  .academy-cta:hover svg { transform: translateX(4px); }
+  .academy-visual {
+    position: relative;
+    background: #080808;
+    border-left: 1px solid var(--gray-dim);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+    overflow: hidden;
+  }
+  .academy-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(196,90,26,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .academy-step-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #111;
+    border: 1px solid var(--gray-dim);
+    transition: all 0.2s;
+    position: relative;
+    z-index: 2;
+  }
+  .academy-step-preview.is-active {
+    border-color: var(--orange-dim);
+    background: rgba(196,90,26,0.06);
+  }
+  .academy-step-preview-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--orange-dim);
+    line-height: 1;
+    min-width: 1.8rem;
+  }
+  .academy-step-preview.is-active .academy-step-preview-num { color: var(--orange); }
+  .academy-step-preview-body {}
+  .academy-step-preview-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+  .academy-step-preview-desc {
+    font-size: 0.72rem;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+  .academy-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    color: var(--orange);
+    border: 1px solid var(--orange-dim);
+    padding: 0.3rem 0.65rem;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+  @media (max-width: 900px) {
+    .academy-teaser { padding: 3.5rem 1.25rem; }
+    .academy-inner { grid-template-columns: 1fr; }
+    .academy-content { padding: 2.5rem 1.5rem; }
+    .academy-visual { display: none; }
+  }
+
   /* CONTACT / CTA */
   .cta-section {
     padding: 7rem 4rem;
@@ -1481,6 +1655,7 @@
   <a href="winsymai.html" class="active">Home</a>
   <a href="karim-identity.html">About Karim</a>
   <a href="projects-showcase.html">Projects</a>
+  <a href="academy.html">Academy</a>
   <div class="mobile-menu-divider"></div>
   <div class="mobile-menu-sub">
     <a href="#about">The System</a>
@@ -1497,6 +1672,7 @@
     <li><a href="winsymai.html" class="active">Home</a></li>
     <li><a href="karim-identity.html">About Karim</a></li>
     <li><a href="projects-showcase.html">Projects</a></li>
+    <li><a href="academy.html">Academy</a></li>
     <li><a href="#speaking">Speaking</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -1953,6 +2129,83 @@
   </div>
 </div>
 
+<!-- ACADEMY TEASER -->
+<div class="academy-teaser fade-up">
+  <div class="academy-inner">
+    <div class="academy-content">
+      <div class="academy-tag">Free Course</div>
+      <h2 class="academy-heading">Learn the<br><span class="accent">AI Creative</span><br>System</h2>
+      <p class="academy-desc">
+        Step-by-step: how to connect Claude and Higgsfield, build professional AI videos, and automate your entire content production — no coding required.
+      </p>
+      <div class="academy-modules">
+        <div class="academy-module">
+          <span class="academy-module-num">01</span>
+          Connect Higgsfield to Claude via MCP
+        </div>
+        <div class="academy-module">
+          <span class="academy-module-num">02</span>
+          Know the right models for every task
+        </div>
+        <div class="academy-module">
+          <span class="academy-module-num">03</span>
+          Create pro videos with Seedance 2.0
+        </div>
+        <div class="academy-module">
+          <span class="academy-module-num">04</span>
+          Build your own skills & tracking system
+        </div>
+        <div class="academy-module">
+          <span class="academy-module-num">05</span>
+          Automate 100+ assets per week
+        </div>
+      </div>
+      <a href="academy.html" class="academy-cta">
+        Start the course
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="academy-visual">
+      <div class="academy-badge">11 Steps · Free</div>
+      <div class="academy-step-preview is-active">
+        <div class="academy-step-preview-num">1</div>
+        <div class="academy-step-preview-body">
+          <div class="academy-step-preview-title">Make the Connection</div>
+          <div class="academy-step-preview-desc">Connect Higgsfield to Claude in 10 minutes via MCP</div>
+        </div>
+      </div>
+      <div class="academy-step-preview">
+        <div class="academy-step-preview-num">2</div>
+        <div class="academy-step-preview-body">
+          <div class="academy-step-preview-title">Install Skills</div>
+          <div class="academy-step-preview-desc">Load professional prompt knowledge into Claude</div>
+        </div>
+      </div>
+      <div class="academy-step-preview">
+        <div class="academy-step-preview-num">3</div>
+        <div class="academy-step-preview-body">
+          <div class="academy-step-preview-title">Know the Right Models</div>
+          <div class="academy-step-preview-desc">Nano Banana Pro · GPT Image 2 · Seedance 2.0</div>
+        </div>
+      </div>
+      <div class="academy-step-preview">
+        <div class="academy-step-preview-num">4</div>
+        <div class="academy-step-preview-body">
+          <div class="academy-step-preview-title">Your First Project</div>
+          <div class="academy-step-preview-desc">Build a full brand from scratch in one prompt</div>
+        </div>
+      </div>
+      <div class="academy-step-preview">
+        <div class="academy-step-preview-num">5</div>
+        <div class="academy-step-preview-body">
+          <div class="academy-step-preview-title">Create Videos Properly</div>
+          <div class="academy-step-preview-desc">Multi-shot Seedance workflow · real footage + AI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CTA / CONTACT -->
 <div class="cta-section fade-up" id="contact">
   <div>
@@ -2042,6 +2295,7 @@
         <li><a href="winsymai.html">Home</a></li>
         <li><a href="karim-identity.html">About Karim</a></li>
         <li><a href="projects-showcase.html">Projects</a></li>
+        <li><a href="academy.html">Academy</a></li>
         <li><a href="#speaking">Speaking</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
