@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Karim Azzaoui — The Person Behind the System</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   window.SUPABASE_URL      = '%%SUPABASE_URL%%';
@@ -1069,6 +1070,85 @@ body::after {
   .trait-grid { grid-template-columns: 1fr; }
   .site-footer-inner { grid-template-columns: 1fr 1fr; }
 }
+
+/* ── LIGHT THEME ─────────────────────────────────────────── */
+[data-theme="light"] {
+  --black: #F2EFE9;
+  --deep: #EAE6DF;
+  --white: #1A1208;
+  --cream: #6B6355;
+  --gray: #6B6355;
+  --gray-mid: #9E9589;
+  --orange: #B84F12;
+  --orange-bright: #D06018;
+  --orange-dim: #D4A882;
+  --orange-pale: rgba(184,79,18,0.08);
+}
+[data-theme="light"] body { background: #F2EFE9; color: #1A1208; }
+[data-theme="light"] body::after { opacity: 0.12; }
+[data-theme="light"] .site-nav {
+  background: rgba(242,239,233,0.96);
+  border-bottom-color: rgba(0,0,0,0.07);
+}
+[data-theme="light"] .mobile-menu { background: #EAE6DF; }
+[data-theme="light"] .opening { background: #F2EFE9; }
+[data-theme="light"] .opening-right { background: linear-gradient(135deg, #e5dfd5 0%, #ede8e0 100%); }
+[data-theme="light"] .opening-tag { color: var(--orange); }
+[data-theme="light"] .opening-title span { color: var(--orange); }
+[data-theme="light"] .opening-subtitle { color: #6B6355; }
+[data-theme="light"] .opening-badge { border-color: #D8D3CB; background: #EAE6DF; color: #6B6355; }
+[data-theme="light"] .section-label { color: var(--orange); }
+[data-theme="light"] .section-label::before { background: var(--orange); }
+[data-theme="light"] .timeline-section { background: #EAE6DF; }
+[data-theme="light"] .timeline-line { background: #D8D3CB; }
+[data-theme="light"] .tl-dot { background: #F2EFE9; border-color: var(--orange-dim); }
+[data-theme="light"] .tl-dot.active { background: var(--orange); border-color: var(--orange); }
+[data-theme="light"] .tl-card { background: #F2EFE9; border-color: #D8D3CB; }
+[data-theme="light"] .tl-card:hover { border-color: var(--orange-dim); }
+[data-theme="light"] .tl-title { color: #1A1208; }
+[data-theme="light"] .tl-role { color: var(--orange); }
+[data-theme="light"] .tl-meta { color: #9E9589; }
+[data-theme="light"] .personality-section { background: #F2EFE9; }
+[data-theme="light"] .trait-card { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .trait-title { color: #1A1208; }
+[data-theme="light"] .trait-desc { color: #6B6355; }
+[data-theme="light"] .philosophy-section { background: #EAE6DF; }
+[data-theme="light"] .philosophy-quote { color: #1A1208; }
+[data-theme="light"] .brands-section { background: #F2EFE9; }
+[data-theme="light"] .brand-logo-cell { background: #EAE6DF; border-color: #D8D3CB; color: #6B6355; }
+[data-theme="light"] .brand-logo-cell:hover { border-color: var(--orange-dim); }
+[data-theme="light"] .profile-section { background: #EAE6DF; }
+[data-theme="light"] .profile-card { background: #F2EFE9; border-color: #D8D3CB; }
+[data-theme="light"] .profile-stat-row { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .pstat { background: #F2EFE9; }
+[data-theme="light"] .skill-bar-bg { background: #D8D3CB; }
+[data-theme="light"] .cta-banner { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .cta-banner-title { color: #1A1208; }
+[data-theme="light"] .cta-banner-body { color: #6B6355; }
+[data-theme="light"] footer, [data-theme="light"] .site-footer { background: #E5E0D8; border-top-color: #D8D3CB; }
+[data-theme="light"] .footer-bottom { border-top-color: #D8D3CB; color: #9E9589; }
+[data-theme="light"] .footer-links-list a { color: #6B6355; }
+[data-theme="light"] .footer-links-list a:hover { color: #1A1208; }
+[data-theme="light"] .footer-col-title { color: #1A1208; }
+
+/* Theme toggle button */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--gray-mid);
+  color: var(--gray);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-toggle-btn:hover { border-color: var(--orange); color: var(--orange); }
+.theme-icon { font-size: 0.85rem; line-height: 1; }
 </style>
 </head>
 <body>
@@ -1583,6 +1663,9 @@ body::after {
   </div>
   <div class="footer-bottom">
     <span>© 2025 Karim Azzaoui · winsym.ai · All rights reserved</span>
+    <button class="theme-toggle-btn" onclick="toggleTheme()">
+      <span class="theme-icon">☀</span><span class="theme-label">Light Mode</span>
+    </button>
     <span>Kuala Lumpur · Malaysia · Germany</span>
   </div>
 </footer>
