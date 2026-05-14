@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academy — Pro Websites with Claude Code · winsym.ai</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
+<style>
+:root {
+  --black: #080808;
+  --orange: #C45A1A;
+  --orange-bright: #E06820;
+  --orange-dim: #7a3010;
+  --orange-glow: rgba(196,90,26,0.12);
+  --white: #F5F2EE;
+  --gray: #888;
+  --gray-dim: #222;
+  --gray-mid: #555;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --nav-h: 64px;
+  --stepbar-h: 56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* NOISE */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── TOP NAV ── */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9500;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.top-nav.nav-hidden { transform: translateY(-100%); }
+
+.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 2px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--orange); }
+
+.nav-center { display: flex; align-items: center; gap: 0.75rem; }
+.nav-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.25rem 0.65rem;
+}
+.nav-progress-text {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.nav-back {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--gray-dim);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--white); border-color: var(--gray-mid); }
+
+/* ── STEP BAR ── */
+.step-bar {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  z-index: 9400;
+  height: var(--stepbar-h);
+  background: #0d0d0d;
+  border-bottom: 1px solid var(--gray-dim);
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.step-bar.nav-hidden { transform: translateY(calc(-1 * var(--nav-h) - var(--stepbar-h))); }
+.step-bar::-webkit-scrollbar { display: none; }
+
+.step-bar-inner {
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 0;
+  min-width: max-content;
+}
+
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.25rem;
+  height: var(--stepbar-h);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  color: var(--gray);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+}
+.step-pill:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+.step-pill.active { color: var(--white); border-bottom-color: var(--orange); }
+.step-pill.done { color: var(--green); }
+.step-pill.done .pill-num { background: var(--green); color: var(--black); border-color: var(--green); }
+
+.pill-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  flex-shrink: 0;
+  transition: all 0.25s;
+}
+.step-pill.active .pill-num { background: var(--orange); border-color: var(--orange); color: var(--black); }
+
+.step-bar-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: var(--orange);
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ── HERO ── */
+.course-hero {
+  padding: calc(var(--nav-h) + var(--stepbar-h) + 4rem) 3rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+.hero-eyebrow .badge {
+  background: var(--orange);
+  color: var(--black);
+  padding: 0.12rem 0.55rem;
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.course-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+.course-hero h1 .accent { color: var(--orange); }
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: #aaa;
+  max-width: 580px;
+  line-height: 1.85;
+  margin-bottom: 2.5rem;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.meta-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.meta-dot::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--gray-dim);
+  border: 1px solid var(--gray-dim);
+}
+.outcome-cell {
+  background: #0d0d0d;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.6;
+}
+.outcome-cell::before {
+  content: '✓';
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── STEP CONTENT ── */
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeUp 0.35s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 3rem 6rem;
+}
+
+.step-heading {
+  margin-bottom: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--gray-dim);
+}
+.step-tag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.step-tag::before { content: ''; width: 18px; height: 1px; background: var(--orange); }
+.step-big-num {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 10vw, 8rem);
+  line-height: 0.85;
+  color: #1a1a1a;
+  letter-spacing: -2px;
+  margin-bottom: -1rem;
+  user-select: none;
+}
+.step-heading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+.step-intro {
+  font-size: 1rem;
+  color: #999;
+  line-height: 1.85;
+  max-width: 580px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 1rem;
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-dim); }
+
+/* Instruction blocks */
+.instr-block {
+  border: 1px solid var(--gray-dim);
+  margin-bottom: 1rem;
+  background: #0c0c0c;
+}
+.instr-header {
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid var(--gray-dim);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(196,90,26,0.05);
+}
+.instr-list { padding: 0.35rem 0; }
+.instr-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.87rem;
+  color: #c0c0c0;
+  align-items: baseline;
+  line-height: 1.6;
+}
+.instr-row:last-child { border-bottom: none; }
+.instr-n {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--orange);
+  padding-top: 2px;
+}
+
+/* Prompt box */
+.prompt-box {
+  background: #090909;
+  border: 1px solid var(--gray-dim);
+  border-left: 3px solid var(--orange);
+  padding: 1.25rem 1.5rem 1.25rem 1.5rem;
+  margin: 1rem 0;
+  position: relative;
+}
+.prompt-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.85rem;
+  padding-right: 4rem;
+}
+.prompt-box pre {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #ccc;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  background: var(--gray-dim);
+  border: none;
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { background: var(--orange); color: var(--black); }
+.copy-btn.copied { background: var(--green); color: var(--black); }
+
+/* Info boxes */
+.info-box {
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  border-left: 3px solid;
+}
+.info-box.warn {
+  background: rgba(245,158,11,0.05);
+  border-color: #f59e0b;
+  border: 1px solid rgba(245,158,11,0.18);
+  border-left: 3px solid #f59e0b;
+  color: #c9983e;
+}
+.info-box.warn strong { color: #f59e0b; }
+.info-box.tip {
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.15);
+  border-left: 3px solid var(--green);
+  color: #7fc99a;
+}
+.info-box.tip strong { color: var(--green); }
+
+/* Req list */
+.req-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+.req-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  background: #0c0c0c;
+  border: 1px solid var(--gray-dim);
+  font-size: 0.87rem;
+  color: #bbb;
+  line-height: 1.6;
+}
+.req-icon { color: var(--orange); flex-shrink: 0; font-size: 0.7rem; }
+
+/* Compare */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--gray-dim);
+  margin: 1rem 0;
+}
+.compare-col {
+  background: #0c0c0c;
+  padding: 1.25rem 1.5rem;
+}
+.compare-col.bad .compare-tag { color: #ef4444; }
+.compare-col.good .compare-tag { color: var(--green); }
+.compare-tag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+  display: block;
+}
+.compare-col p { font-size: 0.85rem; color: #bbb; line-height: 1.7; }
+
+/* Model cards (used for sources / tools) */
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--gray-dim);
+  border: 1px solid var(--gray-dim);
+  margin: 1rem 0;
+}
+.model-card {
+  background: #0c0c0c;
+  padding: 1.35rem 1.25rem;
+  transition: background 0.2s;
+}
+.model-card:hover { background: rgba(196,90,26,0.04); }
+.model-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 0.45rem;
+  line-height: 1.1;
+}
+.model-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+.model-chip {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.18rem 0.45rem;
+}
+
+/* Perm table */
+.perm-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+.perm-table th {
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(196,90,26,0.05);
+  border: 1px solid var(--gray-dim);
+  text-align: left;
+}
+.perm-table td { padding: 0.75rem 1rem; border: 1px solid var(--gray-dim); color: #bbb; }
+.perm-table .allow { color: var(--green); font-weight: 500; }
+.perm-table .warn { color: #f59e0b; font-weight: 500; }
+
+/* Stats */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--gray-dim);
+  border: 1px solid var(--gray-dim);
+  margin: 1rem 0;
+}
+.stat-cell {
+  background: #0c0c0c;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.stat-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 1px; color: var(--gray); text-transform: uppercase; line-height: 1.5; }
+
+/* Stage flow */
+.stage-flow { display: flex; flex-direction: column; gap: 1px; background: var(--gray-dim); margin: 1rem 0; border: 1px solid var(--gray-dim); }
+.stage-row {
+  background: #0c0c0c;
+  padding: 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  transition: background 0.2s;
+}
+.stage-row:hover { background: rgba(196,90,26,0.04); }
+.stage-n { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 2px; color: var(--orange); padding-top: 3px; }
+.stage-title { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.2rem; }
+.stage-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+
+/* Mistake list */
+.mistake-list { display: flex; flex-direction: column; gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); margin: 1rem 0; }
+.mistake-row {
+  background: #0c0c0c;
+  padding: 1.1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+}
+.mistake-n {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: #1e1e1e;
+  line-height: 1;
+}
+.mistake-title { font-size: 0.88rem; font-weight: 500; color: var(--white); margin-bottom: 0.25rem; }
+.mistake-fix { font-size: 0.8rem; color: var(--gray); line-height: 1.6; }
+.mistake-fix .fix-text { color: var(--green); }
+
+/* Scaling table */
+.scale-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+.scale-table th {
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  background: rgba(196,90,26,0.05);
+  border: 1px solid var(--gray-dim);
+  text-align: left;
+}
+.scale-table td { padding: 0.75rem 1rem; border: 1px solid var(--gray-dim); color: #bbb; }
+
+/* System summary */
+.system-box {
+  background: #0c0c0c;
+  border: 1px solid var(--gray-dim);
+  padding: 2rem;
+  margin: 1rem 0;
+}
+.system-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
+.sys-col-title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--orange-dim);
+}
+.sys-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+.sys-list li {
+  font-size: 0.8rem;
+  color: var(--gray);
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.sys-list li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+
+/* Level cards (7 levels of design quality) */
+.level-list { display: flex; flex-direction: column; gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); margin: 1rem 0; }
+.level-row {
+  background: #0c0c0c;
+  padding: 1.1rem 1.5rem;
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+.level-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--orange);
+  line-height: 1;
+}
+.level-title { font-size: 0.92rem; font-weight: 500; color: var(--white); margin-bottom: 0.2rem; }
+.level-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.55; }
+.level-chip {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.2rem 0.5rem;
+  white-space: nowrap;
+}
+.level-chip.muted { color: var(--gray); border-color: var(--gray-dim); }
+
+/* ── STEP CONTROLS ── */
+.step-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-dim);
+}
+.btn-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--gray-dim);
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 7rem;
+  justify-content: center;
+}
+.btn-nav:hover { color: var(--white); border-color: var(--gray-mid); }
+.btn-nav:disabled { opacity: 0.25; cursor: not-allowed; }
+.btn-nav.next { background: var(--orange); border-color: var(--orange); color: var(--black); }
+.btn-nav.next:hover { background: var(--orange-bright); }
+.btn-nav.finish { background: var(--green); border-color: var(--green); color: var(--black); }
+
+.mark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mark-btn:hover { background: var(--green-dim); }
+.mark-btn.done { background: var(--green-dim); opacity: 0.55; cursor: default; pointer-events: none; }
+
+/* WA FLOAT */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9300;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 1.4rem;
+  border-radius: 50px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+  transition: all 0.25s;
+}
+.wa-float:hover { background: #1ebe5d; transform: translateY(-3px); }
+
+/* Inline code */
+code.inline {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--orange);
+  background: rgba(196,90,26,0.06);
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--gray-dim);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  :root { --nav-h: 56px; --stepbar-h: 52px; }
+  .top-nav { padding: 0 1.25rem; }
+  .nav-center { display: none; }
+  .course-hero { padding: calc(var(--nav-h) + var(--stepbar-h) + 2.5rem) 1.25rem 3rem; }
+  .step-bar-inner { padding: 0 0.75rem; }
+  .step-pill { padding: 0 0.85rem; font-size: 0.72rem; }
+  .step-wrap { padding: 2.5rem 1.25rem 5rem; }
+  .step-heading { margin-bottom: 2rem; padding-bottom: 2rem; }
+  .step-big-num { font-size: clamp(4rem, 15vw, 6rem); }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .compare { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-cell:last-child { grid-column: 1 / -1; }
+  .model-grid { grid-template-columns: 1fr 1fr; }
+  .system-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .level-row { grid-template-columns: 2.5rem 1fr; }
+  .level-row .level-chip { grid-column: 2; justify-self: start; margin-top: 0.4rem; }
+  .step-controls { flex-wrap: wrap; gap: 0.75rem; }
+  .btn-nav { flex: 1; }
+  .mark-btn { width: 100%; justify-content: center; order: -1; }
+  .perm-table { font-size: 0.78rem; }
+  .perm-table th, .perm-table td { padding: 0.5rem 0.75rem; }
+  .wa-float { padding: 1rem; border-radius: 50%; }
+  .wa-float span { display: none; }
+  .hero-meta { gap: 1rem; }
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --black: #F2EFE9;
+  --white: #1A1208;
+  --gray: #6B6355;
+  --gray-dim: #D8D3CB;
+  --gray-mid: #9E9589;
+  --green: #16a34a;
+  --green-dim: rgba(22,163,74,0.1);
+  --orange: #B84F12;
+  --orange-bright: #D06018;
+  --orange-dim: #D4A882;
+  --orange-glow: rgba(184,79,18,0.08);
+}
+[data-theme="light"] body { background: #F2EFE9; color: #1A1208; }
+[data-theme="light"] body::after { opacity: 0.1; }
+[data-theme="light"] .top-nav { background: rgba(242,239,233,0.97); border-bottom-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .step-bar { background: #EAE6DF; border-bottom-color: #D8D3CB; }
+[data-theme="light"] .step-pill { color: #9E9589; }
+[data-theme="light"] .step-pill:hover { background: rgba(0,0,0,0.04); color: #1A1208; }
+[data-theme="light"] .step-pill.active { color: #1A1208; }
+[data-theme="light"] .outcomes-grid { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .outcome-cell { background: #EAE6DF; color: #6B6355; }
+[data-theme="light"] .step-big-num { color: #E5E0D8; }
+[data-theme="light"] .step-intro { color: #6B6355; }
+[data-theme="light"] .section-label { color: #9E9589; }
+[data-theme="light"] .section-label::after { background: #D8D3CB; }
+[data-theme="light"] .instr-block { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .instr-header { background: rgba(184,79,18,0.06); border-color: #D8D3CB; }
+[data-theme="light"] .instr-row { border-color: rgba(0,0,0,0.05); color: #1A1208; }
+[data-theme="light"] .prompt-box { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .prompt-box pre { color: #1A1208; }
+[data-theme="light"] .copy-btn { background: #D8D3CB; color: #6B6355; }
+[data-theme="light"] .copy-btn:hover { background: var(--orange); color: #F2EFE9; }
+[data-theme="light"] .info-box.warn { background: rgba(180,100,0,0.05); border-color: rgba(180,100,0,0.25); border-left-color: #b87000; color: #7a5200; }
+[data-theme="light"] .info-box.warn strong { color: #9a6500; }
+[data-theme="light"] .info-box.tip { background: rgba(22,163,74,0.06); border-color: rgba(22,163,74,0.2); border-left-color: #16a34a; color: #166534; }
+[data-theme="light"] .info-box.tip strong { color: #15803d; }
+[data-theme="light"] .req-row { background: #EAE6DF; border-color: #D8D3CB; color: #1A1208; }
+[data-theme="light"] .compare { background: #D8D3CB; }
+[data-theme="light"] .compare-col { background: #EAE6DF; }
+[data-theme="light"] .compare-col p { color: #6B6355; }
+[data-theme="light"] .model-grid { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .model-card { background: #EAE6DF; }
+[data-theme="light"] .model-card:hover { background: rgba(184,79,18,0.05); }
+[data-theme="light"] .model-desc { color: #6B6355; }
+[data-theme="light"] .perm-table th { background: rgba(184,79,18,0.05); border-color: #D8D3CB; }
+[data-theme="light"] .perm-table td { border-color: #D8D3CB; color: #1A1208; }
+[data-theme="light"] .stats-row { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .stat-cell { background: #EAE6DF; }
+[data-theme="light"] .stat-label { color: #9E9589; }
+[data-theme="light"] .stage-flow { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .stage-row { background: #EAE6DF; }
+[data-theme="light"] .stage-row:hover { background: rgba(184,79,18,0.04); }
+[data-theme="light"] .stage-desc { color: #6B6355; }
+[data-theme="light"] .mistake-list { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .mistake-row { background: #EAE6DF; }
+[data-theme="light"] .mistake-n { color: #D8D3CB; }
+[data-theme="light"] .mistake-fix { color: #6B6355; }
+[data-theme="light"] .scale-table th { background: rgba(184,79,18,0.05); border-color: #D8D3CB; }
+[data-theme="light"] .scale-table td { border-color: #D8D3CB; color: #1A1208; }
+[data-theme="light"] .system-box { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .sys-list li { color: #6B6355; }
+[data-theme="light"] .level-list { background: #D8D3CB; border-color: #D8D3CB; }
+[data-theme="light"] .level-row { background: #EAE6DF; }
+[data-theme="light"] .level-desc { color: #6B6355; }
+[data-theme="light"] code.inline { background: rgba(184,79,18,0.07); border-color: #D8D3CB; }
+[data-theme="light"] .step-controls { border-top-color: #D8D3CB; }
+[data-theme="light"] .btn-nav { border-color: #D8D3CB; color: #6B6355; }
+[data-theme="light"] .btn-nav:hover { color: #1A1208; border-color: #9E9589; }
+[data-theme="light"] .nav-back { border-color: #D8D3CB; color: #6B6355; }
+[data-theme="light"] .nav-back:hover { color: #1A1208; border-color: #9E9589; }
+[data-theme="light"] .hero-sub { color: #6B6355; }
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--gray-dim);
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-toggle-btn:hover { border-color: var(--orange); color: var(--orange); }
+.theme-icon { font-size: 0.85rem; line-height: 1; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav" id="mainNav">
+  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
+  <div class="nav-center">
+    <span class="nav-badge">Academy · Course 02</span>
+    <span class="nav-progress-text" id="navProgress">0 / 10 complete</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="theme-toggle-btn" onclick="toggleTheme()"><span class="theme-icon">☀</span><span class="theme-label">Light Mode</span></button>
+    <a href="courses.html" class="nav-back">← All Courses</a>
+  </div>
+</nav>
+
+<!-- STEP BAR -->
+<div class="step-bar" id="stepBar">
+  <div class="step-bar-inner">
+    <button class="step-pill active" data-step="1" onclick="goToStep(1)"><span class="pill-num">1</span>Setup</button>
+    <button class="step-pill" data-step="2" onclick="goToStep(2)"><span class="pill-num">2</span>CLAUDE.md</button>
+    <button class="step-pill" data-step="3" onclick="goToStep(3)"><span class="pill-num">3</span>Design Skill</button>
+    <button class="step-pill" data-step="4" onclick="goToStep(4)"><span class="pill-num">4</span>Screenshot Loop</button>
+    <button class="step-pill" data-step="5" onclick="goToStep(5)"><span class="pill-num">5</span>Clone Sites</button>
+    <button class="step-pill" data-step="6" onclick="goToStep(6)"><span class="pill-num">6</span>Components</button>
+    <button class="step-pill" data-step="7" onclick="goToStep(7)"><span class="pill-num">7</span>7 Levels</button>
+    <button class="step-pill" data-step="8" onclick="goToStep(8)"><span class="pill-num">8</span>Claude Design</button>
+    <button class="step-pill" data-step="9" onclick="goToStep(9)"><span class="pill-num">9</span>Deploy</button>
+    <button class="step-pill" data-step="10" onclick="goToStep(10)"><span class="pill-num">10</span>Stack &amp; Fixes</button>
+  </div>
+  <div class="step-bar-progress" id="barProgress"></div>
+</div>
+
+<!-- HERO -->
+<div class="course-hero" id="courseTop">
+  <div class="hero-eyebrow"><span class="badge">Course 02</span>winsym.ai Academy</div>
+  <h1>Pro Websites with<br><span class="accent">Claude Code</span></h1>
+  <p class="hero-sub">Build websites that don't look AI-generated. Set up Claude Code professionally, master the techniques that produce real design, and deploy to a real domain — step by step.</p>
+  <div class="hero-meta">
+    <div class="meta-dot">10 Steps</div>
+    <div class="meta-dot">No Coding Needed</div>
+    <div class="meta-dot">~60 min</div>
+    <div class="meta-dot">Verified May 2026</div>
+  </div>
+  <div class="outcomes-grid">
+    <div class="outcome-cell">Set up Claude Code properly inside VS Code</div>
+    <div class="outcome-cell">Stop producing generic AI-looking websites</div>
+    <div class="outcome-cell">Clone any site you love — with your branding</div>
+    <div class="outcome-cell">Deploy a real, live website to your own domain</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ STEPS ══════════════════════════════════════ -->
+
+<!-- STEP 1 -->
+<div class="step-panel active" id="step-1">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Getting Started</div>
+    <div class="step-big-num">01</div>
+    <h2>Set Up Claude Code</h2>
+    <p class="step-intro">Install VS Code, add the Claude Code extension, and unlock the workflow that lets Claude actually build with you — not just chat about code.</p>
+  </div>
+
+  <div class="section-label">What You Need</div>
+  <div class="req-list">
+    <div class="req-row"><span class="req-icon">◆</span> <strong style="color:var(--white)">VS Code</strong> (free) — your code editor</div>
+    <div class="req-row"><span class="req-icon">◆</span> A <strong style="color:var(--white)">Claude Pro or Max</strong> account — Free tier doesn't include Claude Code</div>
+    <div class="req-row"><span class="req-icon">◆</span> About <strong style="color:var(--white)">30 minutes</strong> for first-time setup</div>
+  </div>
+
+  <div class="section-label">Install VS Code</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 Once for the whole machine</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Open your browser → search <strong style="color:var(--white)">"VS Code"</strong> → download for your operating system</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Install and open the application</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Install the Claude Code Extension</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 Inside VS Code</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Left sidebar → click the <strong style="color:var(--white)">Extensions icon</strong></span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Search <strong style="color:var(--white)">"Claude Code"</strong> → click <strong style="color:var(--orange)">Install</strong></span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>A new <strong style="color:var(--white)">Claude icon</strong> appears in the top toolbar</span></div>
+      <div class="instr-row"><span class="instr-n">4.</span><span>Click it → sign in with your Anthropic account</span></div>
+      <div class="instr-row"><span class="instr-n">5.</span><span><strong style="color:var(--green)">✓ Done.</strong> Left = files, Right = Claude Code agent (like a chat).</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Create Your First Project Folder</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 The folder Claude will work inside</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Create an empty folder anywhere (Desktop or Documents)</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>In VS Code: <strong style="color:var(--white)">Explorer → Open Folder</strong> → select it</span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Claude Code now has full visibility into that folder</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Enable Bypass Permissions (Recommended)</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">This setting lets Claude work without asking you to confirm every single action — much faster, much smoother.</p>
+  <div class="instr-block">
+    <div class="instr-header">📌 In VS Code Settings</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Open VS Code <strong style="color:var(--white)">Settings</strong></span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Search <strong style="color:var(--white)">"Claude Code"</strong></span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Enable <strong style="color:var(--orange)">"Allow Dangerously Skip Permissions"</strong></span></div>
+    </div>
+  </div>
+  <div class="info-box warn"><strong>⚠ The trade-off:</strong> Claude executes commands without confirmation. In practice this is fine for building websites — as long as you're actively watching. Never let it run overnight unattended.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" disabled>← Prev</button>
+    <button class="mark-btn" id="done-1" onclick="markDone(1)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(2)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step-panel" id="step-2">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Project Memory</div>
+    <div class="step-big-num">02</div>
+    <h2>The CLAUDE.md File</h2>
+    <p class="step-intro">Imagine hiring a new employee. Instead of re-explaining who you are at every task, you hand them a briefing document. They read it every morning. That's CLAUDE.md — Claude reads it before every single prompt.</p>
+  </div>
+
+  <div class="section-label">What Goes In It</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">Rules, brand assets paths, screenshot workflow, deployment rules. Anything Claude needs to remember on every session.</p>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Example CLAUDE.md template</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre># Project: [NAME]
+
+## Rules
+- Always invoke the frontend design skill before any frontend code
+- Always use brand assets from /brand_assets/
+- Screenshot workflow is active
+
+## Brand Assets
+- Logo: /brand_assets/logo.png
+- Brand Guidelines: /brand_assets/guidelines.pdf
+
+## Screenshot Workflow
+After each build:
+1. Start the server
+2. Take screenshots
+3. Visually review and improve
+
+## Deployment Rule
+Always develop on localhost first.
+Only push to GitHub when I explicitly say: "Push to GitHub"</pre>
+  </div>
+
+  <div class="section-label">Two Ways to Create It</div>
+  <div class="compare">
+    <div class="compare-col good">
+      <span class="compare-tag">Option A · Easiest</span>
+      <p>Ask Claude Code directly: <em style="color:#aaa;">"Create a CLAUDE.md file for a website project. My project is: [DESCRIPTION]"</em> — Claude generates a starting template tailored to you.</p>
+    </div>
+    <div class="compare-col good">
+      <span class="compare-tag">Option B · Pre-made</span>
+      <p>Use a ready-made template from a community or course. Drop it in the project root, edit the brand/path lines, done in 2 minutes.</p>
+    </div>
+  </div>
+
+  <div class="info-box tip"><strong>It evolves:</strong> Your CLAUDE.md isn't one-and-done. Start with the basics, add rules as you discover what works. The longer you use Claude Code, the smarter your CLAUDE.md gets.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(1)">← Prev</button>
+    <button class="mark-btn" id="done-2" onclick="markDone(2)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(3)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step-panel" id="step-3">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">End of AI Slop</div>
+    <div class="step-big-num">03</div>
+    <h2>The Frontend Design Skill</h2>
+    <p class="step-intro">This single skill is the difference between "obvious AI website" and "actually looks professional." It's a knowledge file Claude reads before writing any frontend code.</p>
+  </div>
+
+  <div class="section-label">With Skill vs Without</div>
+  <div class="compare">
+    <div class="compare-col bad">
+      <span class="compare-tag">✗ Without the Skill</span>
+      <p>Purple gradients. Generic SaaS layouts. Recognizable as AI at first glance. About <strong style="color:#ef4444;">40% of what you actually want</strong>.</p>
+    </div>
+    <div class="compare-col good">
+      <span class="compare-tag">✓ With the Skill</span>
+      <p>Real animations. Better spacing and typography. No standard AI template. About <strong style="color:var(--green);">60–70%</strong> — noticeably professional.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Install the Skill</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 One command, available everywhere</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Open Claude Code inside VS Code</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Type: <em style="color:var(--white);">"Install the Frontend Design Skill globally."</em></span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Claude handles the install on its own</span></div>
+      <div class="instr-row"><span class="instr-n">4.</span><span><strong style="color:var(--green)">✓ Available in ALL future projects, not just this one</strong></span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Confirmation It's Working</div>
+  <div class="info-box tip"><strong>You'll see in Claude's response:</strong> <em>"Invoking the frontend design skill..."</em> — that's your signal it's active.</div>
+
+  <div class="section-label">Force It in CLAUDE.md</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">So Claude never forgets, add this to your CLAUDE.md:</p>
+  <div class="prompt-box">
+    <div class="prompt-label">Add this rule</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>## Mandatory Rule
+Always invoke the Frontend Design Skill before any frontend code.
+No exceptions, every session.</pre>
+  </div>
+
+  <div class="info-box tip"><strong>Bonus skill — UIUX Pro Max:</strong> Open source on GitHub (52,000+ stars). Specifically lists the AI design patterns to <em>avoid</em>. Stack it on top of the Frontend Design Skill for even better results.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(2)">← Prev</button>
+    <button class="mark-btn" id="done-3" onclick="markDone(3)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(4)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step-panel" id="step-4">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Self-Review Loop</div>
+    <div class="step-big-num">04</div>
+    <h2>The Screenshot Loop</h2>
+    <p class="step-intro">Instead of you telling Claude what looks good, Claude takes a screenshot of its own work, reviews it, and fixes itself. Build → Screenshot → Review → Fix → Screenshot again.</p>
+  </div>
+
+  <div class="section-label">The Cycle</div>
+  <div class="stage-flow">
+    <div class="stage-row"><span class="stage-n">01</span><div><div class="stage-title">Write code</div><div class="stage-desc">Claude implements the section you asked for</div></div></div>
+    <div class="stage-row"><span class="stage-n">02</span><div><div class="stage-title">Start the local server</div><div class="stage-desc">Claude spins up localhost on its own</div></div></div>
+    <div class="stage-row"><span class="stage-n">03</span><div><div class="stage-title">Take a screenshot</div><div class="stage-desc">Puppeteer captures the rendered browser view</div></div></div>
+    <div class="stage-row"><span class="stage-n">04</span><div><div class="stage-title">Visually check the result</div><div class="stage-desc">Does it match the goal? Spacing, alignment, color?</div></div></div>
+    <div class="stage-row"><span class="stage-n">05</span><div><div class="stage-title">Adjust + screenshot again</div><div class="stage-desc">Repeat until it actually looks right</div></div></div>
+  </div>
+
+  <div class="section-label">Wire It Into CLAUDE.md</div>
+  <div class="prompt-box">
+    <div class="prompt-label">Add this section</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>## Screenshot Workflow
+Use Puppeteer for screenshots during development.
+- Save screenshots in /temp_screenshots/ with timestamp
+- At minimum 2 rounds: Build → Screenshot → Review → Fix → Screenshot
+- Compare screenshots with reference when available</pre>
+  </div>
+  <p style="font-size:0.85rem;color:#999;margin-top:0.5rem;">Claude will set up Puppeteer itself the first time you ask for it.</p>
+
+  <div class="section-label">When to Turn It OFF</div>
+  <div class="info-box warn"><strong>⚠ Animated elements break the loop.</strong> Screenshots only capture frozen frames — they don't capture motion. Claude thinks the animation wasn't built, keeps trying, and gets stuck in an infinite loop.</div>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Use this when adding animations</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>Add this animated element.
+IMPORTANT: Do NOT use the screenshot tool since this is an animation.
+Let me know when you're done and I'll check it myself.</pre>
+  </div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(3)">← Prev</button>
+    <button class="mark-btn" id="done-4" onclick="markDone(4)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(5)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 5 -->
+<div class="step-panel" id="step-5">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Inspiration → Output</div>
+    <div class="step-big-num">05</div>
+    <h2>Clone Sites You Love</h2>
+    <p class="step-intro">Find a website you like visually. Hand its screenshot and styles to Claude. Get a version of it with your content, your branding — without losing what made the original look good.</p>
+  </div>
+
+  <div class="section-label">Where to Find Inspiration</div>
+  <div class="model-grid">
+    <div class="model-card">
+      <div class="model-name">Dribbble</div>
+      <div class="model-desc">Design community — explore by mood, color, or industry.</div>
+      <span class="model-chip">dribbble.com</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">Godly Website</div>
+      <div class="model-desc">Infinite scroll of great-looking websites. Best for layouts.</div>
+      <span class="model-chip">godly.website</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">Awwwards</div>
+      <div class="model-desc">Award-winning designs (3 W's in the URL — not 2).</div>
+      <span class="model-chip">awwwwards.com</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">Pinterest</div>
+      <div class="model-desc">Surprisingly strong for landing pages and hero sections.</div>
+      <span class="model-chip">pinterest.com</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">motion-sites.ai</div>
+      <div class="model-desc">Animated backgrounds, scroll effects. Copy-paste prompts.</div>
+      <span class="model-chip">Animations</span>
+    </div>
+  </div>
+
+  <div class="section-label">Step 1 · Full-Page Screenshot</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 Capture the whole page, not just the viewport</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Open the inspiration site, press <strong style="color:var(--white)">F12</strong> (Windows) or <strong style="color:var(--white)">Right-click → Inspect</strong> (Mac)</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Open the <strong style="color:var(--white)">Console</strong> tab</span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Press <code class="inline">Ctrl+Shift+P</code> (Win) or <code class="inline">Cmd+Shift+P</code> (Mac)</span></div>
+      <div class="instr-row"><span class="instr-n">4.</span><span>Type <strong style="color:var(--white)">"Screenshot"</strong> → choose <strong style="color:var(--orange)">"Capture full size screenshot"</strong></span></div>
+      <div class="instr-row"><span class="instr-n">5.</span><span><strong style="color:var(--green)">✓ Complete page</strong> (not just visible area) downloads automatically</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Step 2 · Grab the Styles</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 Inside Developer Tools</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Open the <strong style="color:var(--white)">Elements</strong> tab</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Copy the style section (HTML + CSS)</span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span><em style="color:var(--gray)">Advanced:</em> Also grab the source code (<code class="inline">Ctrl+U</code>) for HTML + JS</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Step 3 · Hand It To Claude</div>
+  <div class="prompt-box">
+    <div class="prompt-label">Paste into Claude Code</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>I want to create a new website similar to this inspiration.
+
+Here's the screenshot: [INSERT SCREENSHOT]
+Here's the style code: [INSERT CSS CODE]
+
+Create a new website that follows this design.
+Use the same visual structure as a starting point.
+Show me on localhost.</pre>
+  </div>
+
+  <div class="section-label">Step 4 · Apply Your Branding</div>
+  <div class="prompt-box">
+    <div class="prompt-label">After the structure looks right</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>The website looks good. Now:
+- Use our Brand Guidelines: @brand_assets/guidelines.pdf
+- Use our logo: @brand_assets/logo.png
+- Adapt the content for our product/company
+- Translate everything to [language]</pre>
+  </div>
+  <div class="info-box tip"><strong>Why this works:</strong> You're not asking Claude to invent design taste — you're giving it a reference to mimic, then re-skinning with your brand. That's the whole trick.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(4)">← Prev</button>
+    <button class="mark-btn" id="done-5" onclick="markDone(5)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(6)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 6 -->
+<div class="step-panel" id="step-6">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">The Final Upgrade</div>
+    <div class="step-big-num">06</div>
+    <h2>Individual Components</h2>
+    <p class="step-intro">Instead of cloning a whole site, you now clone individual UI elements — animated backgrounds, special buttons, glow effects — and drop them into your existing build. This is what separates "fine" from "wow".</p>
+  </div>
+
+  <div class="section-label">The Best Source · 21st.dev</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">A library of high-quality, ready-to-use website components. Animated backgrounds, glow buttons, hover effects, navbars, card designs — all copy-and-paste.</p>
+
+  <div class="instr-block">
+    <div class="instr-header">📌 How to use 21st.dev</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Go to <strong style="color:var(--white)">21st.dev</strong></span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Pick a category (e.g. <strong style="color:var(--white)">Backgrounds → Hero Waves</strong>)</span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Click the element you like</span></div>
+      <div class="instr-row"><span class="instr-n">4.</span><span>Click <strong style="color:var(--orange)">"Copy Prompt"</strong> — copies the code snippet</span></div>
+      <div class="instr-row"><span class="instr-n">5.</span><span>Paste into Claude Code with the prompt below</span></div>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Drop the component in</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>Add this element to our website:
+[INSERT CODE FROM 21ST.DEV]
+
+Do NOT use the screenshot tool (it's an animation).
+Let me know when done.</pre>
+  </div>
+
+  <div class="section-label">Other Component Sources</div>
+  <div class="model-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="model-card">
+      <div class="model-name">CodePen</div>
+      <div class="model-desc">Many creative one-off effects, easily ported.</div>
+      <span class="model-chip">codepen.io</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">Shadcn/UI</div>
+      <div class="model-desc">Professional React component library, production-ready.</div>
+      <span class="model-chip">React</span>
+    </div>
+    <div class="model-card">
+      <div class="model-name">motion-sites.ai</div>
+      <div class="model-desc">Copy prompt → paste into Claude Design or Claude Code directly.</div>
+      <span class="model-chip">Animations</span>
+    </div>
+  </div>
+
+  <div class="info-box tip"><strong>Mindset shift:</strong> You're not building from scratch — you're assembling. Pro websites are <em>collages</em> of components that look great together. This is exactly how design agencies actually work.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(5)">← Prev</button>
+    <button class="mark-btn" id="done-6" onclick="markDone(6)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(7)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 7 -->
+<div class="step-panel" id="step-7">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Design Quality Map</div>
+    <div class="step-big-num">07</div>
+    <h2>The 7 Levels of Quality</h2>
+    <p class="step-intro">A clean ladder that explains why some Claude websites look AI-generated and others don't. Find your current level. Climb one step at a time.</p>
+  </div>
+
+  <div class="section-label">The Ladder</div>
+  <div class="level-list">
+    <div class="level-row"><div class="level-num">1</div><div><div class="level-title">Just a prompt</div><div class="level-desc">"Create a landing page for X" — no further instructions. Generic AI design. Purple gradients. Most people are stuck here.</div></div><span class="level-chip muted">Beginner</span></div>
+    <div class="level-row"><div class="level-num">2</div><div><div class="level-title">Activate design skills</div><div class="level-desc">Frontend Design Skill or UIUX Pro Max Skill enabled. Better spacing, better typography. Still feels templated — just a better template.</div></div><span class="level-chip muted">Basic</span></div>
+    <div class="level-row"><div class="level-num">3</div><div><div class="level-title">Add visual references</div><div class="level-desc">Hand Claude screenshots of websites you like. Claude can now mimic instead of describe. Ceiling: about 50% accuracy from image alone.</div></div><span class="level-chip">Solid</span></div>
+    <div class="level-row"><div class="level-num">4</div><div><div class="level-title">Clone the actual code</div><div class="level-desc">HTML + CSS + JS from the inspiration site. Claude understands the technical implementation, not just the image. <strong style="color:var(--orange)">The most important jump.</strong></div></div><span class="level-chip">Pro</span></div>
+    <div class="level-row"><div class="level-num">5</div><div><div class="level-title">Add your own elements</div><div class="level-desc">Custom AI-generated artwork, 21st.dev components, custom fonts. It finally feels like <em>your</em> project, not a template.</div></div><span class="level-chip">Pro</span></div>
+    <div class="level-row"><div class="level-num">6</div><div><div class="level-title">External design tools</div><div class="level-desc">Stitch (free, by Google), Figma, Pencil.dev, Paper.design. Iterate visually, then bring the export back into Claude Code.</div></div><span class="level-chip">Senior</span></div>
+    <div class="level-row"><div class="level-num">7</div><div><div class="level-title">3D / WebGL</div><div class="level-desc">Custom WebGL, 3D experiences, complex shaders. Still beyond most users — but it's where things are heading.</div></div><span class="level-chip">Expert</span></div>
+  </div>
+
+  <div class="info-box tip"><strong>Honest take:</strong> Most people are stuck at Levels 1–3. The biggest single jump is going from Level 3 (screenshot mimic) to Level 4 (clone the code). That's when you start to understand <em>how</em> websites actually work, not just how they look.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(6)">← Prev</button>
+    <button class="mark-btn" id="done-7" onclick="markDone(7)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(8)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 8 -->
+<div class="step-panel" id="step-8">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">The New Tool</div>
+    <div class="step-big-num">08</div>
+    <h2>Claude Design</h2>
+    <p class="step-intro">Released April 2026, Claude Design is a separate Anthropic product built specifically for design work. Prototypes, landing pages, slide decks, animated promos — all powered by Claude Opus 4.7 vision.</p>
+  </div>
+
+  <div class="section-label">Quick Facts</div>
+  <div class="stats-row">
+    <div class="stat-cell"><div class="stat-num">Apr</div><div class="stat-label">Released April 2026</div></div>
+    <div class="stat-cell"><div class="stat-num">4.7</div><div class="stat-label">Powered by Opus 4.7</div></div>
+    <div class="stat-cell"><div class="stat-num">Pro+</div><div class="stat-label">Pro / Max / Team only</div></div>
+  </div>
+  <div class="info-box warn"><strong>⚠ Separate quota:</strong> Claude Design has its <em>own</em> weekly usage limit — independent from your normal Claude messages. Use it wisely.</div>
+
+  <div class="section-label">What It Can Build</div>
+  <div class="model-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="model-card"><div class="model-name">Prototypes</div><div class="model-desc">Wireframe + high-fidelity. Iterate visually.</div><span class="model-chip">Wireframes</span></div>
+    <div class="model-card"><div class="model-name">Pitch Decks</div><div class="model-desc">Slide decks with consistent design system.</div><span class="model-chip">Slides</span></div>
+    <div class="model-card"><div class="model-name">Landing Pages</div><div class="model-desc">Production-ready, exportable, brand-consistent.</div><span class="model-chip">Web</span></div>
+    <div class="model-card"><div class="model-name">Mobile Mockups</div><div class="model-desc">App screens, flows, and full mockup sets.</div><span class="model-chip">Mobile</span></div>
+    <div class="model-card"><div class="model-name">Launch Videos</div><div class="model-desc">HTML animations and short promos.</div><span class="model-chip">Motion</span></div>
+    <div class="model-card"><div class="model-name">Design Systems</div><div class="model-desc">The foundation everything else builds on.</div><span class="model-chip">Systems</span></div>
+  </div>
+
+  <div class="section-label">The Design System (Most Important Foundation)</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">A design system is the recipe book for your brand: colors, typography, button styles, spacing rules, components. Once you have one, Claude Design builds <em>everything</em> consistent with your brand — automatically.</p>
+
+  <div class="compare">
+    <div class="compare-col good">
+      <span class="compare-tag">If you have a brand</span>
+      <p>Claude Design → <strong style="color:var(--white)">Design Systems → Create New</strong>. Enter company name, link GitHub repo (recommended), upload logo + assets. Optional: import a Figma file. Generation takes ~5 min.</p>
+    </div>
+    <div class="compare-col good">
+      <span class="compare-tag">Starting from scratch</span>
+      <p>First develop the brand in <strong style="color:var(--white)">regular Claude</strong> (saves Design quota), save as markdown, upload that file into Claude Design.</p>
+    </div>
+  </div>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Brand kick-off prompt (regular Claude, not Design)</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>Help me develop a brand for [PRODUCT].
+I need: name, positioning, target audience, color palette (4 colors),
+typography (primary + secondary font), logo concepts,
+visual identity and voice/tone</pre>
+  </div>
+
+  <div class="section-label">Workflow · Building a Landing Page</div>
+  <div class="stage-flow">
+    <div class="stage-row"><span class="stage-n">01</span><div><div class="stage-title">Concept + content in regular Claude</div><div class="stage-desc">Hero text, features, social proof, pricing, CTA — saved as markdown</div></div></div>
+    <div class="stage-row"><span class="stage-n">02</span><div><div class="stage-title">Open Claude Design</div><div class="stage-desc">New project → High Fidelity → select your design system → upload markdown</div></div></div>
+    <div class="stage-row"><span class="stage-n">03</span><div><div class="stage-title">Use Tweaks, not prompts</div><div class="stage-desc">The Tweaks panel (right side) lets you change colors, fonts, layouts in real time — no tokens used until you apply</div></div></div>
+    <div class="stage-row"><span class="stage-n">04</span><div><div class="stage-title">One change per prompt</div><div class="stage-desc">Claude Design loses focus with 5+ simultaneous changes. Iterate small, ship faster.</div></div></div>
+  </div>
+
+  <div class="section-label">Feedback Methods</div>
+  <table class="perm-table">
+    <thead><tr><th>Method</th><th>When to use</th></tr></thead>
+    <tbody>
+      <tr><td><strong style="color:var(--white)">Comment</strong> — click element → enter text</td><td>For specific elements</td></tr>
+      <tr><td><strong style="color:var(--white)">Direct edit</strong> — click text → change</td><td>For text, colors, sizes</td></tr>
+      <tr><td><strong style="color:var(--white)">Draw</strong> — circle an area → annotate</td><td>Regions without a clear element</td></tr>
+      <tr><td><strong style="color:var(--white)">Tweaks</strong> — sliders + options</td><td>Global style changes</td></tr>
+    </tbody>
+  </table>
+
+  <div class="info-box tip"><strong>Token-saving rule:</strong> Brainstorm in regular Claude. Build in Claude Design. Brainstorming inside Design wastes its separate quota — and you'll hit the wall fast.</div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(7)">← Prev</button>
+    <button class="mark-btn" id="done-8" onclick="markDone(8)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(9)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 9 -->
+<div class="step-panel" id="step-9">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Localhost → Live</div>
+    <div class="step-big-num">09</div>
+    <h2>Deploy to a Real Domain</h2>
+    <p class="step-intro">The full path from "looks good on my laptop" to "anyone in the world can visit it." Claude Code → GitHub → Vercel, with auto-deploy on every change.</p>
+  </div>
+
+  <div class="section-label">How the Three Pieces Fit Together</div>
+  <div class="system-box">
+    <div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:0.25rem;">The Deployment Pipeline</div>
+    <div class="system-grid">
+      <div>
+        <div class="sys-col-title">Claude Code</div>
+        <ul class="sys-list">
+          <li>Where you build locally</li>
+          <li>Tests on localhost first</li>
+          <li>Pushes when you say so</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sys-col-title">GitHub</div>
+        <ul class="sys-list">
+          <li>Cloud backup of your code</li>
+          <li>Receives the push</li>
+          <li>Triggers Vercel automatically</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sys-col-title">Vercel</div>
+        <ul class="sys-list">
+          <li>Detects every GitHub change</li>
+          <li>Builds + deploys live</li>
+          <li>Free SSL + .vercel.app domain</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">The Golden Rule — In Your CLAUDE.md</div>
+  <div class="prompt-box">
+    <div class="prompt-label">Locks down auto-deploy</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>## Deployment Rule
+I always develop on localhost.
+Only push to GitHub when I explicitly say: "Push to GitHub".
+No automatic deployment without my approval.</pre>
+  </div>
+
+  <div class="section-label">Set Up GitHub</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 If you don't have one yet</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Go to <strong style="color:var(--white)">github.com</strong> → create a free account</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Or just tell Claude Code: <em style="color:#aaa;">"Create a GitHub repository and push the project there"</em></span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span>Claude handles authentication and pushes for you</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Set Up Vercel</div>
+  <div class="instr-block">
+    <div class="instr-header">📌 Live in under 5 minutes</div>
+    <div class="instr-list">
+      <div class="instr-row"><span class="instr-n">1.</span><span>Go to <strong style="color:var(--white)">vercel.com</strong> → create account using <strong style="color:var(--orange)">GitHub credentials</strong> (important!)</span></div>
+      <div class="instr-row"><span class="instr-n">2.</span><span>Click <strong style="color:var(--white)">"Add New Project"</strong> → pick your GitHub repo → <strong style="color:var(--orange)">"Deploy"</strong></span></div>
+      <div class="instr-row"><span class="instr-n">3.</span><span><strong style="color:var(--green)">✓ Website is live</strong> at <code class="inline">[name].vercel.app</code></span></div>
+      <div class="instr-row"><span class="instr-n">4.</span><span>Auto-deploy is now active for every future push</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Custom Domain (Optional)</div>
+  <p style="font-size:0.87rem;color:#999;margin-bottom:1rem;line-height:1.8;">In Vercel → <strong style="color:var(--white)">Project Settings → Domains</strong> → buy a domain inside Vercel or connect an existing one. <strong style="color:var(--orange)">Porkbun</strong> is cheaper than GoDaddy for new domains.</p>
+
+  <div class="info-box warn"><strong>⚠ Critical security rule:</strong> Never push API keys, passwords, or secrets to public GitHub repos. This includes Supabase keys, Stripe keys, anything sensitive. They belong in <code class="inline">.env</code> files excluded from Git. Remind Claude:<br><br><em style="color:#aaa;">"Make sure no API keys or sensitive data end up in the GitHub repository."</em></div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(8)">← Prev</button>
+    <button class="mark-btn" id="done-9" onclick="markDone(9)">✓ Mark Complete</button>
+    <button class="btn-nav next" onclick="goToStep(10)">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- STEP 10 -->
+<div class="step-panel" id="step-10">
+<div class="step-wrap">
+  <div class="step-heading">
+    <div class="step-tag">Stack &amp; Fixes</div>
+    <div class="step-big-num">10</div>
+    <h2>Tech Stack + Common Mistakes</h2>
+    <p class="step-intro">The full tool list for real web apps (not just landing pages), and the exact mistakes that trip people up — plus the fix for each one.</p>
+  </div>
+
+  <div class="section-label">The Tech Stack — For Actual Web Apps</div>
+  <table class="scale-table">
+    <thead><tr><th>What</th><th>Tool</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Framework</td><td><strong style="color:var(--white)">Next.js + TypeScript</strong></td><td>Standard for modern web apps</td></tr>
+      <tr><td>CSS</td><td><strong style="color:var(--white)">Tailwind CSS</strong></td><td>Fast, consistent, well-supported</td></tr>
+      <tr><td>Starter template</td><td><strong style="color:var(--white)">v0.dev · Lovable · Replit</strong></td><td>Great as a starting point</td></tr>
+      <tr><td>Deployment</td><td><strong style="color:var(--white)">Vercel</strong></td><td>Seamless GitHub integration</td></tr>
+      <tr><td>Auth + database</td><td><strong style="color:var(--white)">Supabase</strong></td><td>Both in one place, easy to visualize</td></tr>
+      <tr><td>Payments</td><td><strong style="color:var(--white)">Stripe</strong></td><td>Industry standard for online payments</td></tr>
+      <tr><td>Email</td><td><strong style="color:var(--white)">Resend</strong></td><td>Free tier, easy to integrate</td></tr>
+      <tr><td>Analytics</td><td><strong style="color:var(--white)">PostHog</strong></td><td>Open source, privacy-friendly</td></tr>
+      <tr><td>Domain</td><td><strong style="color:var(--white)">Porkbun</strong></td><td>Cheaper than GoDaddy</td></tr>
+      <tr><td>Terminal (optional)</td><td><strong style="color:var(--white)">Warp</strong></td><td>AI terminal, great for Git beginners</td></tr>
+    </tbody>
+  </table>
+
+  <div class="prompt-box">
+    <div class="prompt-label">Add this to your CLAUDE.md so Claude uses the right stack</div>
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <pre>## Tech Stack
+Framework: Next.js + TypeScript
+CSS: Tailwind CSS
+Package manager: npm (not bun)
+Database: Supabase</pre>
+  </div>
+
+  <div class="section-label">Common Mistakes &amp; Fixes</div>
+  <div class="mistake-list">
+    <div class="mistake-row">
+      <div class="mistake-n">01</div>
+      <div><div class="mistake-title">Website looks like AI</div><div class="mistake-fix">Generic gradients, boring layout. <span class="fix-text">Fix: Install Frontend Design Skill and force it in CLAUDE.md.</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">02</div>
+      <div><div class="mistake-title">Claude changes too much at once</div><div class="mistake-fix">You ask for a hero tweak, it rewrites the page. <span class="fix-text">Fix: Be specific — "Only adjust the hero section."</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">03</div>
+      <div><div class="mistake-title">Screenshot loop runs endlessly</div><div class="mistake-fix">Animation never gets "captured" so Claude keeps trying. <span class="fix-text">Fix: Turn off the screenshot tool for animated elements.</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">04</div>
+      <div><div class="mistake-title">Claude forgets style rules</div><div class="mistake-fix">Brand drift across sessions. <span class="fix-text">Fix: Reference design system / brand assets path in CLAUDE.md.</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">05</div>
+      <div><div class="mistake-title">Local changes deploy themselves</div><div class="mistake-fix">Half-baked work pushed live. <span class="fix-text">Fix: CLAUDE.md rule — "Only push when I say: Push to GitHub."</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">06</div>
+      <div><div class="mistake-title">404 error after Vercel deploy</div><div class="mistake-fix">Main file isn't named index.html. <span class="fix-text">Fix: Ask Claude Code to rename — done in one prompt.</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">07</div>
+      <div><div class="mistake-title">Mobile view looks broken</div><div class="mistake-fix">Desktop-only thinking. <span class="fix-text">Fix: Before deploy → F12 → mobile view → "optimize for mobile."</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">08</div>
+      <div><div class="mistake-title">Claude Design changes the logo</div><div class="mistake-fix">Recolors or rebuilds it on the fly. <span class="fix-text">Fix: Say explicitly — "Do not change the logo. Use exactly the PNG I uploaded."</span></div></div>
+    </div>
+    <div class="mistake-row">
+      <div class="mistake-n">09</div>
+      <div><div class="mistake-title">Claude Design quota used up</div><div class="mistake-fix">Hit weekly limit mid-project. <span class="fix-text">Fix: Export as ZIP → continue in Claude Code (separate quota).</span></div></div>
+    </div>
+  </div>
+
+  <div class="section-label">The Full System at a Glance</div>
+  <div class="system-box">
+    <div style="font-family:var(--font-mono);font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:0.25rem;">Complete Overview</div>
+    <div class="system-grid">
+      <div>
+        <div class="sys-col-title">Setup &amp; Memory</div>
+        <ul class="sys-list">
+          <li>VS Code + Claude Code extension</li>
+          <li>Bypass Permissions enabled</li>
+          <li>CLAUDE.md in project root</li>
+          <li>Brand assets folder linked</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sys-col-title">Build Techniques</div>
+        <ul class="sys-list">
+          <li>Frontend Design Skill global</li>
+          <li>Screenshot loop active</li>
+          <li>Clone sites via screenshot + CSS</li>
+          <li>Drop in 21st.dev components</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sys-col-title">Ship It</div>
+        <ul class="sys-list">
+          <li>Test on localhost first</li>
+          <li>"Push to GitHub" only when ready</li>
+          <li>Vercel auto-deploys</li>
+          <li>Custom domain via Porkbun</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-controls">
+    <button class="btn-nav" onclick="goToStep(9)">← Prev</button>
+    <button class="mark-btn" id="done-10" onclick="markDone(10)">✓ Mark Complete</button>
+    <button class="btn-nav finish" onclick="showCompletion()">🎓 Finish Course</button>
+  </div>
+</div>
+</div>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+<script>
+const TOTAL = 10;
+let completed = new Set();
+let current = 1;
+
+function goToStep(n) {
+  document.getElementById('step-' + current).classList.remove('active');
+  document.querySelector('.step-pill[data-step="' + current + '"]').classList.remove('active');
+
+  current = n;
+  document.getElementById('step-' + n).classList.add('active');
+
+  document.querySelectorAll('.step-pill').forEach(p => {
+    const s = parseInt(p.dataset.step);
+    p.classList.remove('active');
+    if (completed.has(s)) p.classList.add('done'); else p.classList.remove('done');
+  });
+  document.querySelector('.step-pill[data-step="' + n + '"]').classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+
+  const pill = document.querySelector('.step-pill[data-step="' + n + '"]');
+  if (pill) pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function markDone(n) {
+  completed.add(n);
+  const btn = document.getElementById('done-' + n);
+  btn.textContent = '✓ Complete';
+  btn.classList.add('done');
+
+  const pill = document.querySelector('.step-pill[data-step="' + n + '"]');
+  if (pill) { pill.classList.add('done'); pill.querySelector('.pill-num').textContent = '✓'; }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((completed.size / TOTAL) * 100);
+  document.getElementById('barProgress').style.width = pct + '%';
+  document.getElementById('navProgress').textContent = completed.size + ' / ' + TOTAL + ' complete';
+}
+
+function copyPrompt(btn) {
+  const box = btn.closest('.prompt-box');
+  const text = box.querySelector('pre').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function showCompletion() {
+  markDone(10);
+  setTimeout(() => {
+    alert('🎓 Course Complete!\n\nYou now have the full system to build professional websites with Claude Code and Claude Design — from setup to live deployment.\n\nHead to winsym.ai to book a 1-on-1 if you want personalized help on your project.');
+  }, 300);
+}
+
+// Nav + stepbar hide on scroll
+var lastY = window.scrollY;
+var ticking = false;
+var navEl = document.getElementById('mainNav');
+var barEl = document.getElementById('stepBar');
+window.addEventListener('scroll', function() {
+  if (!ticking) {
+    window.requestAnimationFrame(function() {
+      var cur = window.scrollY;
+      if (cur > lastY && cur > 80) {
+        navEl.classList.add('nav-hidden');
+        barEl.classList.add('nav-hidden');
+      } else {
+        navEl.classList.remove('nav-hidden');
+        barEl.classList.remove('nav-hidden');
+      }
+      lastY = cur;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+</script>
+</body>
+</html>

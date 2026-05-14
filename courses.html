@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academy — Choose Your Coaching · winsym.ai</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
+<style>
+:root {
+  --black: #080808;
+  --orange: #C45A1A;
+  --orange-bright: #E06820;
+  --orange-dim: #7a3010;
+  --orange-glow: rgba(196,90,26,0.12);
+  --white: #F5F2EE;
+  --gray: #888;
+  --gray-dim: #222;
+  --gray-mid: #555;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.1);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --nav-h: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* NOISE */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── TOP NAV ── */
+.top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9500;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 2px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--orange); }
+.nav-center { display: flex; align-items: center; gap: 0.75rem; }
+.nav-badge {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.25rem 0.65rem;
+}
+.nav-back {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--gray-dim);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--white); border-color: var(--gray-mid); }
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--gray-dim);
+  color: var(--gray);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-toggle-btn:hover { border-color: var(--orange); color: var(--orange); }
+.theme-icon { font-size: 0.85rem; line-height: 1; }
+
+/* ── HERO ── */
+.hub-hero {
+  padding: calc(var(--nav-h) + 5rem) 3rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+.hub-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+}
+.hub-hero h1 .accent { color: var(--orange); }
+.hub-sub {
+  font-size: 1.05rem;
+  color: #aaa;
+  max-width: 620px;
+  line-height: 1.85;
+  margin-bottom: 2rem;
+}
+.hub-meta {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.meta-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.meta-dot::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+/* ── COURSES SECTION ── */
+.courses-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 3rem 6rem;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-dim); }
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.25rem;
+}
+
+.course-card {
+  position: relative;
+  background: #0c0c0c;
+  border: 1px solid var(--gray-dim);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.course-card:hover {
+  border-color: var(--orange-dim);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(196,90,26,0.08);
+}
+.course-card.coming-soon {
+  cursor: default;
+  opacity: 0.55;
+}
+.course-card.coming-soon:hover {
+  border-color: var(--gray-dim);
+  transform: none;
+  box-shadow: none;
+}
+
+.course-visual {
+  position: relative;
+  height: 200px;
+  background: #080808;
+  border-bottom: 1px solid var(--gray-dim);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, var(--orange-glow), transparent 65%);
+  pointer-events: none;
+}
+.course-visual-num {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  line-height: 1;
+  color: rgba(196,90,26,0.14);
+  letter-spacing: -2px;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+.course-visual-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange-dim);
+  padding: 0.25rem 0.65rem;
+  background: rgba(8,8,8,0.7);
+  z-index: 2;
+}
+
+.course-body {
+  padding: 1.85rem 1.85rem 2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.course-tag {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.course-tag::before { content: ''; width: 18px; height: 1px; background: var(--orange); }
+.course-card.coming-soon .course-tag { color: var(--gray); }
+.course-card.coming-soon .course-tag::before { background: var(--gray); }
+.course-card.coming-soon .course-visual-icon { color: var(--gray); border-color: var(--gray-dim); }
+.course-card.coming-soon .course-visual-num { color: rgba(136,136,136,0.12); }
+
+.course-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: 1px;
+  margin-bottom: 0.85rem;
+  color: var(--white);
+}
+.course-title .accent { color: var(--orange); }
+.course-desc {
+  font-size: 0.88rem;
+  color: #999;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--gray-dim);
+}
+.course-meta-item {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.course-meta-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+.course-card.coming-soon .course-meta-item::before { background: var(--gray); }
+
+.course-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-bottom: 1.75rem;
+}
+.course-module {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-size: 0.82rem;
+  color: #bbb;
+  line-height: 1.55;
+}
+.course-module-num {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--orange);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+  min-width: 1.4rem;
+}
+
+.course-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--orange);
+  color: var(--black);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.85rem 1.25rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.course-cta:hover { background: var(--orange-bright); }
+.course-cta svg { transition: transform 0.2s; }
+.course-card:hover .course-cta svg { transform: translateX(4px); }
+
+.course-cta.disabled {
+  background: var(--gray-dim);
+  color: var(--gray);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ── INFO STRIP ── */
+.info-strip {
+  max-width: 1100px;
+  margin: 4rem auto 0;
+  padding: 0 3rem;
+}
+.info-box {
+  background: #0c0c0c;
+  border: 1px solid var(--gray-dim);
+  border-left: 3px solid var(--orange);
+  padding: 1.5rem 1.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.info-icon {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--orange);
+  line-height: 1;
+}
+.info-content { flex: 1; }
+.info-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+  color: var(--white);
+}
+.info-text { font-size: 0.88rem; color: #aaa; line-height: 1.7; }
+
+/* WA FLOAT */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9300;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 1.4rem;
+  border-radius: 50px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+  transition: all 0.25s;
+}
+.wa-float:hover { background: #1ebe5d; transform: translateY(-3px); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  :root { --nav-h: 56px; }
+  .top-nav { padding: 0 1.25rem; }
+  .nav-center { display: none; }
+  .hub-hero { padding: calc(var(--nav-h) + 3rem) 1.25rem 2rem; }
+  .courses-wrap { padding: 1.5rem 1.25rem 4rem; }
+  .info-strip { padding: 0 1.25rem; margin-top: 3rem; }
+  .info-box { flex-direction: column; gap: 0.85rem; padding: 1.25rem; }
+  .courses-grid { grid-template-columns: 1fr; }
+  .course-visual { height: 160px; }
+  .course-visual-num { font-size: 6rem; }
+  .course-body { padding: 1.5rem 1.5rem 1.75rem; }
+  .wa-float { padding: 1rem; border-radius: 50%; }
+  .wa-float span { display: none; }
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --black: #F2EFE9;
+  --white: #1A1208;
+  --gray: #6B6355;
+  --gray-dim: #D8D3CB;
+  --gray-mid: #9E9589;
+  --green: #16a34a;
+  --green-dim: rgba(22,163,74,0.1);
+  --orange: #B84F12;
+  --orange-bright: #D06018;
+  --orange-dim: #D4A882;
+  --orange-glow: rgba(184,79,18,0.08);
+}
+[data-theme="light"] body { background: #F2EFE9; color: #1A1208; }
+[data-theme="light"] body::after { opacity: 0.1; }
+[data-theme="light"] .top-nav { background: rgba(242,239,233,0.97); border-bottom-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .nav-back { border-color: #D8D3CB; color: #6B6355; }
+[data-theme="light"] .nav-back:hover { color: #1A1208; border-color: #9E9589; }
+[data-theme="light"] .hub-sub { color: #6B6355; }
+[data-theme="light"] .section-label { color: #9E9589; }
+[data-theme="light"] .section-label::after { background: #D8D3CB; }
+[data-theme="light"] .course-card { background: #EAE6DF; border-color: #D8D3CB; }
+[data-theme="light"] .course-card:hover { border-color: var(--orange-dim); box-shadow: 0 8px 32px rgba(184,79,18,0.06); }
+[data-theme="light"] .course-visual { background: #E5E0D8; border-color: #D8D3CB; }
+[data-theme="light"] .course-visual-num { color: rgba(184,79,18,0.13); }
+[data-theme="light"] .course-visual-icon { background: rgba(242,239,233,0.7); }
+[data-theme="light"] .course-meta { border-color: #D8D3CB; }
+[data-theme="light"] .course-desc { color: #6B6355; }
+[data-theme="light"] .course-module { color: #1A1208; }
+[data-theme="light"] .info-box { background: #EAE6DF; border-color: #D8D3CB; border-left-color: var(--orange); }
+[data-theme="light"] .info-text { color: #6B6355; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
+  <div class="nav-center">
+    <span class="nav-badge">Academy · Course Library</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="theme-toggle-btn" onclick="toggleTheme()"><span class="theme-icon">☀</span><span class="theme-label">Light Mode</span></button>
+    <a href="winsymai.html" class="nav-back">← Back to home</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hub-hero">
+  <div class="hero-eyebrow">winsym.ai Academy</div>
+  <h1>Choose your<br><span class="accent">coaching</span></h1>
+  <p class="hub-sub">
+    Step-by-step coachings built from real practice — clear, verified, and free.
+    Pick a track below to start. Each course is self-contained: no fluff, no theory dumps, just the exact moves that work.
+  </p>
+  <div class="hub-meta">
+    <div class="meta-dot">2 Courses Live</div>
+    <div class="meta-dot">More Coming</div>
+    <div class="meta-dot">Verified May 2026</div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="courses-wrap">
+  <div class="section-label">Available Coachings</div>
+  <div class="courses-grid">
+
+    <!-- COURSE 01 — Higgsfield + Claude -->
+    <a href="academy.html" class="course-card">
+      <div class="course-visual">
+        <div class="course-visual-num">01</div>
+        <span class="course-visual-icon">AI Creative</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tag">Course 01 · Free</div>
+        <h2 class="course-title">Higgsfield<br>+ <span class="accent">Claude</span></h2>
+        <p class="course-desc">
+          Your AI Creative System — from first connection to fully automated content production.
+          Build pro images and videos through conversation, no coding required.
+        </p>
+        <div class="course-meta">
+          <span class="course-meta-item">11 Steps</span>
+          <span class="course-meta-item">~45 min</span>
+          <span class="course-meta-item">Beginner Friendly</span>
+        </div>
+        <div class="course-modules">
+          <div class="course-module"><span class="course-module-num">01</span>Connect Higgsfield to Claude via MCP</div>
+          <div class="course-module"><span class="course-module-num">02</span>Install pro skills &amp; prompt knowledge</div>
+          <div class="course-module"><span class="course-module-num">03</span>Know the right models for every task</div>
+          <div class="course-module"><span class="course-module-num">04</span>Build a full brand from one prompt</div>
+          <div class="course-module"><span class="course-module-num">05</span>Automate 100+ assets per week</div>
+        </div>
+        <span class="course-cta">
+          Start the course
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- COURSE 02 — Claude Code + Claude Design -->
+    <a href="claude-academy.html" class="course-card">
+      <div class="course-visual">
+        <div class="course-visual-num">02</div>
+        <span class="course-visual-icon">Web &amp; Design</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tag">Course 02 · Free</div>
+        <h2 class="course-title">Pro Websites with<br><span class="accent">Claude Code</span></h2>
+        <p class="course-desc">
+          Build websites that don't look AI-generated. Set up Claude Code professionally,
+          master the 5 core techniques, and deploy a real site to your own domain.
+        </p>
+        <div class="course-meta">
+          <span class="course-meta-item">10 Steps</span>
+          <span class="course-meta-item">~60 min</span>
+          <span class="course-meta-item">No Code Needed</span>
+        </div>
+        <div class="course-modules">
+          <div class="course-module"><span class="course-module-num">01</span>Set up VS Code + Claude Code properly</div>
+          <div class="course-module"><span class="course-module-num">02</span>The CLAUDE.md file — your project memory</div>
+          <div class="course-module"><span class="course-module-num">03</span>End AI slop with the Frontend Design Skill</div>
+          <div class="course-module"><span class="course-module-num">04</span>Clone any site you love, with your branding</div>
+          <div class="course-module"><span class="course-module-num">05</span>Design → GitHub → Vercel · live in minutes</div>
+        </div>
+        <span class="course-cta">
+          Start the course
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- COMING SOON SLOT (placeholder, easy to replace) -->
+    <div class="course-card coming-soon">
+      <div class="course-visual">
+        <div class="course-visual-num">03</div>
+        <span class="course-visual-icon">Coming Soon</span>
+      </div>
+      <div class="course-body">
+        <div class="course-tag">Course 03 · In Production</div>
+        <h2 class="course-title">More<br>coachings soon</h2>
+        <p class="course-desc">
+          New courses are added regularly — automation systems, video editing,
+          AI-assisted product launches, and more. Sign up below to get notified.
+        </p>
+        <div class="course-meta">
+          <span class="course-meta-item">TBA</span>
+          <span class="course-meta-item">Free at launch</span>
+        </div>
+        <div class="course-modules">
+          <div class="course-module"><span class="course-module-num">··</span>Topic still in research</div>
+          <div class="course-module"><span class="course-module-num">··</span>Verified from real projects</div>
+          <div class="course-module"><span class="course-module-num">··</span>Same step-by-step format</div>
+        </div>
+        <span class="course-cta disabled">
+          Coming soon
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INFO STRIP -->
+<section class="info-strip">
+  <div class="info-box">
+    <div class="info-icon">★</div>
+    <div class="info-content">
+      <div class="info-title">Want a 1-on-1 coaching?</div>
+      <p class="info-text">
+        All courses here are free and self-paced. If you'd rather get walked through your specific setup live —
+        AI content pipeline, agency workflow, product launch — book a private session directly via WhatsApp.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>WhatsApp</span>
+</a>
+
+</body>
+</html>
