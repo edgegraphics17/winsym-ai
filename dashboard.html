@@ -116,7 +116,9 @@ body {
 }
 .welcome-tag { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.5rem; }
 .welcome-name { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 2px; line-height: 1; color: var(--white); }
-.welcome-sub { font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem; }
+.welcome-user { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: 3px; line-height: 1; color: var(--orange); min-height: 1em; }
+.welcome-sub { font-size: 0.9rem; color: var(--gray); margin-top: 0.75rem; }
+[data-theme="light"] .welcome-user { color: var(--orange); }
 
 /* ── STATS ROW ── */
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); margin-bottom: 3rem; }
@@ -269,7 +271,8 @@ body {
   <div class="welcome-row">
     <div>
       <div class="welcome-tag">— Your Academy</div>
-      <div class="welcome-name" id="welcomeName">Welcome Back</div>
+      <div class="welcome-name">Welcome Back,</div>
+      <div class="welcome-user" id="welcomeUser">...</div>
       <div class="welcome-sub" id="welcomeSub">Continue your AI Journey, where you left off.</div>
     </div>
   </div>
@@ -384,18 +387,26 @@ var certs = [];
     }
     currentUser = user;
 
-    // Get profile — fall back to email if table missing
+    // Get profile — fall back to auth metadata, then email prefix
     var profile = null;
     try { profile = await getProfile(user.id); } catch(e) {}
-    var name = (profile && profile.full_name) ? profile.full_name
-             : (user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name
-             : user.email.split('@')[0];
+    var rawName = (profile && profile.full_name)
+      ? profile.full_name
+      : (user.user_metadata && user.user_metadata.full_name)
+        ? user.user_metadata.full_name
+        : (user.identities && user.identities[0] && user.identities[0].identity_data && user.identities[0].identity_data.full_name)
+          ? user.identities[0].identity_data.full_name
+          : user.email.split('@')[0];
+    // Capitalize first letter of each word
+    var name = rawName.replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    var firstName = name.split(' ')[0];
     userProfile = profile;
+    console.log('[dashboard] user name resolved:', name);
 
-    // Set nav avatar & welcome
-    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+    // Set nav avatar & personalized welcome
+    document.getElementById('userAvatar').textContent = firstName.charAt(0).toUpperCase();
     document.getElementById('menuEmail').textContent = user.email;
-    document.getElementById('welcomeName').textContent = 'Welcome Back, ' + name.split(' ')[0];
+    document.getElementById('welcomeUser').textContent = firstName;
 
     // Load progress for every available course
     var totalSteps = 0;
