@@ -366,6 +366,9 @@ var COURSES = [
 ];
 
 // ── Init ──
+var allProgress = {};
+var certs = [];
+
 (async function init() {
   try {
     var user = await getUser();
@@ -389,7 +392,6 @@ var COURSES = [
     document.getElementById('welcomeName').textContent = 'Hey, ' + name.split(' ')[0];
 
     // Load all progress — safe fallback to empty array
-    var allProgress = {};
     var totalSteps = 0;
     var coursesStarted = 0;
 
@@ -405,15 +407,12 @@ var COURSES = [
     }
 
     // Load certs — safe fallback
-    var certs = [];
     try { certs = await getCertificates(user.id); } catch(e) {}
 
     document.getElementById('statSteps').textContent = totalSteps;
     document.getElementById('statCourses').textContent = coursesStarted;
     document.getElementById('statCerts').textContent = certs.length;
 
-    // Render
-    renderCourses(allProgress, certs);
     renderCerts(certs, name);
 
     // Welcome sub
@@ -423,8 +422,9 @@ var COURSES = [
 
   } catch(err) {
     console.error('Dashboard init error:', err);
-    // Still show dashboard even if something fails
   } finally {
+    // Always render courses — even if auth/data failed
+    renderCourses(allProgress, certs);
     document.getElementById('dashLoading').style.display = 'none';
     document.getElementById('dashContent').style.display = 'block';
   }
