@@ -822,6 +822,32 @@ body::after {
 }
 .nav-cta:hover { background: var(--orange); color: var(--black); }
 
+/* AUTH NAV */
+.nav-auth-btn {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  border: 1px solid var(--gray-dim);
+  padding: 0.45rem 0.9rem;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.nav-auth-btn:hover { color: var(--white); border-color: var(--gray-mid); }
+.nav-auth-avatar {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--orange); color: var(--black);
+  font-size: 0.6rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; line-height: 1;
+}
+[data-theme="light"] .nav-auth-btn { color: #7A7066; border-color: #DDD8CF; }
+[data-theme="light"] .nav-auth-btn:hover { color: #2C2416; border-color: #9E9589; }
+
 /* HAMBURGER */
 .nav-hamburger {
   display: none;
@@ -1061,7 +1087,13 @@ body::after {
     <li><a href="winsymai.html#speaking">Speaking</a></li>
     <li><a href="winsymai.html#contact">Contact</a></li>
   </ul>
-  <a href="winsymai.html#contact" class="nav-cta">Book a session →</a>
+  <div style="display:flex;align-items:center;gap:0.5rem;">
+    <div id="navAuthArea" style="display:none;">
+      <a href="dashboard.html" class="nav-auth-btn"><span class="nav-auth-avatar" id="navAuthAvatar"></span>Dashboard</a>
+    </div>
+    <a href="auth.html" id="navLoginBtn" class="nav-auth-btn" style="display:none;">Login</a>
+    <a href="winsymai.html#contact" class="nav-cta">Book a session →</a>
+  </div>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -1416,6 +1448,23 @@ document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
       trackEvent('projects', 'filter_click', { filter: btn.textContent.trim() });
     });
   });
+
+  // ── AUTH NAV ─────────────────────────────────────────────
+  (async function() {
+    try {
+      const user = await getUser();
+      const authArea  = document.getElementById('navAuthArea');
+      const loginBtn  = document.getElementById('navLoginBtn');
+      const avatar    = document.getElementById('navAuthAvatar');
+      if (user) {
+        const name = user.user_metadata?.full_name || user.email || '';
+        avatar.textContent = name.charAt(0).toUpperCase();
+        authArea.style.display = 'block';
+      } else {
+        loginBtn.style.display = 'inline-flex';
+      }
+    } catch(e) {}
+  })();
 </script>
 </body>
 </html>

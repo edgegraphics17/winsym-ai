@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — winsym.ai Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-client.js"></script>
+<style>
+:root {
+  --black: #1C1917;
+  --orange: #C45A1A;
+  --orange-bright: #E06820;
+  --orange-dim: #7a3010;
+  --orange-glow: rgba(196,90,26,0.12);
+  --white: #F5F2EE;
+  --gray: #8a8278;
+  --gray-dim: #2E2A27;
+  --gray-mid: #5a5550;
+  --green: #22c55e;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --black: #F5F1EB; --white: #2C2416; --gray: #7A7066;
+  --gray-dim: #DDD8CF; --gray-mid: #9E9589;
+  --orange: #B84F12; --orange-bright: #D06018; --orange-dim: #C0845A;
+  --orange-glow: rgba(184,79,18,0.07);
+}
+[data-theme="light"] body { background: #F5F1EB; color: #2C2416; }
+[data-theme="light"] .top-nav { background: rgba(245,241,235,0.97); border-bottom-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .user-avatar { background: var(--orange); }
+[data-theme="light"] .dash-section-title { color: #2C2416; }
+[data-theme="light"] .course-card { background: #EDE9E2; border-color: #DDD8CF; }
+[data-theme="light"] .course-card:hover { border-color: var(--orange-dim); box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+[data-theme="light"] .course-title { color: #2C2416; }
+[data-theme="light"] .course-desc { color: #7A7066; }
+[data-theme="light"] .progress-bg { background: #DDD8CF; }
+[data-theme="light"] .step-dot { background: #DDD8CF; }
+[data-theme="light"] .step-dot.done { background: var(--orange); }
+[data-theme="light"] .cert-card { background: #EDE9E2; border-color: #DDD8CF; }
+[data-theme="light"] .cert-title { color: #2C2416; }
+[data-theme="light"] .dash-stat-card { background: #EDE9E2; border-color: #DDD8CF; }
+[data-theme="light"] .stat-num { color: var(--orange); }
+[data-theme="light"] .stat-label { color: #7A7066; }
+[data-theme="light"] .welcome-name { color: #2C2416; }
+[data-theme="light"] .welcome-sub { color: #7A7066; }
+
+/* ── NAV ── */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 64px;
+  background: rgba(28,25,23,0.97);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+  backdrop-filter: blur(12px);
+}
+.nav-logo { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 2px; color: var(--white); text-decoration: none; }
+.nav-logo span { color: var(--orange); }
+.nav-right { display: flex; align-items: center; gap: 1rem; }
+.nav-home { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.nav-home:hover { color: var(--white); }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--orange);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 0.95rem;
+  color: #fff; cursor: pointer; user-select: none;
+  position: relative;
+}
+.user-menu {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  background: #28231F; border: 1px solid var(--gray-dim);
+  min-width: 180px; z-index: 300; display: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+[data-theme="light"] .user-menu { background: #F5F1EB; border-color: #DDD8CF; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.user-menu.open { display: block; }
+.user-menu-item {
+  display: block; width: 100%; text-align: left;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray); background: none; border: none; cursor: pointer;
+  text-decoration: none; border-bottom: 1px solid var(--gray-dim);
+  transition: color 0.15s, background 0.15s;
+}
+.user-menu-item:last-child { border-bottom: none; }
+.user-menu-item:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+[data-theme="light"] .user-menu-item { color: #7A7066; border-bottom-color: #DDD8CF; }
+[data-theme="light"] .user-menu-item:hover { color: #2C2416; background: rgba(0,0,0,0.02); }
+.user-menu-item.danger:hover { color: #f87171; }
+
+/* ── PAGE LAYOUT ── */
+.dash-page { padding: 96px 0 5rem; max-width: 1200px; margin: 0 auto; padding-left: 2.5rem; padding-right: 2.5rem; }
+
+/* ── WELCOME HEADER ── */
+.welcome-row {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 3rem; padding-bottom: 2rem;
+  border-bottom: 1px solid var(--gray-dim);
+  gap: 1rem; flex-wrap: wrap;
+}
+.welcome-tag { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.5rem; }
+.welcome-name { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: 2px; line-height: 1; color: var(--white); }
+.welcome-sub { font-size: 0.9rem; color: var(--gray); margin-top: 0.5rem; }
+
+/* ── STATS ROW ── */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); margin-bottom: 3rem; }
+.dash-stat-card { background: var(--black); padding: 1.5rem 2rem; }
+.stat-num { font-family: var(--font-display); font-size: 2rem; color: var(--orange); letter-spacing: 1px; }
+.stat-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: 0.25rem; }
+
+/* ── SECTION TITLES ── */
+.dash-section { margin-bottom: 3rem; }
+.dash-section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; }
+.dash-section-title { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 2px; color: var(--white); }
+.dash-section-sub { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+
+/* ── COURSE CARDS ── */
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); }
+.course-card {
+  background: #232019; padding: 2rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer; text-decoration: none; color: inherit;
+  border: 1px solid transparent; margin: -1px;
+}
+.course-card:hover { border-color: var(--orange-dim); box-shadow: 0 4px 24px rgba(0,0,0,0.3); z-index: 1; position: relative; }
+.course-card.locked { cursor: default; opacity: 0.6; }
+.course-card.locked:hover { border-color: transparent; box-shadow: none; }
+.course-num { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
+.course-title { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 1px; color: var(--white); line-height: 1.1; }
+.course-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.6; flex: 1; }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-top: auto; }
+.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.progress-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+.progress-pct { font-family: var(--font-mono); font-size: 0.65rem; color: var(--orange); }
+.progress-bg { height: 3px; background: var(--gray-dim); }
+.progress-fill { height: 100%; background: var(--orange); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+
+/* ── STEP DOTS ── */
+.step-dots { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 0.75rem; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-dim); transition: background 0.2s; }
+.step-dot.done { background: var(--orange); }
+.step-dot.current { background: var(--orange-bright); box-shadow: 0 0 6px var(--orange); }
+
+/* ── COURSE FOOTER ── */
+.course-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--orange); margin-top: 0.5rem;
+  text-decoration: none;
+}
+.course-cta:hover { color: var(--orange-bright); }
+.course-badge {
+  font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.2rem 0.5rem; border: 1px solid; display: inline-block;
+}
+.course-badge.free { border-color: var(--green); color: var(--green); }
+.course-badge.soon { border-color: var(--gray-mid); color: var(--gray-mid); }
+.course-badge.complete { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
+
+/* ── CERTIFICATES ── */
+.certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.cert-card {
+  background: #1E1B18; border: 1px solid var(--gray-dim);
+  padding: 1.75rem; position: relative; overflow: hidden;
+}
+.cert-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-bright));
+}
+.cert-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+.cert-course { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.4rem; }
+.cert-title { font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 1px; color: var(--white); margin-bottom: 0.5rem; }
+.cert-date { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 1px; color: var(--gray); }
+.cert-code { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 1px; color: var(--gray-mid); margin-top: 0.3rem; }
+.cert-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 1rem; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--orange); text-decoration: none; cursor: pointer; background: none; border: none;
+}
+.cert-btn:hover { color: var(--orange-bright); }
+
+/* ── EMPTY CERT STATE ── */
+.certs-empty { padding: 2rem; border: 1px dashed var(--gray-dim); text-align: center; color: var(--gray); }
+.certs-empty p { font-size: 0.85rem; margin-top: 0.5rem; }
+
+/* ── COMING SOON CARD ── */
+.course-card.coming-soon { cursor: default; }
+.course-card.coming-soon:hover { border-color: transparent; box-shadow: none; }
+
+/* ── LOADING ── */
+.dash-loading { display: flex; align-items: center; justify-content: center; min-height: 60vh; }
+.dash-loading-inner { text-align: center; }
+.dash-loading-spinner { width: 32px; height: 32px; border: 2px solid var(--gray-dim); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .top-nav { padding: 0 1.25rem; }
+  .dash-page { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stats-row .dash-stat-card:last-child { grid-column: span 2; }
+  .courses-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="winsymai.html" class="nav-logo">WIN<span>SYM</span>.AI</a>
+  <div class="nav-right">
+    <a href="winsymai.html" class="nav-home">← Home</a>
+    <div class="user-avatar" id="userAvatar" onclick="toggleMenu()">?
+      <div class="user-menu" id="userMenu">
+        <span class="user-menu-item" id="menuEmail" style="cursor:default;opacity:0.5;"></span>
+        <a href="winsymai.html" class="user-menu-item">Home</a>
+        <button class="user-menu-item danger" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- LOADING STATE -->
+<div class="dash-loading" id="dashLoading">
+  <div class="dash-loading-inner">
+    <div class="dash-loading-spinner"></div>
+    <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">Loading your dashboard…</div>
+  </div>
+</div>
+
+<!-- DASHBOARD CONTENT (hidden until loaded) -->
+<main class="dash-page" id="dashContent" style="display:none">
+
+  <!-- WELCOME -->
+  <div class="welcome-row">
+    <div>
+      <div class="welcome-tag">— Your Academy</div>
+      <div class="welcome-name" id="welcomeName">Welcome back</div>
+      <div class="welcome-sub" id="welcomeSub">Continue where you left off.</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="statsRow">
+    <div class="dash-stat-card">
+      <div class="stat-num" id="statSteps">0</div>
+      <div class="stat-label">Steps Completed</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="stat-num" id="statCourses">0</div>
+      <div class="stat-label">Courses Started</div>
+    </div>
+    <div class="dash-stat-card">
+      <div class="stat-num" id="statCerts">0</div>
+      <div class="stat-label">Certificates Earned</div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <div class="dash-section">
+    <div class="dash-section-header">
+      <div class="dash-section-title">YOUR COURSES</div>
+      <div class="dash-section-sub">Free access · self-paced</div>
+    </div>
+    <div class="courses-grid" id="coursesGrid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="dash-section" id="certsSection">
+    <div class="dash-section-header">
+      <div class="dash-section-title">CERTIFICATES</div>
+      <div class="dash-section-sub">Earned on completion</div>
+    </div>
+    <div id="certsContainer">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+</main>
+
+<!-- CERTIFICATE MODAL -->
+<div id="certModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:#1C1917;border:1px solid var(--gray-dim);max-width:560px;width:100%;padding:3rem;position:relative;text-align:center;" id="certModalInner">
+    <button onclick="closeCertModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--gray);font-size:1.2rem;cursor:pointer;">✕</button>
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:1rem;">Certificate of Completion</div>
+    <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:3px;color:var(--gray);margin-bottom:0.5rem;">WINSYM.AI ACADEMY</div>
+    <div style="width:60px;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-bright));margin:1rem auto;"></div>
+    <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;">This certifies that</div>
+    <div style="font-family:var(--font-display);font-size:2rem;letter-spacing:2px;color:var(--white);margin-bottom:1rem;" id="certModalName"></div>
+    <div style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--gray);margin-bottom:0.4rem;">has successfully completed</div>
+    <div style="font-family:var(--font-display);font-size:1.4rem;letter-spacing:2px;color:var(--orange);margin-bottom:1.5rem;" id="certModalCourse"></div>
+    <div style="font-family:var(--font-mono);font-size:0.55rem;letter-spacing:1px;color:var(--gray-mid);" id="certModalMeta"></div>
+    <div style="margin-top:2rem;display:flex;gap:1rem;justify-content:center;">
+      <button onclick="printCert()" style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;background:var(--orange);color:#fff;border:none;padding:0.75rem 1.5rem;cursor:pointer;">Print / Save PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var currentUser = null;
+var userProfile = null;
+
+// ── Course catalogue ──
+var COURSES = [
+  {
+    id: 'higgsfield-claude',
+    title: 'Higgsfield + Claude',
+    desc: 'Automate your full AI content pipeline. From prompt to published — 11 practical steps.',
+    steps: 11,
+    url: 'academy.html',
+    available: true
+  },
+  {
+    id: 'pro-websites',
+    title: 'Pro Websites with Claude Code',
+    desc: 'Build and deploy real websites without writing a single line of code by hand.',
+    steps: 10,
+    url: '#',
+    available: false
+  },
+  {
+    id: 'coming-soon',
+    title: 'More Coachings Coming',
+    desc: 'Automation systems, product launches, video editing workflows — same format, same depth.',
+    steps: 0,
+    url: '#',
+    available: false,
+    comingSoon: true
+  }
+];
+
+// ── Init ──
+(async function init() {
+  var user = await getUser();
+  if (!user) {
+    window.location.href = 'auth.html?redirect=dashboard.html';
+    return;
+  }
+  currentUser = user;
+
+  var profile = await getProfile(user.id);
+  var name = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
+  userProfile = profile;
+
+  // Set nav avatar
+  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('menuEmail').textContent = user.email;
+  document.getElementById('welcomeName').textContent = 'Hey, ' + name.split(' ')[0];
+
+  // Load all progress
+  var allProgress = {};
+  var totalSteps = 0;
+  var coursesStarted = 0;
+
+  for (var i = 0; i < COURSES.length; i++) {
+    var c = COURSES[i];
+    if (!c.available || c.comingSoon) continue;
+    var prog = await getCourseProgress(user.id, c.id);
+    allProgress[c.id] = prog;
+    var done = prog.filter(function(p) { return p.completed; }).length;
+    totalSteps += done;
+    if (prog.length > 0) coursesStarted++;
+  }
+
+  // Load certs
+  var certs = await getCertificates(user.id);
+  document.getElementById('statSteps').textContent = totalSteps;
+  document.getElementById('statCourses').textContent = coursesStarted;
+  document.getElementById('statCerts').textContent = certs.length;
+
+  // Render courses
+  renderCourses(allProgress, certs);
+  renderCerts(certs, name);
+
+  // Update welcome sub
+  if (totalSteps > 0) {
+    document.getElementById('welcomeSub').textContent = totalSteps + ' steps completed · keep going!';
+  } else {
+    document.getElementById('welcomeSub').textContent = 'Pick a course below to get started.';
+  }
+
+  document.getElementById('dashLoading').style.display = 'none';
+  document.getElementById('dashContent').style.display = 'block';
+})();
+
+// ── Render courses ──
+function renderCourses(allProgress, certs) {
+  var grid = document.getElementById('coursesGrid');
+  grid.innerHTML = '';
+
+  COURSES.forEach(function(course) {
+    var prog = allProgress[course.id] || [];
+    var doneSteps = prog.filter(function(p) { return p.completed; });
+    var pct = course.steps > 0 ? Math.round((doneSteps.length / course.steps) * 100) : 0;
+    var isCertified = certs.some(function(c) { return c.course_id === course.id; });
+    var lastStep = prog.length > 0
+      ? prog.sort(function(a,b){ return new Date(b.last_visited_at) - new Date(a.last_visited_at); })[0].step_number
+      : 1;
+
+    var card = document.createElement('div');
+    card.className = 'course-card' + ((!course.available || course.comingSoon) ? ' coming-soon' : '');
+
+    var badgeHtml = '';
+    if (course.comingSoon) {
+      badgeHtml = '<span class="course-badge soon">Coming Soon</span>';
+    } else if (isCertified) {
+      badgeHtml = '<span class="course-badge complete">✓ Certified</span>';
+    } else if (course.available) {
+      badgeHtml = '<span class="course-badge free">Free</span>';
+    }
+
+    var progressHtml = '';
+    if (course.available && !course.comingSoon) {
+      // Render step dots
+      var dots = '';
+      for (var s = 1; s <= course.steps; s++) {
+        var stepDone = doneSteps.some(function(d){ return d.step_number === s; });
+        var isCurrent = (!stepDone && s === lastStep && prog.length > 0);
+        dots += '<div class="step-dot' + (stepDone ? ' done' : '') + (isCurrent ? ' current' : '') + '" title="Step ' + s + '"></div>';
+      }
+      progressHtml = '<div class="progress-wrap">' +
+        '<div class="progress-info">' +
+          '<span class="progress-label">Progress</span>' +
+          '<span class="progress-pct">' + pct + '%</span>' +
+        '</div>' +
+        '<div class="progress-bg"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        '<div class="step-dots">' + dots + '</div>' +
+      '</div>';
+    }
+
+    var ctaHtml = '';
+    if (course.available && !course.comingSoon) {
+      var ctaText = prog.length === 0 ? 'Start Course →' : (pct >= 100 ? 'Review Course →' : 'Continue → Step ' + lastStep);
+      ctaHtml = '<a class="course-cta" href="' + course.url + '?step=' + lastStep + '">' + ctaText + '</a>';
+    }
+
+    var num = course.comingSoon ? '·· ·' : ('0' + (COURSES.indexOf(course) + 1));
+
+    card.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+        '<div class="course-num">' + num + '</div>' +
+        badgeHtml +
+      '</div>' +
+      '<div class="course-title">' + course.title + '</div>' +
+      '<div class="course-desc">' + course.desc + '</div>' +
+      progressHtml +
+      ctaHtml;
+
+    if (course.available && !course.comingSoon) {
+      card.style.cursor = 'default';
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+// ── Render certificates ──
+function renderCerts(certs, name) {
+  var container = document.getElementById('certsContainer');
+  if (certs.length === 0) {
+    container.innerHTML =
+      '<div class="certs-empty">' +
+        '<div style="font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px;color:var(--gray-mid)">No certificates yet</div>' +
+        '<p>Complete all steps in a course to earn your certificate.</p>' +
+      '</div>';
+    return;
+  }
+
+  var grid = document.createElement('div');
+  grid.className = 'certs-grid';
+
+  certs.forEach(function(cert) {
+    var courseName = cert.courses ? cert.courses.title : cert.course_id;
+    var issueDate = new Date(cert.issued_at).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+    var card = document.createElement('div');
+    card.className = 'cert-card';
+    card.innerHTML =
+      '<div class="cert-icon">🏆</div>' +
+      '<div class="cert-course">Certificate of Completion</div>' +
+      '<div class="cert-title">' + courseName + '</div>' +
+      '<div class="cert-date">Issued: ' + issueDate + '</div>' +
+      '<div class="cert-code">Code: ' + cert.cert_code + '</div>' +
+      '<button class="cert-btn" onclick="openCertModal(\'' + cert.id + '\', \'' + courseName.replace(/'/g,"'") + '\', \'' + issueDate + '\', \'' + cert.cert_code + '\', \'' + name + '\')">View Certificate →</button>';
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+}
+
+// ── Certificate modal ──
+function openCertModal(id, courseName, issueDate, code, name) {
+  document.getElementById('certModalName').textContent = name;
+  document.getElementById('certModalCourse').textContent = courseName;
+  document.getElementById('certModalMeta').textContent = 'Issued: ' + issueDate + '  ·  Code: ' + code;
+  document.getElementById('certModal').style.display = 'flex';
+}
+function closeCertModal() {
+  document.getElementById('certModal').style.display = 'none';
+}
+function printCert() { window.print(); }
+
+// ── Nav menu ──
+function toggleMenu() {
+  event.stopPropagation();
+  document.getElementById('userMenu').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var m = document.getElementById('userMenu');
+  if (m) m.classList.remove('open');
+});
+
+// ── Sign out ──
+async function doSignOut() {
+  await signOut();
+  window.location.href = 'winsymai.html';
+}
+</script>
+</body>
+</html>

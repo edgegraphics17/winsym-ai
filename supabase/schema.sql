@@ -117,3 +117,119 @@ CREATE INDEX IF NOT EXISTS idx_bookings_status    ON bookings(status);
 CREATE INDEX IF NOT EXISTS idx_leads_email        ON leads(email);
 CREATE INDEX IF NOT EXISTS idx_page_events_page   ON page_events(page, event_type);
 CREATE INDEX IF NOT EXISTS idx_page_events_time   ON page_events(created_at DESC);
+
+-- ────────────────────────────────────────────────────────────
+-- 5. PROFILES — Extended user data (linked to auth.users)
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS profiles (
+  id            UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  created_at    TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  updated_at    TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  full_name     TEXT,
+  email         TEXT,
+  avatar_url    TEXT
+);
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own profile"
+  ON profiles FOR SELECT TO authenticated USING (auth.uid() = id);
+
+CREATE POLICY "Users can update own profile"
+  ON profiles FOR UPDATE TO authenticated USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert own profile"
+  ON profiles FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
+
+-- Auto-create profile on signup
+CREATE OR REPLACE FUNCTION handle_new_user()
+RETURNS TRIGGER LANGUAGE plpgsql SECURITY DEFINER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1))
+  );
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+-- ────────────────────────────────────────────────────────────
+-- 6. COURSES — Course catalogue
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS courses (
+  id            TEXT PRIMARY KEY,  -- 'higgsfield-claude', 'pro-websites'
+  title         TEXT NOT NULL,
+  description   TEXT,
+  total_steps   INTEGER NOT NULL DEFAULT 0,
+  is_published  BOOLEAN DEFAULT TRUE,
+  sort_order    INTEGER DEFAULT 0,
+  created_at    TIMESTAMPTZ DEFAULT NOW() NOT NULL
+);
+
+ALTER TABLE courses ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can read published courses"
+  ON courses FOR SELECT USING (is_published = true);
+
+-- Seed the two courses
+INSERT INTO courses (id, title, description, total_steps, sort_order) VALUES
+  ('higgsfield-claude', 'Higgsfield + Claude', 'Automate your full AI content pipeline in 11 steps.', 11, 1),
+  ('pro-websites', 'Pro Websites with Claude Code', 'Build & deploy real websites — no code needed.', 10, 2)
+ON CONFLICT (id) DO NOTHING;
+
+-- ────────────────────────────────────────────────────────────
+-- 7. USER_PROGRESS — Per-user, per-course step tracking
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_progress (
+  id              UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id         UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  course_id       TEXT REFERENCES courses(id) ON DELETE CASCADE NOT NULL,
+  step_number     INTEGER NOT NULL,        -- 1-based step index
+  completed       BOOLEAN DEFAULT FALSE,
+  completed_at    TIMESTAMPTZ,
+  last_visited_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  UNIQUE(user_id, course_id, step_number)
+);
+
+ALTER TABLE user_progress ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can read own progress"
+  ON user_progress FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own progress"
+  ON user_progress FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own progress"
+  ON user_progress FOR UPDATE TO authenticated USING (auth.uid() = user_id);
+
+CREATE INDEX IF NOT EXISTS idx_progress_user_course ON user_progress(user_id, course_id);
+CREATE INDEX IF NOT EXISTS idx_progress_completed   ON user_progress(user_id, course_id, completed);
+
+-- ────────────────────────────────────────────────────────────
+-- 8. USER_CERTIFICATES — Issued on 100% course completion
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS user_certificates (
+  id            UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id       UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  course_id     TEXT REFERENCES courses(id) ON DELETE CASCADE NOT NULL,
+  issued_at     TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+  cert_code     TEXT UNIQUE DEFAULT 'CERT-' || upper(substr(md5(random()::text), 1, 8)),
+  UNIQUE(user_id, course_id)
+);
+
+ALTER TABLE user_certificates ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can read own certificates"
+  ON user_certificates FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own certificates"
+  ON user_certificates FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+CREATE INDEX IF NOT EXISTS idx_certs_user ON user_certificates(user_id);
