@@ -269,8 +269,8 @@ body {
   <div class="welcome-row">
     <div>
       <div class="welcome-tag">— Your Academy</div>
-      <div class="welcome-name" id="welcomeName">Welcome back</div>
-      <div class="welcome-sub" id="welcomeSub">Continue where you left off.</div>
+      <div class="welcome-name" id="welcomeName">Welcome Back</div>
+      <div class="welcome-sub" id="welcomeSub">Continue your AI Journey, where you left off.</div>
     </div>
   </div>
 
@@ -389,7 +389,7 @@ var certs = [];
     // Set nav avatar & welcome
     document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
     document.getElementById('menuEmail').textContent = user.email;
-    document.getElementById('welcomeName').textContent = 'Hey, ' + name.split(' ')[0];
+    document.getElementById('welcomeName').textContent = 'Welcome Back, ' + name.split(' ')[0];
 
     // Load all progress — safe fallback to empty array
     var totalSteps = 0;
@@ -418,7 +418,7 @@ var certs = [];
     // Welcome sub
     document.getElementById('welcomeSub').textContent = totalSteps > 0
       ? totalSteps + ' steps completed · keep going!'
-      : 'Pick a course below to get started.';
+      : 'Continue your AI Journey, where you left off.';
 
   } catch(err) {
     console.error('Dashboard init error:', err);
@@ -503,6 +503,14 @@ function renderCourses(allProgress, certs) {
         '<div class="course-desc">' + course.desc + '</div>' +
         '<div class="course-footer">' + stepsHtml + ctaHtml + '</div>' +
       '</div>';
+
+    if (course.available && !course.comingSoon) {
+      var dest = course.url + '?step=' + lastStep;
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', (function(url) {
+        return function() { window.location.href = url; };
+      })(dest));
+    }
 
     grid.appendChild(card);
   });
