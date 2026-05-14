@@ -288,6 +288,24 @@
     justify-content: center;
   }
 
+  /* Photo layer — sits below animated bars, partially transparent */
+  .hero-photo-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .hero-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.42;
+    mix-blend-mode: luminosity;
+    display: block;
+    filter: contrast(1.05) brightness(0.9);
+  }
+
   /* Animated vertical bars like in the business card */
   .bar-container {
     position: absolute;
@@ -295,6 +313,7 @@
     display: flex;
     gap: 0;
     overflow: hidden;
+    z-index: 2;
   }
 
   .bar {
@@ -1515,8 +1534,12 @@
   [data-theme="light"] .nav-links a:hover { color: #2C2416; }
   [data-theme="light"] .nav-links a.active { color: var(--orange); }
   [data-theme="light"] .hero-visual {
-    background: linear-gradient(135deg, #ece5da 0%, #EDE9E2 40%, #F5F1EB 100%);
+    background: linear-gradient(135deg, #2a1a08 0%, #1C1917 40%, #1C1917 100%);
     box-shadow: none;
+  }
+  [data-theme="light"] .hero-photo-img {
+    opacity: 0.35;
+    filter: contrast(1.1) brightness(0.85) saturate(0.7);
   }
   [data-theme="light"] .hero-desc { color: #7A7066; }
   [data-theme="light"] .ticker { background: var(--orange); }
@@ -1821,6 +1844,9 @@
   </div>
   <div class="hero-right">
     <div class="hero-visual">
+      <div class="hero-photo-layer" aria-hidden="true">
+        <img src="images/karim-speaking.jpg" alt="" class="hero-photo-img">
+      </div>
       <div class="bar-container">
         <div class="bar"></div>
         <div class="bar"></div>
