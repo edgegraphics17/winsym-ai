@@ -3,9 +3,10 @@
 ## Mandatory Rules
 
 1. **Always invoke the Frontend Design Skill before any frontend code** — No exceptions, every session.
-2. **Use brand assets from /brand_assets/** — Ensure visual consistency across all work.
-3. **Screenshot workflow is active** — After each build, follow the verification protocol.
-4. **Always develop on localhost first** — Only push to GitHub when explicitly instructed.
+2. **Always invoke the ui-ux-pro-max skill for all UI/frontend work** — Stack it with the Frontend Design Skill. Never skip it.
+3. **Use brand assets from /brand_assets/** — Ensure visual consistency across all work.
+4. **Screenshot workflow is active** — After each build, follow the verification protocol.
+5. **Always develop on localhost first** — Only push to GitHub when explicitly instructed.
 
 ## Skills & Quality Protocols
 
