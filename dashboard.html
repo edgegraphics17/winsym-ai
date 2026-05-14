@@ -351,8 +351,8 @@ var COURSES = [
     title: 'Pro Websites with Claude Code',
     desc: 'Build and deploy real websites without writing a single line of code by hand.',
     steps: 10,
-    url: '#',
-    available: false
+    url: 'claude-academy.html',
+    available: true
   },
   {
     id: 'coming-soon',
@@ -371,7 +371,13 @@ var certs = [];
 
 (async function init() {
   try {
+    // Try getUser first; fall back to session if it returns null
     var user = await getUser();
+    if (!user) {
+      var sessionData = await db.auth.getSession();
+      user = sessionData && sessionData.data && sessionData.data.session
+        ? sessionData.data.session.user : null;
+    }
     if (!user) {
       window.location.href = 'auth.html?redirect=dashboard.html';
       return;
@@ -391,7 +397,7 @@ var certs = [];
     document.getElementById('menuEmail').textContent = user.email;
     document.getElementById('welcomeName').textContent = 'Welcome Back, ' + name.split(' ')[0];
 
-    // Load all progress — safe fallback to empty array
+    // Load progress for every available course
     var totalSteps = 0;
     var coursesStarted = 0;
 
@@ -399,15 +405,20 @@ var certs = [];
       var c = COURSES[i];
       if (!c.available || c.comingSoon) continue;
       var prog = [];
-      try { prog = await getCourseProgress(user.id, c.id); } catch(e) {}
+      try {
+        prog = await getCourseProgress(user.id, c.id);
+        console.log('[dashboard] progress for', c.id, '→', prog.length, 'rows');
+      } catch(e) {
+        console.error('[dashboard] getCourseProgress error for', c.id, e);
+      }
       allProgress[c.id] = prog;
       var done = prog.filter(function(p) { return p.completed; }).length;
       totalSteps += done;
       if (prog.length > 0) coursesStarted++;
     }
 
-    // Load certs — safe fallback
-    try { certs = await getCertificates(user.id); } catch(e) {}
+    // Load certs
+    try { certs = await getCertificates(user.id); } catch(e) { console.error('[dashboard] certs error', e); }
 
     document.getElementById('statSteps').textContent = totalSteps;
     document.getElementById('statCourses').textContent = coursesStarted;
@@ -415,15 +426,13 @@ var certs = [];
 
     renderCerts(certs, name);
 
-    // Welcome sub
     document.getElementById('welcomeSub').textContent = totalSteps > 0
       ? totalSteps + ' steps completed · keep going!'
       : 'Continue your AI Journey, where you left off.';
 
   } catch(err) {
-    console.error('Dashboard init error:', err);
+    console.error('[dashboard] init error:', err);
   } finally {
-    // Always render courses — even if auth/data failed
     renderCourses(allProgress, certs);
     document.getElementById('dashLoading').style.display = 'none';
     document.getElementById('dashContent').style.display = 'block';
