@@ -164,9 +164,9 @@ body {
 }
 .course-thumb-bar {
   position: absolute; bottom: 0; left: 0; right: 0;
-  height: 4px; background: rgba(255,255,255,0.12); z-index: 2;
+  height: 5px; background: rgba(255,255,255,0.12); z-index: 2;
 }
-.course-thumb-fill { height: 100%; background: var(--orange); transition: width 0.6s ease; }
+.course-thumb-fill { height: 100%; background: var(--green); transition: width 0.8s ease; }
 
 /* ── CARD BODY ── */
 .course-body { padding: 1rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
@@ -471,15 +471,15 @@ function renderCourses(allProgress, certs) {
     var watermarkHtml = watermark.split('\n').map(function(l){ return '<div>' + l + '</div>'; }).join('');
     var numLabel = course.comingSoon ? '···' : ('0' + (idx + 1));
 
-    // Progress bar on thumbnail — only shown when course has been started
-    var thumbBarHtml = isStarted
+    // Progress bar — always visible for available courses, fills with real progress
+    var thumbBarHtml = (course.available && !course.comingSoon)
       ? '<div class="course-thumb-bar"><div class="course-thumb-fill" style="width:' + pct + '%"></div></div>'
       : '';
 
     // Footer content
     var stepsHtml = '', ctaHtml = '';
     if (course.available && !course.comingSoon) {
-      var stepLabel = isStarted ? pct + '% · ' + course.steps + ' steps' : course.steps + ' steps';
+      var stepLabel = doneSteps.length + ' / ' + course.steps + ' steps' + (isStarted ? '  ·  ' + pct + '%' : '');
       stepsHtml = '<span class="course-steps-label">' + stepLabel + '</span>';
       var ctaText = !isStarted ? 'Start →' : (pct >= 100 ? 'Review →' : 'Continue →');
       ctaHtml = '<a class="course-cta" href="' + course.url + '?step=' + lastStep + '">' + ctaText + '</a>';
