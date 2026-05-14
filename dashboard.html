@@ -434,12 +434,23 @@ var certs = [];
 
 (async function init() {
   try {
-    // Try getUser first; fall back to session if it returns null
-    var user = await getUser();
+    // refreshSession() forces a new JWT from the refresh token — required for RLS to return rows
+    var user = null;
+    try {
+      var rd = await db.auth.refreshSession();
+      if (rd && rd.data && rd.data.session) {
+        user = rd.data.session.user;
+        console.log('[dashboard] auth via refreshSession');
+      }
+    } catch(e) { console.warn('[dashboard] refreshSession failed:', e.message); }
     if (!user) {
-      var sessionData = await db.auth.getSession();
-      user = sessionData && sessionData.data && sessionData.data.session
-        ? sessionData.data.session.user : null;
+      try { user = await getUser(); if (user) console.log('[dashboard] auth via getUser'); } catch(e) {}
+    }
+    if (!user) {
+      try {
+        var sd = await db.auth.getSession();
+        if (sd && sd.data && sd.data.session) { user = sd.data.session.user; console.log('[dashboard] auth via getSession'); }
+      } catch(e) {}
     }
     if (!user) {
       window.location.href = 'auth.html?redirect=dashboard.html';
