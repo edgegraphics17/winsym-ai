@@ -4,7 +4,7 @@
 // ============================================================
 
 const SUPABASE_URL     = 'https://rkyqluymaafxypaphumo.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJreXFsdXltYWFmeHlwYXBodW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzNjQ2MjMsImV4cCI6MjA2MTk0MDYyM30.VXwItyFOpfr91nmRVMjm4mriIGNXzb2PkILDa3rZ7Uc';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJreXFsdXltYWFmeHlwYXBodW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyOTgzNDMsImV4cCI6MjA5Mzg3NDM0M30.VXwItyFOpfr91nmRVMjm4mriIGNXzb2PkILDa3rZ7Uc';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -115,10 +115,18 @@ async function issueCertificate(userId, courseId) {
 
 // Get all certificates for a user
 async function getCertificates(userId) {
-  const { data } = await db
+  const { data, error } = await db
     .from('user_certificates')
     .select('*, courses(title)')
     .eq('user_id', userId);
+  if (error) {
+    // Fallback: try without the join in case courses table is missing
+    const { data: data2 } = await db
+      .from('user_certificates')
+      .select('*')
+      .eq('user_id', userId);
+    return data2 || [];
+  }
   return data || [];
 }
 

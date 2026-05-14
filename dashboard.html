@@ -354,56 +354,67 @@ var COURSES = [
 
 // ── Init ──
 (async function init() {
-  var user = await getUser();
-  if (!user) {
-    window.location.href = 'auth.html?redirect=dashboard.html';
-    return;
+  try {
+    var user = await getUser();
+    if (!user) {
+      window.location.href = 'auth.html?redirect=dashboard.html';
+      return;
+    }
+    currentUser = user;
+
+    // Get profile — fall back to email if table missing
+    var profile = null;
+    try { profile = await getProfile(user.id); } catch(e) {}
+    var name = (profile && profile.full_name) ? profile.full_name
+             : (user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name
+             : user.email.split('@')[0];
+    userProfile = profile;
+
+    // Set nav avatar & welcome
+    document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+    document.getElementById('menuEmail').textContent = user.email;
+    document.getElementById('welcomeName').textContent = 'Hey, ' + name.split(' ')[0];
+
+    // Load all progress — safe fallback to empty array
+    var allProgress = {};
+    var totalSteps = 0;
+    var coursesStarted = 0;
+
+    for (var i = 0; i < COURSES.length; i++) {
+      var c = COURSES[i];
+      if (!c.available || c.comingSoon) continue;
+      var prog = [];
+      try { prog = await getCourseProgress(user.id, c.id); } catch(e) {}
+      allProgress[c.id] = prog;
+      var done = prog.filter(function(p) { return p.completed; }).length;
+      totalSteps += done;
+      if (prog.length > 0) coursesStarted++;
+    }
+
+    // Load certs — safe fallback
+    var certs = [];
+    try { certs = await getCertificates(user.id); } catch(e) {}
+
+    document.getElementById('statSteps').textContent = totalSteps;
+    document.getElementById('statCourses').textContent = coursesStarted;
+    document.getElementById('statCerts').textContent = certs.length;
+
+    // Render
+    renderCourses(allProgress, certs);
+    renderCerts(certs, name);
+
+    // Welcome sub
+    document.getElementById('welcomeSub').textContent = totalSteps > 0
+      ? totalSteps + ' steps completed · keep going!'
+      : 'Pick a course below to get started.';
+
+  } catch(err) {
+    console.error('Dashboard init error:', err);
+    // Still show dashboard even if something fails
+  } finally {
+    document.getElementById('dashLoading').style.display = 'none';
+    document.getElementById('dashContent').style.display = 'block';
   }
-  currentUser = user;
-
-  var profile = await getProfile(user.id);
-  var name = (profile && profile.full_name) ? profile.full_name : user.email.split('@')[0];
-  userProfile = profile;
-
-  // Set nav avatar
-  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
-  document.getElementById('menuEmail').textContent = user.email;
-  document.getElementById('welcomeName').textContent = 'Hey, ' + name.split(' ')[0];
-
-  // Load all progress
-  var allProgress = {};
-  var totalSteps = 0;
-  var coursesStarted = 0;
-
-  for (var i = 0; i < COURSES.length; i++) {
-    var c = COURSES[i];
-    if (!c.available || c.comingSoon) continue;
-    var prog = await getCourseProgress(user.id, c.id);
-    allProgress[c.id] = prog;
-    var done = prog.filter(function(p) { return p.completed; }).length;
-    totalSteps += done;
-    if (prog.length > 0) coursesStarted++;
-  }
-
-  // Load certs
-  var certs = await getCertificates(user.id);
-  document.getElementById('statSteps').textContent = totalSteps;
-  document.getElementById('statCourses').textContent = coursesStarted;
-  document.getElementById('statCerts').textContent = certs.length;
-
-  // Render courses
-  renderCourses(allProgress, certs);
-  renderCerts(certs, name);
-
-  // Update welcome sub
-  if (totalSteps > 0) {
-    document.getElementById('welcomeSub').textContent = totalSteps + ' steps completed · keep going!';
-  } else {
-    document.getElementById('welcomeSub').textContent = 'Pick a course below to get started.';
-  }
-
-  document.getElementById('dashLoading').style.display = 'none';
-  document.getElementById('dashContent').style.display = 'block';
 })();
 
 // ── Render courses ──
