@@ -47,12 +47,10 @@ body {
 [data-theme="light"] .user-avatar { background: var(--orange); }
 [data-theme="light"] .dash-section-title { color: #2C2416; }
 [data-theme="light"] .course-card { background: #EDE9E2; border-color: #DDD8CF; }
-[data-theme="light"] .course-card:hover { border-color: var(--orange-dim); box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+[data-theme="light"] .course-card:hover { border-color: var(--orange-dim); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
 [data-theme="light"] .course-title { color: #2C2416; }
 [data-theme="light"] .course-desc { color: #7A7066; }
-[data-theme="light"] .progress-bg { background: #DDD8CF; }
-[data-theme="light"] .step-dot { background: #DDD8CF; }
-[data-theme="light"] .step-dot.done { background: var(--orange); }
+[data-theme="light"] .course-footer { border-top-color: #DDD8CF; }
 [data-theme="light"] .cert-card { background: #EDE9E2; border-color: #DDD8CF; }
 [data-theme="light"] .cert-title { color: #2C2416; }
 [data-theme="light"] .dash-stat-card { background: #EDE9E2; border-color: #DDD8CF; }
@@ -133,41 +131,57 @@ body {
 .dash-section-sub { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
 
 /* ── COURSE CARDS ── */
-.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); }
+.courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 .course-card {
-  background: #232019; padding: 2rem;
-  display: flex; flex-direction: column; gap: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #232019;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--gray-dim); overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   cursor: pointer; text-decoration: none; color: inherit;
-  border: 1px solid transparent; margin: -1px;
 }
-.course-card:hover { border-color: var(--orange-dim); box-shadow: 0 4px 24px rgba(0,0,0,0.3); z-index: 1; position: relative; }
-.course-card.locked { cursor: default; opacity: 0.6; }
-.course-card.locked:hover { border-color: transparent; box-shadow: none; }
+.course-card:hover { transform: translateY(-4px); border-color: var(--orange-dim); box-shadow: 0 12px 36px rgba(0,0,0,0.45); }
+.course-card.coming-soon { cursor: default; }
+.course-card.coming-soon:hover { transform: none; border-color: var(--gray-dim); box-shadow: none; }
+
+/* ── THUMBNAIL ── */
+.course-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 0.85rem;
+}
+.course-thumb-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
+.course-thumb-center {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.course-thumb-watermark {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: 3px; text-align: center; line-height: 1.15;
+  color: rgba(255,255,255,0.07); text-transform: uppercase; padding: 0 1rem;
+}
+.course-thumb-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 4px; background: rgba(255,255,255,0.12); z-index: 2;
+}
+.course-thumb-fill { height: 100%; background: var(--orange); transition: width 0.6s ease; }
+
+/* ── CARD BODY ── */
+.course-body { padding: 1rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
 .course-num { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); }
-.course-title { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 1px; color: var(--white); line-height: 1.1; }
-.course-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.6; flex: 1; }
-
-/* ── PROGRESS BAR ── */
-.progress-wrap { margin-top: auto; }
-.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-.progress-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
-.progress-pct { font-family: var(--font-mono); font-size: 0.65rem; color: var(--orange); }
-.progress-bg { height: 3px; background: var(--gray-dim); }
-.progress-fill { height: 100%; background: var(--orange); transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
-
-/* ── STEP DOTS ── */
-.step-dots { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 0.75rem; }
-.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-dim); transition: background 0.2s; }
-.step-dot.done { background: var(--orange); }
-.step-dot.current { background: var(--orange-bright); box-shadow: 0 0 6px var(--orange); }
-
-/* ── COURSE FOOTER ── */
+.course-title { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 1px; color: var(--white); line-height: 1.1; }
+.course-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.55; flex: 1; }
+.course-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--gray-dim);
+}
+.course-steps-label { font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray); }
 .course-cta {
-  display: inline-flex; align-items: center; gap: 0.5rem;
+  display: inline-flex; align-items: center; gap: 0.4rem;
   font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--orange); margin-top: 0.5rem;
-  text-decoration: none;
+  color: var(--orange); text-decoration: none;
 }
 .course-cta:hover { color: var(--orange-bright); }
 .course-badge {
@@ -204,10 +218,6 @@ body {
 .certs-empty { padding: 2rem; border: 1px dashed var(--gray-dim); text-align: center; color: var(--gray); }
 .certs-empty p { font-size: 0.85rem; margin-top: 0.5rem; }
 
-/* ── COMING SOON CARD ── */
-.course-card.coming-soon { cursor: default; }
-.course-card.coming-soon:hover { border-color: transparent; box-shadow: none; }
-
 /* ── LOADING ── */
 .dash-loading { display: flex; align-items: center; justify-content: center; min-height: 60vh; }
 .dash-loading-inner { text-align: center; }
@@ -215,6 +225,9 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .courses-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 768px) {
   .top-nav { padding: 0 1.25rem; }
   .dash-page { padding-left: 1.25rem; padding-right: 1.25rem; }
@@ -422,67 +435,74 @@ function renderCourses(allProgress, certs) {
   var grid = document.getElementById('coursesGrid');
   grid.innerHTML = '';
 
-  COURSES.forEach(function(course) {
+  var thumbGradients = {
+    'higgsfield-claude': 'linear-gradient(145deg, #1a0800 0%, #2d1200 45%, #4a1e00 100%)',
+    'pro-websites':      'linear-gradient(145deg, #020b14 0%, #051a30 50%, #0a2648 100%)',
+    'coming-soon':       'linear-gradient(145deg, #1C1917 0%, #252019 60%, #1a1712 100%)'
+  };
+  var thumbWatermarks = {
+    'higgsfield-claude': 'HIGGSFIELD\n+ CLAUDE',
+    'pro-websites':      'PRO\nWEBSITES',
+    'coming-soon':       '· · ·'
+  };
+
+  COURSES.forEach(function(course, idx) {
     var prog = allProgress[course.id] || [];
     var doneSteps = prog.filter(function(p) { return p.completed; });
     var pct = course.steps > 0 ? Math.round((doneSteps.length / course.steps) * 100) : 0;
     var isCertified = certs.some(function(c) { return c.course_id === course.id; });
     var lastStep = prog.length > 0
-      ? prog.sort(function(a,b){ return new Date(b.last_visited_at) - new Date(a.last_visited_at); })[0].step_number
+      ? prog.slice().sort(function(a,b){ return new Date(b.last_visited_at) - new Date(a.last_visited_at); })[0].step_number
       : 1;
+    var isStarted = doneSteps.length > 0;
 
     var card = document.createElement('div');
-    card.className = 'course-card' + ((!course.available || course.comingSoon) ? ' coming-soon' : '');
+    card.className = 'course-card' + (course.comingSoon ? ' coming-soon' : '');
 
+    // Badge
     var badgeHtml = '';
-    if (course.comingSoon) {
-      badgeHtml = '<span class="course-badge soon">Coming Soon</span>';
-    } else if (isCertified) {
-      badgeHtml = '<span class="course-badge complete">✓ Certified</span>';
-    } else if (course.available) {
-      badgeHtml = '<span class="course-badge free">Free</span>';
-    }
+    if (course.comingSoon)       badgeHtml = '<span class="course-badge soon">Coming Soon</span>';
+    else if (isCertified)        badgeHtml = '<span class="course-badge complete">✓ Certified</span>';
+    else if (course.available)   badgeHtml = '<span class="course-badge free">Free</span>';
 
-    var progressHtml = '';
-    if (course.available && !course.comingSoon) {
-      // Render step dots
-      var dots = '';
-      for (var s = 1; s <= course.steps; s++) {
-        var stepDone = doneSteps.some(function(d){ return d.step_number === s; });
-        var isCurrent = (!stepDone && s === lastStep && prog.length > 0);
-        dots += '<div class="step-dot' + (stepDone ? ' done' : '') + (isCurrent ? ' current' : '') + '" title="Step ' + s + '"></div>';
-      }
-      progressHtml = '<div class="progress-wrap">' +
-        '<div class="progress-info">' +
-          '<span class="progress-label">Progress</span>' +
-          '<span class="progress-pct">' + pct + '%</span>' +
-        '</div>' +
-        '<div class="progress-bg"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
-        '<div class="step-dots">' + dots + '</div>' +
-      '</div>';
-    }
+    // Thumbnail
+    var gradient  = thumbGradients[course.id]  || 'linear-gradient(145deg,#1C1917,#252019)';
+    var watermark = thumbWatermarks[course.id] || course.title.toUpperCase();
+    var watermarkHtml = watermark.split('\n').map(function(l){ return '<div>' + l + '</div>'; }).join('');
+    var numLabel = course.comingSoon ? '···' : ('0' + (idx + 1));
 
-    var ctaHtml = '';
+    // Progress bar on thumbnail — only shown when course has been started
+    var thumbBarHtml = isStarted
+      ? '<div class="course-thumb-bar"><div class="course-thumb-fill" style="width:' + pct + '%"></div></div>'
+      : '';
+
+    // Footer content
+    var stepsHtml = '', ctaHtml = '';
     if (course.available && !course.comingSoon) {
-      var ctaText = prog.length === 0 ? 'Start Course →' : (pct >= 100 ? 'Review Course →' : 'Continue → Step ' + lastStep);
+      var stepLabel = isStarted ? pct + '% · ' + course.steps + ' steps' : course.steps + ' steps';
+      stepsHtml = '<span class="course-steps-label">' + stepLabel + '</span>';
+      var ctaText = !isStarted ? 'Start →' : (pct >= 100 ? 'Review →' : 'Continue →');
       ctaHtml = '<a class="course-cta" href="' + course.url + '?step=' + lastStep + '">' + ctaText + '</a>';
+    } else if (!course.comingSoon) {
+      stepsHtml = '<span class="course-steps-label">' + course.steps + ' steps</span>';
     }
-
-    var num = course.comingSoon ? '·· ·' : ('0' + (COURSES.indexOf(course) + 1));
 
     card.innerHTML =
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
-        '<div class="course-num">' + num + '</div>' +
-        badgeHtml +
+      '<div class="course-thumb" style="background:' + gradient + '">' +
+        '<div class="course-thumb-top">' +
+          '<span class="course-num">' + numLabel + '</span>' +
+          badgeHtml +
+        '</div>' +
+        '<div class="course-thumb-center">' +
+          '<div class="course-thumb-watermark">' + watermarkHtml + '</div>' +
+        '</div>' +
+        thumbBarHtml +
       '</div>' +
-      '<div class="course-title">' + course.title + '</div>' +
-      '<div class="course-desc">' + course.desc + '</div>' +
-      progressHtml +
-      ctaHtml;
-
-    if (course.available && !course.comingSoon) {
-      card.style.cursor = 'default';
-    }
+      '<div class="course-body">' +
+        '<div class="course-title">' + course.title + '</div>' +
+        '<div class="course-desc">' + course.desc + '</div>' +
+        '<div class="course-footer">' + stepsHtml + ctaHtml + '</div>' +
+      '</div>';
 
     grid.appendChild(card);
   });
