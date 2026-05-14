@@ -288,7 +288,7 @@ body {
   <a href="winsymai.html" class="nav-logo">WIN<span>SYM</span>.AI</a>
   <div class="nav-right">
     <a href="winsymai.html" class="nav-home">← Home</a>
-    <div class="user-avatar" id="userAvatar" onclick="toggleMenu()">?
+    <div class="user-avatar" id="userAvatar" onclick="toggleMenu()"><span id="userAvatarLetter">?</span>
       <div class="user-menu" id="userMenu">
         <span class="user-menu-item" id="menuEmail" style="cursor:default;opacity:0.5;"></span>
         <a href="winsymai.html" class="user-menu-item">Home</a>
@@ -475,7 +475,7 @@ var certs = [];
     console.log('[dashboard] user name resolved:', name);
 
     // Set nav avatar & personalized welcome
-    document.getElementById('userAvatar').textContent = firstName.charAt(0).toUpperCase();
+    document.getElementById('userAvatarLetter').textContent = firstName.charAt(0).toUpperCase();
     document.getElementById('menuEmail').textContent = user.email;
     document.getElementById('welcomeUser').textContent = firstName;
 
