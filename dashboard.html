@@ -194,6 +194,44 @@ body {
 .course-badge.soon { border-color: var(--gray-mid); color: var(--gray-mid); }
 .course-badge.complete { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
 
+/* ── RESOURCES ── */
+.resource-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); }
+.resource-card {
+  background: #1E1B18; padding: 1.25rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  text-decoration: none; color: inherit;
+  transition: background 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.resource-card:hover { background: #262219; box-shadow: inset 0 0 0 1px var(--orange-dim); z-index: 1; }
+.resource-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
+.resource-icon { font-family: var(--font-mono); font-size: 0.9rem; color: var(--orange); }
+.resource-course { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-mid); padding: 0.15rem 0.4rem; border: 1px solid var(--gray-dim); white-space: nowrap; }
+.resource-name { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 1px; color: var(--white); line-height: 1; }
+.resource-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.5; flex: 1; }
+.resource-link { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange-dim); margin-top: 0.25rem; }
+[data-theme="light"] .resource-card { background: #EDE9E2; }
+[data-theme="light"] .resource-card:hover { background: #E5E0D8; }
+
+/* ── SKILLS ── */
+.skill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gray-dim); border: 1px solid var(--gray-dim); }
+.skill-card { background: #1E1B18; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.skill-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.skill-course { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-mid); padding: 0.15rem 0.4rem; border: 1px solid var(--gray-dim); white-space: nowrap; }
+.skill-type { font-family: var(--font-mono); font-size: 0.48rem; letter-spacing: 1px; text-transform: uppercase; color: var(--orange); }
+.skill-name { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 1px; color: var(--white); line-height: 1.1; }
+.skill-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.5; flex: 1; }
+.skill-copy-btn {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono); font-size: 0.55rem; letter-spacing: 1.5px; text-transform: uppercase;
+  background: none; border: 1px solid var(--orange); color: var(--orange);
+  padding: 0.55rem 0.9rem; cursor: pointer; width: 100%; text-align: left;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.skill-copy-btn:hover { background: var(--orange-glow); }
+.skill-copy-btn.copied { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.08); }
+[data-theme="light"] .skill-card { background: #EDE9E2; }
+
 /* ── CERTIFICATES ── */
 .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
 .cert-card {
@@ -229,6 +267,8 @@ body {
 /* ── RESPONSIVE ── */
 @media (max-width: 960px) {
   .courses-grid { grid-template-columns: repeat(2, 1fr); }
+  .resource-grid { grid-template-columns: repeat(2, 1fr); }
+  .skill-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
   .top-nav { padding: 0 1.25rem; }
@@ -236,6 +276,8 @@ body {
   .stats-row { grid-template-columns: 1fr 1fr; }
   .stats-row .dash-stat-card:last-child { grid-column: span 2; }
   .courses-grid { grid-template-columns: 1fr; }
+  .resource-grid { grid-template-columns: 1fr 1fr; }
+  .skill-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -302,6 +344,24 @@ body {
     <div class="courses-grid" id="coursesGrid">
       <!-- injected by JS -->
     </div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="dash-section">
+    <div class="dash-section-header">
+      <div class="dash-section-title">RESOURCES</div>
+      <div class="dash-section-sub">Essential tools from the coachings</div>
+    </div>
+    <div class="resource-grid" id="resourceGrid"></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="dash-section">
+    <div class="dash-section-header">
+      <div class="dash-section-title">SKILLS</div>
+      <div class="dash-section-sub">Click any skill to copy the install command</div>
+    </div>
+    <div class="skill-grid" id="skillGrid"></div>
   </div>
 
   <!-- CERTIFICATES -->
@@ -445,6 +505,8 @@ var certs = [];
     console.error('[dashboard] init error:', err);
   } finally {
     renderCourses(allProgress, certs);
+    renderResources();
+    renderSkills();
     document.getElementById('dashLoading').style.display = 'none';
     document.getElementById('dashContent').style.display = 'block';
   }
@@ -567,6 +629,115 @@ function renderCerts(certs, name) {
   });
 
   container.appendChild(grid);
+}
+
+// ── Resources ──
+var RESOURCES = [
+  { name: 'Higgsfield',      desc: 'AI video, image & UGC generation',       url: 'https://higgsfield.ai',                                                               icon: '▶',  course: '01' },
+  { name: 'Claude.ai',       desc: 'Your AI creative & coding partner',       url: 'https://claude.ai',                                                                   icon: '◆',  course: '01 · 02' },
+  { name: 'Claude Code',     desc: 'Build & deploy with AI in the terminal',  url: 'https://claude.ai/code',                                                              icon: '⌨',  course: '02' },
+  { name: 'VS Code',         desc: 'Code editor — runs Claude Code',          url: 'https://code.visualstudio.com',                                                       icon: '{ }', course: '02' },
+  { name: 'GitHub',          desc: 'Version control & code hosting',          url: 'https://github.com',                                                                  icon: '⬡',  course: '02' },
+  { name: 'Vercel',          desc: 'Auto-deploys your site on every push',    url: 'https://vercel.com',                                                                  icon: '▲',  course: '02' },
+  { name: 'Supabase',        desc: 'Auth, database & backend in one',         url: 'https://supabase.com',                                                                icon: '⚡', course: '02' },
+  { name: 'CapCut',          desc: 'Add music & edit AI video clips',         url: 'https://www.capcut.com',                                                              icon: '✂',  course: '01' },
+  { name: 'DaVinci Resolve', desc: 'Professional-grade video editing',        url: 'https://www.blackmagicdesign.com/products/davinciresolve',                           icon: '◈',  course: '01' },
+  { name: 'Google Sheets',   desc: 'Content tracking & production planning',  url: 'https://sheets.google.com',                                                           icon: '⊞',  course: '01' },
+  { name: 'Meta Ads',        desc: 'Launch & track ad campaigns',             url: 'https://ads.meta.com',                                                                icon: '◎',  course: '01' },
+  { name: 'Anthropic',       desc: 'Claude API, models & documentation',      url: 'https://anthropic.com',                                                               icon: '◇',  course: '01 · 02' }
+];
+
+function renderResources() {
+  var grid = document.getElementById('resourceGrid');
+  RESOURCES.forEach(function(r) {
+    var a = document.createElement('a');
+    a.className = 'resource-card';
+    a.href = r.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML =
+      '<div class="resource-card-top">' +
+        '<span class="resource-icon">' + r.icon + '</span>' +
+        '<span class="resource-course">Course ' + r.course + '</span>' +
+      '</div>' +
+      '<div class="resource-name">' + r.name + '</div>' +
+      '<div class="resource-desc">' + r.desc + '</div>' +
+      '<div class="resource-link">' + r.url.replace('https://','') + ' →</div>';
+    grid.appendChild(a);
+  });
+}
+
+// ── Skills ──
+var SKILLS = [
+  {
+    name: 'Frontend Design Skill',
+    desc: 'Makes Claude write professional, non-AI-looking UI. Essential for every web project.',
+    course: '02', type: 'Claude Code Skill',
+    cmd: 'Install the Frontend Design Skill globally.'
+  },
+  {
+    name: 'UIUX Pro Max',
+    desc: 'Open source (52k ★) — lists every AI design anti-pattern to avoid. Stack with Frontend Design.',
+    course: '02', type: 'Claude Code Skill',
+    cmd: 'Install the UIUX Pro Max Skill globally.'
+  },
+  {
+    name: 'Seedance Director',
+    desc: 'Writes optimised multi-scene Seedance 2.0 prompts with cuts, transitions and timing built in.',
+    course: '01', type: 'Claude Code Skill',
+    cmd: 'Install the Seedance Director Skill globally.'
+  },
+  {
+    name: 'Hypermotion Video',
+    desc: 'Your custom Higgsfield Marketing Studio skill — encodes your best-performing prompt as reusable logic.',
+    course: '01', type: 'Custom Skill',
+    cmd: 'Turn my best Higgsfield prompt into a skill and save it under .claude/skills/hypermotion-video.md'
+  }
+];
+
+function renderSkills() {
+  var grid = document.getElementById('skillGrid');
+  SKILLS.forEach(function(s) {
+    var card = document.createElement('div');
+    card.className = 'skill-card';
+    card.innerHTML =
+      '<div class="skill-top">' +
+        '<span class="skill-type">' + s.type + '</span>' +
+        '<span class="skill-course">Course ' + s.course + '</span>' +
+      '</div>' +
+      '<div class="skill-name">' + s.name + '</div>' +
+      '<div class="skill-desc">' + s.desc + '</div>' +
+      '<button class="skill-copy-btn" onclick="copySkill(this)">Copy Install Command →</button>';
+    card.querySelector('.skill-copy-btn').dataset.cmd = s.cmd;
+    grid.appendChild(card);
+  });
+}
+
+function copySkill(btn) {
+  var cmd = btn.dataset.cmd;
+  if (!cmd) return;
+  navigator.clipboard.writeText(cmd).then(function() {
+    btn.textContent = '✓ Copied to clipboard!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'Copy Install Command →';
+      btn.classList.remove('copied');
+    }, 2200);
+  }).catch(function() {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = cmd;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = 'Copy Install Command →';
+      btn.classList.remove('copied');
+    }, 2200);
+  });
 }
 
 // ── Certificate modal ──
