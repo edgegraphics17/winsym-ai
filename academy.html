@@ -1862,6 +1862,8 @@ async function loadProgress() {
       if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
     }
   });
+  // Sync to localStorage so dashboard can always read current progress
+  try { localStorage.setItem('ws_progress_' + COURSE_ID, JSON.stringify(Array.from(completed))); } catch(e) {}
   updateProgress();
   updatePillStates();
 }
@@ -1963,6 +1965,9 @@ function showLoginGate(n) {
 // ────────────────────────────────────────────────────────────
 async function markDone(n) {
   completed.add(n);
+  // Keep localStorage in sync immediately so dashboard always shows fresh progress
+  try { localStorage.setItem('ws_progress_' + COURSE_ID, JSON.stringify(Array.from(completed))); } catch(e) {}
+
   const btn = document.getElementById('done-' + n);
   if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
 

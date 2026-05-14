@@ -478,14 +478,26 @@ var certs = [];
       var prog = [];
       try {
         prog = await getCourseProgress(user.id, c.id);
-        console.log('[dashboard] progress for', c.id, '→', prog.length, 'rows');
+        console.log('[dashboard] supabase progress for', c.id, '→', prog.length, 'rows');
       } catch(e) {
         console.error('[dashboard] getCourseProgress error for', c.id, e);
+      }
+      // Fallback: read completed steps from localStorage (written by academy on every completion)
+      if (prog.filter(function(p){ return p.completed; }).length === 0) {
+        try {
+          var cached = JSON.parse(localStorage.getItem('ws_progress_' + c.id) || '[]');
+          if (cached.length > 0) {
+            prog = cached.map(function(s) {
+              return { step_number: s, completed: true, last_visited_at: new Date().toISOString() };
+            });
+            console.log('[dashboard] localStorage fallback for', c.id, '→', cached.length, 'completed steps');
+          }
+        } catch(e) {}
       }
       allProgress[c.id] = prog;
       var done = prog.filter(function(p) { return p.completed; }).length;
       totalSteps += done;
-      if (prog.length > 0) coursesStarted++;
+      if (done > 0) coursesStarted++;
     }
 
     // Load certs
