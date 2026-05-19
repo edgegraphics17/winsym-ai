@@ -1854,15 +1854,26 @@ function updateNavAuth() {
 // ────────────────────────────────────────────────────────────
 async function loadProgress() {
   if (!currentUser) return;
-  const rows = await getCourseProgress(currentUser.id, COURSE_ID);
-  rows.forEach(r => {
-    if (r.completed) {
-      completed.add(r.step_number);
-      const btn = document.getElementById('done-' + r.step_number);
-      if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
-    }
+
+  // Seed from localStorage FIRST — preserves data across sessions if Supabase RLS returns empty
+  try {
+    const lsCached = JSON.parse(localStorage.getItem('ws_progress_' + COURSE_ID) || '[]');
+    lsCached.forEach(s => completed.add(s));
+  } catch(e) {}
+
+  // Overlay with Supabase (authoritative source when it works)
+  try {
+    const rows = await getCourseProgress(currentUser.id, COURSE_ID);
+    rows.forEach(r => { if (r.completed) completed.add(r.step_number); });
+  } catch(e) {}
+
+  // Update button states for all completed steps
+  completed.forEach(n => {
+    const btn = document.getElementById('done-' + n);
+    if (btn) { btn.textContent = '✓ Complete'; btn.classList.add('done'); }
   });
-  // Sync to localStorage so dashboard can always read current progress
+
+  // Persist merged result back to localStorage
   try { localStorage.setItem('ws_progress_' + COURSE_ID, JSON.stringify(Array.from(completed))); } catch(e) {}
   updateProgress();
   updatePillStates();
