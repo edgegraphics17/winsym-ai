@@ -1,0 +1,31 @@
+/* winsym.ai — Typography Tokens */
+:root {
+  /* Font families */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+
+  /* Type scale */
+  --text-xxs:  0.55rem;
+  --text-xs:   0.65rem;
+  --text-sm:   0.75rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  2rem;
+  --text-3xl:  3rem;
+  --text-hero: clamp(5rem, 10vw, 9rem);
+
+  /* Line heights */
+  --leading-tight:   1;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.7;
+
+  /* Letter spacing */
+  --tracking-tight:   0;
+  --tracking-normal:  0.5px;
+  --tracking-wide:    1.5px;
+  --tracking-wider:   2px;
+  --tracking-widest:  3px;
+}

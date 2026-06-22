@@ -1,0 +1,60 @@
+<!-- @dsCard group="Buttons" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-raised:#232019;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-border:#2E2A27;--color-border-mid:#5a5550;--color-orange:#C45A1A;--color-orange-hover:#E06820;--color-orange-dim:#7a3010;--color-orange-faint:rgba(196,90,26,.08);--color-danger:#f87171;--color-danger-dim:rgba(248,113,113,.1);--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);padding:32px;-webkit-font-smoothing:antialiased}
+.group{margin-bottom:28px}
+.group-label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:14px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-mono);font-size:0.55rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;line-height:1;padding:12px 24px;border:1px solid transparent;cursor:pointer;transition:all 150ms ease;user-select:none;white-space:nowrap;min-height:44px;text-decoration:none}
+.btn-primary{background:var(--color-orange);color:#1C1917;border-color:var(--color-orange)}
+.btn-primary:hover{background:var(--color-orange-hover);border-color:var(--color-orange-hover)}
+.btn-ghost{background:transparent;color:var(--color-orange);border-color:var(--color-orange-dim)}
+.btn-outline{background:transparent;color:var(--color-text-muted);border-color:var(--color-border)}
+.btn-danger{background:transparent;color:var(--color-danger);border-color:transparent}
+.btn-danger:hover{background:var(--color-danger-dim)}
+.btn-sm{font-size:0.5rem;padding:8px 16px;min-height:36px}
+.btn-lg{font-size:0.65rem;padding:16px 32px;min-height:52px}
+.btn-disabled{opacity:0.45;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="group">
+  <div class="group-label">Variants</div>
+  <div class="row">
+    <button class="btn btn-primary">Book Discovery Call</button>
+    <button class="btn btn-ghost">Learn More</button>
+    <button class="btn btn-outline">Cancel</button>
+    <button class="btn btn-danger">Sign Out</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-label">Sizes</div>
+  <div class="row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-lg">Large CTA</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-label">States</div>
+  <div class="row">
+    <button class="btn btn-primary">Active</button>
+    <button class="btn btn-primary btn-disabled" disabled>Loading…</button>
+    <button class="btn btn-ghost btn-disabled" disabled>Disabled</button>
+  </div>
+</div>
+
+</body>
+</html>

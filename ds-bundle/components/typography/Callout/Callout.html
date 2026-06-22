@@ -1,0 +1,72 @@
+<!-- @dsCard group="Typography" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Callout — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-raised:#232019;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-border:#2E2A27;--color-orange:#C45A1A;--color-orange-faint:rgba(196,90,26,.06);--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:300;padding:32px;-webkit-font-smoothing:antialiased}
+.group{margin-bottom:28px}
+.group-label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:14px}
+
+/* Orange left-border callout */
+.ws-callout{border-left:2px solid var(--color-orange);padding-left:16px;color:var(--color-text-muted);font-size:1rem;line-height:1.6;font-style:italic}
+.ws-callout cite{display:block;margin-top:10px;font-style:normal;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--color-orange)}
+
+/* Accent line inline decorator */
+.ws-accent-line{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted)}
+.ws-accent-line::before{content:'';width:24px;height:1px;background:var(--color-orange);flex-shrink:0}
+
+/* Highlight block */
+.highlight-block{background:var(--color-orange-faint);border:1px solid var(--color-border);border-left:2px solid var(--color-orange);padding:20px 24px}
+.highlight-block .label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-orange);margin-bottom:8px}
+.highlight-block p{font-size:0.95rem;color:var(--color-text-muted);line-height:1.6}
+
+/* Stat callout */
+.stat-callout{display:flex;align-items:baseline;gap:16px;padding:20px 0;border-top:1px solid var(--color-border)}
+.stat-num{font-family:var(--font-display);font-size:3rem;color:var(--color-orange);letter-spacing:1px;line-height:1}
+.stat-desc{font-size:0.9rem;color:var(--color-text-muted);line-height:1.5;max-width:240px}
+</style>
+</head>
+<body>
+
+<div class="group">
+  <div class="group-label">Quote / Callout (orange left border)</div>
+  <blockquote class="ws-callout">
+    "We built a Company Brain in 30 days and cut our decision-making time by 60%. Every department now runs on AI."
+    <cite>— CEO, logistics company · KL</cite>
+  </blockquote>
+</div>
+
+<div class="group">
+  <div class="group-label">Accent Line Decorator</div>
+  <div class="ws-accent-line">Company Brain Method · Phase 3 of 5</div>
+</div>
+
+<div class="group">
+  <div class="group-label">Highlight Block</div>
+  <div class="highlight-block">
+    <div class="label">Jarvis Recommendation</div>
+    <p>The highest-ROI action right now is closing one Company Brain client at MYR 12,000 — that's 12% of the monthly target in a single deal.</p>
+  </div>
+</div>
+
+<div class="group">
+  <div class="group-label">Stat Callout</div>
+  <div class="stat-callout">
+    <div class="stat-num">8×</div>
+    <div class="stat-desc">Company Brain engagements per month to hit MYR 100,000 — the single clearest path to the target.</div>
+  </div>
+  <div class="stat-callout">
+    <div class="stat-num">30</div>
+    <div class="stat-desc">Days from kickoff to a fully deployed AI Operating System — shorter than most consultants' discovery phase.</div>
+  </div>
+</div>
+
+</body>
+</html>

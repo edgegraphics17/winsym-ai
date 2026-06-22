@@ -1,0 +1,56 @@
+/* winsym.ai — Color Tokens */
+:root {
+  /* Backgrounds */
+  --color-bg:          #1C1917;
+  --color-bg-raised:   #232019;
+  --color-bg-elevated: #2A2520;
+  --color-bg-overlay:  rgba(28, 25, 23, 0.97);
+  --color-surface:     #0c0c0c;
+
+  /* Text */
+  --color-text:         #F5F2EE;
+  --color-text-muted:   #8a8278;
+  --color-text-dim:     #5a5550;
+  --color-text-inverse: #1C1917;
+
+  /* Borders */
+  --color-border:     #2E2A27;
+  --color-border-mid: #5a5550;
+  --color-divider:    #2E2A27;
+
+  /* Brand — Orange */
+  --color-orange:       #C45A1A;
+  --color-orange-hover: #E06820;
+  --color-orange-dim:   #7a3010;
+  --color-orange-glow:  rgba(196, 90, 26, 0.15);
+  --color-orange-faint: rgba(196, 90, 26, 0.08);
+
+  /* Semantic — Success */
+  --color-success:     #22c55e;
+  --color-success-dim: rgba(34, 197, 94, 0.10);
+
+  /* Semantic — Danger */
+  --color-danger:     #f87171;
+  --color-danger-dim: rgba(248, 113, 113, 0.10);
+}
+
+/* Light mode overrides */
+[data-theme="light"] {
+  --color-bg:           #F5F1EB;
+  --color-bg-raised:    #EDE9E2;
+  --color-bg-elevated:  #E6E1D9;
+  --color-bg-overlay:   rgba(245, 241, 235, 0.97);
+  --color-surface:      #FAF8F4;
+  --color-text:         #2C2416;
+  --color-text-muted:   #7A7066;
+  --color-text-dim:     #9E9589;
+  --color-text-inverse: #F5F2EE;
+  --color-border:       #DDD8CF;
+  --color-border-mid:   #9E9589;
+  --color-divider:      #DDD8CF;
+  --color-orange:       #B84F12;
+  --color-orange-hover: #D06018;
+  --color-orange-dim:   #C0845A;
+  --color-orange-glow:  rgba(184, 79, 18, 0.12);
+  --color-orange-faint: rgba(184, 79, 18, 0.06);
+}
