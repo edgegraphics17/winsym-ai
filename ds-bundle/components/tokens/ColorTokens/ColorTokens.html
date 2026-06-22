@@ -1,0 +1,97 @@
+<!-- @dsCard group="Tokens" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Tokens — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-raised:#232019;--color-bg-elevated:#2A2520;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-text-dim:#5a5550;--color-border:#2E2A27;--color-orange:#C45A1A;--color-orange-hover:#E06820;--color-orange-dim:#7a3010;--color-success:#22c55e;--color-danger:#f87171;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:300;line-height:1.5;padding:32px;-webkit-font-smoothing:antialiased}
+.label{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.swatch{border:1px solid var(--color-border);overflow:hidden}
+.swatch-color{height:64px}
+.swatch-info{padding:10px 12px;background:var(--color-bg-raised)}
+.swatch-name{font-family:var(--font-mono);font-size:0.6rem;letter-spacing:1px;color:var(--color-text-muted);display:block;margin-bottom:2px}
+.swatch-hex{font-family:var(--font-mono);font-size:0.65rem;color:var(--color-text)}
+.section{margin-bottom:28px}
+</style>
+</head>
+<body>
+
+<div class="section">
+  <div class="label">Brand Colors</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1C1917"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-bg</span><span class="swatch-hex">#1C1917</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#232019"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-bg-raised</span><span class="swatch-hex">#232019</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2A2520"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-bg-elevated</span><span class="swatch-hex">#2A2520</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F5F2EE"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-text</span><span class="swatch-hex">#F5F2EE</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#8a8278"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-text-muted</span><span class="swatch-hex">#8a8278</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#5a5550"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-text-dim</span><span class="swatch-hex">#5a5550</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2E2A27"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-border</span><span class="swatch-hex">#2E2A27</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="label">Orange — Primary Brand</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#C45A1A"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-orange</span><span class="swatch-hex">#C45A1A</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#E06820"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-orange-hover</span><span class="swatch-hex">#E06820</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#7a3010"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-orange-dim</span><span class="swatch-hex">#7a3010</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:rgba(196,90,26,0.15)"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-orange-glow</span><span class="swatch-hex">rgba(196,90,26,.15)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="label">Semantic</div>
+  <div class="grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#22c55e"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-success</span><span class="swatch-hex">#22c55e</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f87171"></div>
+      <div class="swatch-info"><span class="swatch-name">--color-danger</span><span class="swatch-hex">#f87171</span></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "shape": "css-only",
+  "pkg": "winsym-ai",
+  "version": "1.0.0",
+  "bundleDir": "ds-bundle",
+  "readmeHeader": ".design-sync/conventions.md",
+  "components": [
+    "components/tokens/ColorTokens",
+    "components/tokens/TypeScale",
+    "components/buttons/Button",
+    "components/cards/Card",
+    "components/cards/StatCard",
+    "components/badges/Badge",
+    "components/navigation/Nav",
+    "components/forms/FormInput",
+    "components/feedback/ProgressBar",
+    "components/feedback/Toast",
+    "components/layout/SectionLabel",
+    "components/typography/Callout"
+  ],
+  "notes": "CSS-only design system (no JS components). Manual bundle layout. Fonts via Google Fonts CDN. Dark-first with data-theme=light for light mode."
+}

@@ -1,0 +1,84 @@
+<!-- @dsCard group="Cards" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-raised:#232019;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-border:#2E2A27;--color-border-mid:#5a5550;--color-orange:#C45A1A;--color-orange-dim:#7a3010;--color-orange-faint:rgba(196,90,26,.08);--color-success:#22c55e;--font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-weight:300;padding:32px;-webkit-font-smoothing:antialiased}
+.group-label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:32px}
+
+/* Base card */
+.ws-card{background:var(--color-bg-raised);border:1px solid var(--color-border);padding:24px;transition:border-color 220ms ease,box-shadow 220ms ease,transform 350ms ease}
+.ws-card:hover{border-color:var(--color-orange-dim);box-shadow:0 12px 36px rgba(0,0,0,.45)}
+.ws-card-interactive{cursor:pointer;text-decoration:none;color:inherit;display:block}
+.ws-card-interactive:hover{transform:translateY(-4px)}
+
+/* Card internals */
+.card-eyebrow{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-orange);margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.card-eyebrow::before{content:'';width:18px;height:1px;background:var(--color-orange)}
+.card-title{font-family:var(--font-display);font-size:1.5rem;letter-spacing:2px;color:var(--color-text);margin-bottom:8px}
+.card-body{font-size:0.9rem;color:var(--color-text-muted);line-height:1.6}
+.card-footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--color-border);display:flex;align-items:center;justify-content:space-between}
+.card-meta{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--color-text-muted)}
+.card-price{font-family:var(--font-display);font-size:1.3rem;color:var(--color-orange);letter-spacing:1px}
+.ws-badge{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border:1px solid}
+.badge-success{color:var(--color-success);border-color:var(--color-success);background:rgba(34,197,94,.08)}
+</style>
+</head>
+<body>
+
+<div class="group-label">Standard Card</div>
+<div class="grid">
+  <div class="ws-card">
+    <div class="card-eyebrow">Company Brain</div>
+    <div class="card-title">AI Operating System</div>
+    <div class="card-body">We build a custom AI Operating System for your business in 30 days — 5 phases, fully integrated.</div>
+    <div class="card-footer">
+      <div class="card-meta">30 days · Fully managed</div>
+      <div class="card-price">MYR 12,000</div>
+    </div>
+  </div>
+
+  <div class="ws-card">
+    <div class="card-eyebrow">Monthly Retainer</div>
+    <div class="card-title">Ongoing AI Support</div>
+    <div class="card-body">Continuous AI strategy, implementation, and optimisation — your AI partner, every month.</div>
+    <div class="card-footer">
+      <div class="card-meta">Recurring · Cancel anytime</div>
+      <div class="card-price">MYR 3,500/mo</div>
+    </div>
+  </div>
+</div>
+
+<div class="group-label">Interactive Card (hover lift)</div>
+<div class="grid">
+  <a href="#" class="ws-card ws-card-interactive">
+    <div class="card-eyebrow">AI Leader Programme</div>
+    <div class="card-title">8-Week Cohort</div>
+    <div class="card-body">For non-technical leaders who want to lead with AI — hands-on, cohort-based, results-guaranteed.</div>
+    <div class="card-footer">
+      <div class="card-meta">8 weeks · Group cohort</div>
+      <div class="ws-badge badge-success">Enroll Now</div>
+    </div>
+  </a>
+
+  <a href="#" class="ws-card ws-card-interactive">
+    <div class="card-eyebrow">AI Jumpstart</div>
+    <div class="card-title">2-Day Intensive</div>
+    <div class="card-body">Fast-track your AI journey — two days to a working prototype and a clear implementation roadmap.</div>
+    <div class="card-footer">
+      <div class="card-meta">2 days · In-person / Remote</div>
+      <div class="card-price">MYR 2,500</div>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>

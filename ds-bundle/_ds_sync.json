@@ -1,0 +1,9 @@
+{
+  "shape": "css-only",
+  "version": "1.0.0",
+  "pkg": "winsym-ai",
+  "builtAt": "2026-06-22",
+  "components": 12,
+  "groups": ["Tokens", "Buttons", "Cards", "Badges", "Navigation", "Forms", "Feedback", "Layout", "Typography"],
+  "note": "Hand-authored bundle — no converter script. Content hashes omitted; re-sync will re-verify all components."
+}

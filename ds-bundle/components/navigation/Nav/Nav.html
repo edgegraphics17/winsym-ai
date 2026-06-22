@@ -1,0 +1,70 @@
+<!-- @dsCard group="Navigation" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-raised:#232019;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-text-dim:#5a5550;--color-border:#2E2A27;--color-border-mid:#5a5550;--color-orange:#C45A1A;--color-orange-hover:#E06820;--color-orange-dim:#7a3010;--font-display:'Bebas Neue',sans-serif;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);padding:0;-webkit-font-smoothing:antialiased}
+.group-label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);padding:20px 32px 10px}
+
+/* ── Nav base ── */
+.ws-nav{height:56px;background:rgba(28,25,23,.97);border-bottom:1px solid var(--color-border);display:flex;align-items:center;padding:0 32px;gap:24px;backdrop-filter:blur(12px)}
+.ws-nav-logo{font-family:var(--font-display);font-size:1.4rem;letter-spacing:2px;color:var(--color-text);flex-shrink:0;text-decoration:none}
+.ws-nav-logo .accent{color:var(--color-orange)}
+.ws-nav-links{display:flex;align-items:center;gap:24px;margin-left:auto;list-style:none}
+.ws-nav-link{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--color-text-muted);text-decoration:none;transition:color 150ms ease}
+.ws-nav-link:hover,.ws-nav-link.active{color:var(--color-text)}
+.btn-nav{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:0.55rem;letter-spacing:3px;text-transform:uppercase;padding:10px 20px;border:1px solid var(--color-orange-dim);color:var(--color-orange);text-decoration:none;transition:all 150ms ease;min-height:36px}
+.btn-nav:hover{background:var(--color-orange);color:#1C1917;border-color:var(--color-orange)}
+.ws-avatar{width:32px;height:32px;border-radius:9999px;background:var(--color-orange);color:#1C1917;font-family:var(--font-display);font-size:0.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.ws-theme-toggle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:none;border:1px solid var(--color-border);color:var(--color-text-muted);cursor:pointer;font-size:0.85rem}
+
+/* spacer */
+.spacer{height:1px;background:var(--color-border);margin:0}
+</style>
+</head>
+<body>
+
+<div class="group-label">Marketing Nav (unauthenticated)</div>
+<nav class="ws-nav" aria-label="Main navigation">
+  <a href="#" class="ws-nav-logo">WINSYM<span class="accent">.AI</span></a>
+  <ul class="ws-nav-links" role="list">
+    <li><a href="#" class="ws-nav-link active">Home</a></li>
+    <li><a href="#" class="ws-nav-link">Services</a></li>
+    <li><a href="#" class="ws-nav-link">About</a></li>
+    <li><a href="#" class="ws-nav-link">Projects</a></li>
+    <li><a href="#" class="btn-nav">Book a Call</a></li>
+  </ul>
+</nav>
+
+<div style="height:32px;background:var(--color-bg)"></div>
+
+<div class="group-label">Academy Nav (authenticated)</div>
+<nav class="ws-nav" aria-label="Academy navigation">
+  <a href="#" class="ws-nav-logo">WINSYM<span class="accent">.AI</span></a>
+  <ul class="ws-nav-links" role="list">
+    <li><a href="#" class="ws-nav-link">← Academy</a></li>
+    <li><button class="ws-theme-toggle" aria-label="Toggle theme">◐</button></li>
+    <li><div class="ws-avatar" aria-label="User menu">K</div></li>
+  </ul>
+</nav>
+
+<div style="height:32px;background:var(--color-bg)"></div>
+
+<div class="group-label">Mobile Nav (collapsed)</div>
+<nav class="ws-nav" style="padding:0 20px" aria-label="Mobile navigation">
+  <a href="#" class="ws-nav-logo">WINSYM<span class="accent">.AI</span></a>
+  <ul class="ws-nav-links" role="list" style="gap:12px">
+    <li><a href="#" class="btn-nav" style="font-size:0.5rem;padding:8px 14px">Book a Call</a></li>
+    <li><button class="ws-theme-toggle" style="width:28px;height:28px" aria-label="Toggle theme">◐</button></li>
+  </ul>
+</nav>
+
+</body>
+</html>

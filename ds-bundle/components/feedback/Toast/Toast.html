@@ -1,0 +1,68 @@
+<!-- @dsCard group="Feedback" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toast — winsym.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--color-bg:#1C1917;--color-bg-elevated:#2A2520;--color-text:#F5F2EE;--color-text-muted:#8a8278;--color-border:#2E2A27;--color-orange:#C45A1A;--color-success:#22c55e;--color-danger:#f87171;--font-mono:'DM Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);padding:32px;-webkit-font-smoothing:antialiased}
+.group-label{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:14px}
+.stack{display:flex;flex-direction:column;gap:10px;max-width:340px;margin-bottom:32px}
+.ws-toast{display:flex;align-items:center;gap:12px;background:var(--color-bg-elevated);border:1px solid var(--color-border);padding:12px 20px;box-shadow:0 12px 36px rgba(0,0,0,.45);animation:toast-in 400ms cubic-bezier(.34,1.56,.64,1) both}
+.ws-toast-dot{width:6px;height:6px;border-radius:9999px;flex-shrink:0}
+.dot-orange{background:var(--color-orange)}
+.dot-success{background:var(--color-success)}
+.dot-danger{background:var(--color-danger)}
+.dot-muted{background:var(--color-text-muted)}
+.toast-text{font-family:var(--font-mono);font-size:0.55rem;letter-spacing:1.5px;color:var(--color-text-muted);flex:1}
+.toast-action{font-family:var(--font-mono);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--color-orange);cursor:pointer;flex-shrink:0;border:none;background:none}
+@keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* position demo */
+.position-demo{position:relative;background:var(--color-bg);border:1px solid var(--color-border);height:180px;overflow:hidden}
+.position-demo-content{padding:20px;font-family:var(--font-mono);font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--color-text-muted)}
+.toast-region{position:absolute;bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="group-label">Toast Variants</div>
+<div class="stack">
+  <div class="ws-toast">
+    <span class="ws-toast-dot dot-orange"></span>
+    <span class="toast-text">Progress saved automatically</span>
+  </div>
+  <div class="ws-toast">
+    <span class="ws-toast-dot dot-success"></span>
+    <span class="toast-text">Course marked complete</span>
+    <button class="toast-action">View cert</button>
+  </div>
+  <div class="ws-toast">
+    <span class="ws-toast-dot dot-danger"></span>
+    <span class="toast-text">Failed to save — please retry</span>
+    <button class="toast-action">Retry</button>
+  </div>
+  <div class="ws-toast">
+    <span class="ws-toast-dot dot-muted"></span>
+    <span class="toast-text">New module unlocked</span>
+  </div>
+</div>
+
+<div class="group-label">Position — Bottom Right (default)</div>
+<div class="position-demo">
+  <div class="position-demo-content">Page content</div>
+  <div class="toast-region">
+    <div class="ws-toast">
+      <span class="ws-toast-dot dot-success"></span>
+      <span class="toast-text">Lesson complete</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
