@@ -655,9 +655,87 @@
     align-items: end;
   }
 
+  /* CORTEX FEATURE STRIP — the foundational "00" card above the pillar grid */
+  .cortex-feature {
+    border: 1px solid var(--orange-dim);
+    background: linear-gradient(135deg, rgba(196,90,26,0.1), rgba(196,90,26,0.02));
+    padding: 3rem;
+    margin-bottom: 1px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .cortex-feature-num {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .cortex-feature-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .cortex-feature-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .cortex-feature-desc {
+    font-size: 0.9rem;
+    color: var(--gray);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+  .cortex-layer-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .cortex-layer-chips span {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray);
+    border: 1px solid var(--gray-dim);
+    padding: 0.3rem 0.6rem;
+  }
+  .cortex-feature-cta {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--black);
+    background: var(--orange);
+    padding: 0.9rem 1.5rem;
+    white-space: nowrap;
+    transition: background 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .cortex-feature-cta:hover { background: var(--orange-bright); }
+
+  .pillar-powered {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--orange-dim);
+  }
+
   .pillars-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 0;
     border: 1px solid var(--gray-dim);
   }
@@ -758,6 +836,43 @@
     justify-content: center;
     color: var(--orange-dim);
     font-size: 1.5rem;
+  }
+
+  .cortex-quote {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--white);
+    letter-spacing: 0.3px;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    line-height: 1.4;
+  }
+  .cortex-quote span { color: var(--orange); }
+
+  .cortex-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--gray-dim);
+  }
+  .cortex-value-icon {
+    color: var(--orange);
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .cortex-value-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .cortex-value-desc {
+    font-size: 0.8rem;
+    color: var(--gray);
+    line-height: 1.7;
   }
 
   /* PRICE CALCULATOR */
@@ -992,6 +1107,169 @@
     font-size: 0.7rem;
     color: var(--orange);
   }
+
+  /* CORTEX DIAGNOSTIC QUIZ */
+  .quiz-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .quiz-panel {
+    min-height: 440px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quiz-progress { margin-bottom: 2.5rem; }
+  .quiz-progress-bar {
+    height: 3px;
+    background: var(--gray-dim);
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: var(--orange);
+    width: 25%;
+    transition: width 0.3s ease;
+  }
+  .quiz-progress-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  .quiz-step { display: none; flex: 1; }
+  .quiz-step.active { display: block; animation: quizFade 0.3s ease; }
+  @keyframes quizFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .quiz-question {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    margin-bottom: 1.75rem;
+    line-height: 1.25;
+  }
+  .quiz-question-hint {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--gray);
+    font-weight: 400;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .quiz-option {
+    border: 1px solid var(--gray-dim);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .quiz-option:hover { border-color: var(--orange-dim); }
+  .quiz-option:focus-visible, .quiz-chip:focus-visible, .quiz-addon:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 2px;
+  }
+  .quiz-option.active { border-color: var(--orange); background: rgba(196,90,26,0.08); }
+  .quiz-option-title { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+  .quiz-option-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.3rem; line-height: 1.5; }
+
+  .quiz-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .quiz-chip {
+    border: 1px solid var(--gray-dim);
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--gray);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .quiz-chip span { font-size: 0.68rem; color: var(--gray-mid); }
+  .quiz-chip:hover { border-color: var(--orange-dim); color: var(--white); }
+  .quiz-chip.active { border-color: var(--orange); background: rgba(196,90,26,0.08); color: var(--white); }
+  .quiz-chip.active span { color: var(--orange); }
+  .quiz-chip.disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .quiz-toggle-group { display: flex; flex-direction: column; gap: 0.6rem; }
+  .quiz-addon {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--gray-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+  .quiz-addon:hover { border-color: var(--orange-dim); color: var(--white); }
+  .quiz-addon.active { border-color: var(--orange); background: rgba(196,90,26,0.08); color: var(--white); }
+  .quiz-addon-check {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--gray-dim);
+    flex-shrink: 0;
+  }
+  .quiz-addon.active .quiz-addon-check { background: var(--orange); border-color: var(--orange); }
+  .quiz-addon-title { font-size: 0.85rem; color: var(--white); font-weight: 500; }
+  .quiz-addon-desc { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
+  .quiz-addon-price { margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange); white-space: nowrap; }
+
+  .quiz-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-dim);
+  }
+  .quiz-btn-back, .quiz-btn-next {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .quiz-btn-back { background: none; color: var(--gray); padding: 0.8rem 0; }
+  .quiz-btn-back:hover { color: var(--white); }
+  .quiz-btn-next { background: var(--orange); color: var(--black); padding: 0.9rem 2rem; }
+  .quiz-btn-next:hover { background: var(--orange-bright); }
+  .quiz-btn-next:disabled { background: var(--gray-dim); color: var(--gray-mid); cursor: not-allowed; }
+
+  .result-gap {
+    font-size: 0.82rem;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .result-gap strong { color: var(--orange); font-weight: 500; }
+  .result-tier-name { font-family: var(--font-display); font-size: 2rem; color: var(--white); line-height: 1; }
+  .result-tier-desc { font-size: 0.8rem; color: var(--gray); margin: 0.5rem 0 1.25rem; line-height: 1.6; }
+  .result-layers { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .result-layers span {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--orange);
+    border: 1px solid var(--orange-dim);
+    padding: 0.3rem 0.6rem;
+  }
+  .result-cta-sub { text-align: center; font-size: 0.7rem; color: var(--gray-mid); margin-top: 0.75rem; }
 
   /* SPEAKING SECTION */
   .speaking-section {
@@ -1802,6 +2080,9 @@
 
     /* ── PILLARS ── */
     .pillars-header { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    .cortex-feature { grid-template-columns: 1fr; text-align: left; padding: 2rem 1.25rem; gap: 1.25rem; }
+    .cortex-feature-num { font-size: 3rem; }
+    .cortex-feature-cta { width: 100%; text-align: center; }
     .pillars-grid { grid-template-columns: 1fr; }
     .pillar-card { border-right: none; border-bottom: 1px solid var(--gray-dim); padding: 2rem 1.25rem; }
     .pillar-num { font-size: 2.5rem; margin-bottom: 0.75rem; }
@@ -1811,11 +2092,14 @@
     .brain-step { background: var(--black); padding: 1.5rem 1rem; }
     .brain-arrow { display: none; }
     .brain-step-num { font-size: 2.5rem; }
+    .cortex-values { grid-template-columns: 1fr; gap: 1.5rem; }
 
-    /* ── CALCULATOR ── */
+    /* ── CALCULATOR / CORTEX DIAGNOSTIC ── */
     .calc-header { grid-template-columns: 1fr; gap: 1.5rem; }
-    .calc-body { grid-template-columns: 1fr; gap: 2rem; }
+    .calc-body, .quiz-body { grid-template-columns: 1fr; gap: 2rem; }
     .calc-result { position: static; }
+    .quiz-panel { min-height: auto; }
+    .quiz-chip { flex: 1 1 100%; }
 
     /* ── SPEAKING ── */
     .speaking-section { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1853,7 +2137,7 @@
   <a href="courses.html">Academy</a>
   <div class="mobile-menu-divider"></div>
   <div class="mobile-menu-sub">
-    <a href="#about">The System</a>
+    <a href="#cortex">CORTEX</a>
     <a href="#speaking">Speaking</a>
     <a href="#calculator">Work with me</a>
     <a href="#contact">Contact</a>
@@ -1886,17 +2170,17 @@
 <!-- HERO -->
 <section class="hero" style="padding: 0; max-width: 100%;">
   <div class="hero-left">
-    <div class="hero-eyebrow">AI Coach · Speaker · Translator</div>
+    <div class="hero-eyebrow">AI Coach · CORTEX Architect · Speaker</div>
     <h1 class="hero-name">
       Karim
       <span class="last">Azzaoui</span>
     </h1>
-    <div class="hero-title">Winning Systems · Backed by AI</div>
+    <div class="hero-title">Winning Systems · Backed by a Brain</div>
     <p class="hero-desc">
-      I bridge the gap between business and AI — helping Asian companies build their AI Operating System, from first prompt to full integration.
+      Your company already has a brain — it's just scattered across people, files and apps. I install CORTEX: the governed AI Brain that captures what your business knows, runs how it works, and helps it decide. Everything else I do is built on top of it.
     </p>
     <div class="hero-actions">
-      <a href="#calculator" class="btn-primary">Build my AI system</a>
+      <a href="#calculator" class="btn-primary">Find my CORTEX tier</a>
       <a href="#speaking" class="btn-ghost">Speaking topics</a>
     </div>
   </div>
@@ -1941,14 +2225,14 @@
 <div class="ticker">
   <div class="ticker-inner">
     <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Company Brain<span class="ticker-dot"></span></span>
+    <span class="ticker-item">CORTEX — The Brain<span class="ticker-dot"></span></span>
     <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
     <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
     <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
     <span class="ticker-item">Meta Partner<span class="ticker-dot"></span></span>
     <span class="ticker-item">Kuala Lumpur · Malaysia<span class="ticker-dot"></span></span>
     <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Company Brain<span class="ticker-dot"></span></span>
+    <span class="ticker-item">CORTEX — The Brain<span class="ticker-dot"></span></span>
     <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
     <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
     <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
@@ -1986,7 +2270,7 @@
     <p class="about-quote">"Most companies don't need more AI tools — they need someone who can build the right system around their real business goals."</p>
     <p class="about-body">
       With over a decade in marketing, design and digital systems — and certified partnerships with both Google and Meta — I've seen exactly where companies get stuck when trying to adopt AI. It's never about the technology. It's about the translation layer between business logic and AI capability.<br><br>
-      I work with KMUs across Malaysia and Asia to build what I call a Company Brain: a complete AI operating system tailored to your workflows, your team, and your market.
+      I work with KMUs across Malaysia and Asia to install what I call CORTEX: a governed AI Brain that captures what your business knows, runs how it works, and helps it decide — the foundation every other AI system gets built on top of.
     </p>
     <div class="credential-row">
       <div class="credential">✦ Google Partner</div>
@@ -2014,49 +2298,61 @@
 <div class="glow-line"></div>
 
 <!-- PILLARS / WHAT I DO -->
-<div class="pillars-section">
+<div class="pillars-section" id="services">
   <div class="pillars-inner">
     <div class="pillars-header fade-up">
       <div>
-        <div class="section-tag">What I do</div>
-        <h2 class="section-title">Five ways<br>I help you<br><span class="accent">win</span></h2>
+        <div class="section-tag">How it all fits together</div>
+        <h2 class="section-title">One Brain.<br>Everything else<br><span class="accent">plugs in</span></h2>
       </div>
       <div style="padding-bottom: 0.5rem;">
         <p style="color: #999; font-size: 0.95rem; line-height: 1.9;">
-          From design to automation to AI coaching — every service is designed to work together as one system. Not isolated projects. A winning operation.
+          CORTEX is the foundation — the governed Brain every engagement starts with. Coaching, design, web, and marketing are built to run on top of it, not around it. Not isolated projects. One winning system.
         </p>
       </div>
     </div>
+
+    <div class="cortex-feature fade-up">
+      <div class="cortex-feature-num">00</div>
+      <div>
+        <div class="cortex-feature-tag">Start here — every engagement begins with this</div>
+        <div class="cortex-feature-title">CORTEX — The Brain Build</div>
+        <p class="cortex-feature-desc">Your company already has a brain — it's just scattered across people, files, and apps. CORTEX captures it: one governed source of truth that knows your business, runs how you work, and helps you decide. Nothing below this works without it first.</p>
+        <div class="cortex-layer-chips">
+          <span>Knowledge</span><span>Operations</span><span>Marketing</span><span>Sales</span><span>Customer</span><span>Decision</span><span>Risk</span><span>Automation</span>
+        </div>
+      </div>
+      <a href="#calculator" class="cortex-feature-cta">Find my tier →</a>
+    </div>
+
     <div class="pillars-grid fade-up">
       <div class="pillar-card">
         <div class="pillar-num">01</div>
         <div class="pillar-icon"></div>
         <div class="pillar-title">AI Coaching & Strategy</div>
         <p class="pillar-desc">Build your personal AI muscle. From zero to confident — I coach you and your team to think, plan, and execute with AI as a core tool.</p>
+        <div class="pillar-powered">↳ Trains your team to run the Brain</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">02</div>
         <div class="pillar-icon"></div>
-        <div class="pillar-title">Company Brain Build</div>
-        <p class="pillar-desc">Your full AI Operating System. Knowledge base, internal AI, automated workflows — all designed around how your business actually works.</p>
+        <div class="pillar-title">Commercial Design & Animation</div>
+        <p class="pillar-desc">AI-powered creative production. Campaigns, visuals, motion — built faster, smarter, and with a coherent brand identity.</p>
+        <div class="pillar-powered">↳ Powered by your Brain's Content layer</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">03</div>
         <div class="pillar-icon"></div>
-        <div class="pillar-title">Commercial Design & Animation</div>
-        <p class="pillar-desc">AI-powered creative production. Campaigns, visuals, motion — built faster, smarter, and with a coherent brand identity.</p>
+        <div class="pillar-title">Web Development & Apps</div>
+        <p class="pillar-desc">From websites to web apps — built with AI-assisted development that cuts timelines and costs without cutting quality.</p>
+        <div class="pillar-powered">↳ Powered by your Brain's Automation layer</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">04</div>
         <div class="pillar-icon"></div>
-        <div class="pillar-title">Web Development & Apps</div>
-        <p class="pillar-desc">From websites to web apps — built with AI-assisted development that cuts timelines and costs without cutting quality.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">05</div>
-        <div class="pillar-icon"></div>
         <div class="pillar-title">Marketing Hub Leadership</div>
         <p class="pillar-desc">As a certified Google and Meta partner, I connect your AI systems to your paid channels for a fully integrated marketing machine.</p>
+        <div class="pillar-powered">↳ Powered by your Brain's Sales & Marketing layer</div>
       </div>
     </div>
   </div>
@@ -2074,8 +2370,8 @@
       <div class="speaking-item">
         <div class="speaking-num">01</div>
         <div class="speaking-item-body">
-          <div class="speaking-item-title">The Company Brain — Building Your AI Operating System</div>
-          <div class="speaking-item-desc">A practical framework for SMEs to integrate AI into every layer of their business operations.</div>
+          <div class="speaking-item-title">CORTEX — Building Your Company's AI Brain</div>
+          <div class="speaking-item-desc">A practical framework for SMEs to install a governed AI Brain across every layer of their business.</div>
         </div>
         <div class="speaking-item-arrow">→</div>
       </div>
@@ -2141,11 +2437,12 @@
 <div class="glow-line"></div>
 
 <!-- COMPANY BRAIN -->
-<div class="brain-section fade-up" id="company-brain">
+<div class="brain-section fade-up" id="cortex">
   <div class="brain-header">
-    <div class="section-tag" style="justify-content: center;">The Framework</div>
-    <h2 class="section-title" style="text-align: center;">The <span class="accent">Company<br>Brain</span> Method</h2>
-    <p style="color: #999; font-size: 0.9rem; line-height: 1.9; text-align: center; margin-top: 1rem;">A proven 5-phase process for building your full AI Operating System — from audit to autonomous operation.</p>
+    <div class="section-tag" style="justify-content: center;">The CORTEX Method</div>
+    <h2 class="section-title" style="text-align: center;">The <span class="accent">CORTEX</span> Method</h2>
+    <p style="color: #999; font-size: 0.9rem; line-height: 1.9; text-align: center; margin-top: 1rem;">A proven 5-phase process for installing your governed AI Brain — from audit to autonomous operation.</p>
+    <p class="cortex-quote" style="margin-top: 2rem;">"We don't sell a chatbot. We install <span>the brain your company runs on.</span>"</p>
   </div>
   <div class="brain-flow">
     <div class="brain-step">
@@ -2157,7 +2454,7 @@
     <div class="brain-step">
       <div class="brain-step-num">02</div>
       <div class="brain-step-title">Blueprint</div>
-      <div class="brain-step-desc">Design your custom AI OS — which tools, which workflows, which knowledge gets captured first.</div>
+      <div class="brain-step-desc">Design your custom CORTEX Brain — which layers, which workflows, which knowledge gets captured first.</div>
     </div>
     <div class="brain-arrow">→</div>
     <div class="brain-step">
@@ -2175,7 +2472,24 @@
     <div class="brain-step">
       <div class="brain-step-num">05</div>
       <div class="brain-step-title">Scale</div>
-      <div class="brain-step-desc">Monthly optimization, new integrations, and expanding the brain as your business grows.</div>
+      <div class="brain-step-desc">Monthly optimization, new layers, and expanding the Brain as your business grows.</div>
+    </div>
+  </div>
+  <div class="cortex-values">
+    <div class="cortex-value">
+      <div class="cortex-value-icon">◆</div>
+      <div class="cortex-value-title">Never lose knowledge again</div>
+      <div class="cortex-value-desc">One governed source of truth — not scattered across people, files, chats, and apps.</div>
+    </div>
+    <div class="cortex-value">
+      <div class="cortex-value-icon">◆</div>
+      <div class="cortex-value-title">Decisions on evidence, not opinion</div>
+      <div class="cortex-value-desc">Every answer sourced and confidence-rated — no fabrication, ever.</div>
+    </div>
+    <div class="cortex-value">
+      <div class="cortex-value-icon">◆</div>
+      <div class="cortex-value-title">Built for trust</div>
+      <div class="cortex-value-desc">Full access control and human approval on every high-stakes output.</div>
     </div>
   </div>
 </div>
@@ -2204,7 +2518,7 @@
         <div class="process-step-num">3</div>
         <div class="process-step-tag">Week 2–5</div>
         <div class="process-step-title">Build Together</div>
-        <div class="process-step-desc">We build your Company Brain in real time. Weekly sessions, async support, and constant iteration.</div>
+        <div class="process-step-desc">We build your CORTEX Brain in real time. Weekly sessions, async support, and constant iteration.</div>
       </div>
       <div class="process-step">
         <div class="process-step-num">4</div>
@@ -2221,112 +2535,155 @@
   <div class="calculator-inner">
     <div class="calc-header fade-up">
       <div>
-        <div class="section-tag">Build your package</div>
-        <h2 class="section-title">Design your<br><span class="accent">AI system</span></h2>
+        <div class="section-tag">Free 2-minute assessment</div>
+        <h2 class="section-title">Find your<br><span class="accent">CORTEX</span> tier</h2>
       </div>
       <div>
         <p class="calc-subtitle">
-          Every business is different. Select the components you need — the calculator builds your custom package in real time and shows you exactly what you're getting and when.
+          Answer 4 quick questions. We'll show you exactly which CORTEX tier fits your business, what it unlocks first, and what it costs — no guesswork, no generic quote.
         </p>
       </div>
     </div>
-    <div class="calc-body fade-up">
-      <div class="calc-options">
 
-        <div class="calc-label">Entry point</div>
-        <div class="calc-toggle-group" id="group-entry">
-          <div class="calc-toggle" data-price="2500" data-id="jumpstart" data-weeks="2" data-group="entry" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Jumpstart Session</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">2-day intensive · AI audit + quick wins + tool stack</div>
+    <div class="quiz-body fade-up">
+      <div class="quiz-panel">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" id="quizProgressBar">
+            <div class="quiz-progress-fill" id="quizProgressFill"></div>
+          </div>
+          <div class="quiz-progress-label" id="quizProgressLabel">Step 1 of 4</div>
+        </div>
+
+        <!-- STEP 1 — TEAM SIZE -->
+        <div class="quiz-step active" data-step="1">
+          <div class="quiz-question">How big is your team?</div>
+          <div class="quiz-options" role="radiogroup" aria-label="Team size">
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="starter" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">Solo to 10 people</div>
+              <div class="quiz-option-desc">Founder-led, lean team — you need answers fast without hiring.</div>
             </div>
-            <span class="calc-toggle-price">MYR 2,500</span>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="growth" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">10–250 people</div>
+              <div class="quiz-option-desc">Growing SME — knowledge is starting to outrun your team's memory.</div>
+            </div>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="professional" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">250–2,500 people</div>
+              <div class="quiz-option-desc">Mid-market — multiple departments, decisions need real evidence.</div>
+            </div>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="enterprise" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">2,500+ people</div>
+              <div class="quiz-option-desc">Enterprise — the business needs to run on the Brain, not just use it.</div>
+            </div>
           </div>
         </div>
 
-        <div class="calc-label">Core build</div>
-        <div class="calc-toggle-group" id="group-core">
-          <div class="calc-toggle" data-price="12000" data-id="brain30" data-weeks="4" data-group="core" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Company Brain — 30 Days</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Full AI OS · knowledge base · 3 automations · team training</div>
+        <!-- STEP 2 — MATURITY -->
+        <div class="quiz-step" data-step="2">
+          <div class="quiz-question">Where does your business stand today?</div>
+          <div class="quiz-options" role="radiogroup" aria-label="Current maturity">
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="1" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">We ask around to find answers</div>
+              <div class="quiz-option-desc">Knowledge lives in people's heads, scattered files, and chats.</div>
             </div>
-            <span class="calc-toggle-price">MYR 12,000</span>
-          </div>
-          <div class="calc-toggle" data-price="4800" data-id="course" data-weeks="8" data-group="core" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Leader — 8-Week Programme</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Cohort-based · live sessions · prompt mastery · workflows</div>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="2" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">We have the docs, but not the trust</div>
+              <div class="quiz-option-desc">Information exists somewhere — finding and trusting it still takes time.</div>
             </div>
-            <span class="calc-toggle-price">MYR 4,800</span>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="3" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">We're connected, but decide on gut feel</div>
+              <div class="quiz-option-desc">Tools talk to each other. Decisions still don't run on evidence.</div>
+            </div>
+            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="4" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-option-title">We have the data, just not the speed</div>
+              <div class="quiz-option-desc">Dashboards exist — turning them into a decision still takes days.</div>
+            </div>
           </div>
         </div>
 
-        <div class="calc-label">Add-ons</div>
-        <div class="calc-toggle-group">
-          <div class="calc-toggle" data-price="3500" data-id="retainer" data-weeks="0" data-group="addon" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Monthly Retainer</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Ongoing AI partner · monthly strategy · new integrations · async support</div>
-            </div>
-            <span class="calc-toggle-price">MYR 3,500/mo</span>
+        <!-- STEP 3 — PAIN POINTS / LAYERS -->
+        <div class="quiz-step" data-step="3">
+          <div class="quiz-question">Where does it hurt most right now? <span class="quiz-question-hint">(pick up to 2)</span></div>
+          <div class="quiz-chips" role="group" aria-label="Pain points">
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Knowledge" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Knowledge<span>End "ask the veteran"</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Operations" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Operations<span>Meetings become assigned work</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Marketing" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Marketing & Content<span>On-brand at scale</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Sales" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Sales<span>Every rep performs like your best rep</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Customer" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Customer<span>One memory of every relationship</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Decision" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Decision<span>Score high-stakes choices</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Risk" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Intelligence & Risk<span>Live radar + crisis playbook</span></div>
+            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Automation" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Automation<span>The business runs on a cadence</span></div>
           </div>
-          <div class="calc-toggle" data-price="2000" data-id="design" data-weeks="2" data-group="addon" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">AI Design & Content Pack</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Brand assets · AI-generated campaign visuals · animation</div>
+        </div>
+
+        <!-- STEP 4 — ADD-ONS -->
+        <div class="quiz-step" data-step="4">
+          <div class="quiz-question">Want to add anything else? <span class="quiz-question-hint">(optional)</span></div>
+          <div class="quiz-toggle-group" role="group" aria-label="Optional add-ons">
+            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="jumpstart" data-price="2500" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-addon-check"></div>
+              <div><div class="quiz-addon-title">AI Jumpstart / Brain Diagnostic</div><div class="quiz-addon-desc">2-day pilot before you commit to a full build</div></div>
+              <span class="quiz-addon-price">MYR 2,500</span>
             </div>
-            <span class="calc-toggle-price">MYR 2,000</span>
-          </div>
-          <div class="calc-toggle" data-price="1500" data-id="web" data-weeks="3" data-group="addon" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Website or App Build</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">AI-assisted development · landing page or web app</div>
+            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="coaching" data-price="4800" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-addon-check"></div>
+              <div><div class="quiz-addon-title">Brain Coaching — 8 weeks</div><div class="quiz-addon-desc">Train your team to run and extend the Brain</div></div>
+              <span class="quiz-addon-price">MYR 4,800</span>
             </div>
-            <span class="calc-toggle-price">from MYR 1,500</span>
-          </div>
-          <div class="calc-toggle" data-price="3000" data-id="speaking" data-weeks="0" data-group="addon" onclick="toggleCalc(this)">
-            <div class="calc-toggle-check"></div>
-            <div>
-              <div style="font-size:0.85rem; color: var(--white); font-weight:500;">Speaking / Workshop Booking</div>
-              <div style="font-size:0.75rem; color: var(--gray); margin-top:2px;">Keynote or half-day workshop for your team or event</div>
+            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="design" data-price="2000" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-addon-check"></div>
+              <div><div class="quiz-addon-title">AI Design & Content Pack</div><div class="quiz-addon-desc">Brand assets, campaign visuals, animation</div></div>
+              <span class="quiz-addon-price">MYR 2,000</span>
             </div>
-            <span class="calc-toggle-price">from MYR 3,000</span>
+            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="web" data-price="1500" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-addon-check"></div>
+              <div><div class="quiz-addon-title">Website or App Build</div><div class="quiz-addon-desc">The front door to your new Brain</div></div>
+              <span class="quiz-addon-price">from MYR 1,500</span>
+            </div>
+            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="speaking" data-price="3000" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+              <div class="quiz-addon-check"></div>
+              <div><div class="quiz-addon-title">Speaking / Workshop Booking</div><div class="quiz-addon-desc">Bring the Brain framework to your team or event</div></div>
+              <span class="quiz-addon-price">from MYR 3,000</span>
+            </div>
           </div>
+        </div>
+
+        <div class="quiz-nav">
+          <button class="quiz-btn-back" id="quizBack" onclick="quizBack()" style="visibility:hidden;">← Back</button>
+          <button class="quiz-btn-next" id="quizNext" onclick="quizNext()" disabled>Next →</button>
         </div>
       </div>
 
       <!-- RESULT PANEL -->
-      <div class="calc-result">
-        <div class="result-label">Your custom package</div>
+      <div class="calc-result" aria-live="polite">
+        <div class="result-label">Your CORTEX recommendation</div>
         <div id="result-items">
-          <div class="result-empty">Select the components above<br>to build your package.</div>
+          <div class="result-empty">Answer the questions on the left —<br>your tier and price appear here.</div>
         </div>
         <div id="result-footer" style="display:none;">
-          <div class="result-savings" id="result-savings"></div>
+          <div class="result-gap" id="result-gap"></div>
+          <div class="result-tier-name" id="result-tier-name"></div>
+          <div class="result-tier-desc" id="result-tier-desc"></div>
+          <div class="result-layers" id="result-layers"></div>
           <div class="result-total-row">
             <div>
-              <div class="result-total-label">Total investment</div>
+              <div class="result-total-label">Setup investment</div>
               <div class="result-total-curr">MYR</div>
             </div>
             <div class="result-total-num" id="result-total">0</div>
           </div>
-          <div class="result-timeline" id="result-timeline">
-            <div class="result-timeline-label">Estimated timeline</div>
-            <div class="result-timeline-bar">
-              <div class="result-timeline-fill" id="timeline-fill"></div>
-            </div>
-            <div class="result-timeline-weeks" id="timeline-weeks"></div>
+          <div class="result-line" style="margin-top:0.5rem;">
+            <span class="result-line-name">+ Monthly platform fee</span>
+            <span class="result-line-price" id="result-monthly">—</span>
           </div>
-          <button class="result-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
-            Book a discovery call →
+          <div class="result-line">
+            <span class="result-line-name">Year-1 total</span>
+            <span class="result-line-price" id="result-year1">—</span>
+          </div>
+          <div id="result-addon-lines"></div>
+          <button class="result-cta" id="quizCta" onclick="submitQuiz()">
+            Book my Brain Diagnostic call →
           </button>
+          <div class="result-cta-sub">Free 30-min call · we'll confirm your tier together</div>
         </div>
       </div>
     </div>
@@ -2432,11 +2789,13 @@
         <label class="form-label">I'm interested in</label>
         <select id="cf-service" class="form-select">
           <option value="">Select a service...</option>
-          <option>AI Jumpstart Session</option>
-          <option>Company Brain — 30 Days</option>
-          <option>AI Leader Programme</option>
+          <option>CORTEX — Starter</option>
+          <option>CORTEX — Growth</option>
+          <option>CORTEX — Professional</option>
+          <option>CORTEX — Enterprise</option>
+          <option>AI Jumpstart / Brain Diagnostic</option>
+          <option>Brain Coaching — 8 Weeks</option>
           <option>Speaking / Workshop</option>
-          <option>Retainer / Ongoing Partnership</option>
           <option>I'm not sure yet</option>
         </select>
       </div>
@@ -2464,11 +2823,11 @@
     <div>
       <div class="footer-col-title">Services</div>
       <ul class="footer-links">
-        <li><a href="#company-brain">Company Brain</a></li>
-        <li><a href="#speaking">AI Coaching</a></li>
-        <li><a href="#calculator">Web Development</a></li>
-        <li><a href="#calculator">Design & Animation</a></li>
-        <li><a href="#calculator">Marketing Hubs</a></li>
+        <li><a href="#cortex">CORTEX — The Brain</a></li>
+        <li><a href="#services">AI Coaching & Strategy</a></li>
+        <li><a href="#services">Design & Animation</a></li>
+        <li><a href="#services">Web Development & Apps</a></li>
+        <li><a href="#services">Marketing Hub Leadership</a></li>
       </ul>
     </div>
     <div>
@@ -2519,114 +2878,188 @@
     });
   });
 
-  // PRICE CALCULATOR
-  const selected = {};
+  // CORTEX DIAGNOSTIC
+  window.cortexQuiz = { step: 1, teamSize: null, maturity: null, painPoints: [], addons: {} };
 
-  const labels = {
-    jumpstart: 'AI Jumpstart Session',
-    brain30: 'Company Brain — 30 Days',
-    course: 'AI Leader Programme (8-week)',
-    retainer: 'Monthly Retainer',
+  var TIERS = {
+    starter:      { name: 'Starter',      target: 'Solo / micro teams (1–10 people)',  level: 2, setup: 6000,   monthly: 1200,  year1: 20400,  desc: 'A focused Brain build around your single biggest knowledge gap — live in weeks, not months.' },
+    growth:       { name: 'Growth',       target: 'Growing SMEs (10–250 people)',       level: 3, setup: 18000,  monthly: 3500,  year1: 60000,  desc: 'A connected Brain across the layers that hurt most — knowledge, ops and decisions working together.' },
+    professional: { name: 'Professional', target: 'Mid-market (250–2,500 people)',      level: 4, setup: 45000,  monthly: 8000,  year1: 141000, desc: 'A governed, evidence-driven Brain spanning most of the business, with risk and intelligence layers active.' },
+    enterprise:   { name: 'Enterprise',   target: 'Enterprise (2,500+ people)',          level: 5, setup: 120000, monthly: 18000, year1: 336000, desc: 'A fully autonomous Brain running across every layer — the business operates on it, not just with it.' }
+  };
+
+  var ADDON_LABELS = {
+    jumpstart: 'AI Jumpstart / Brain Diagnostic',
+    coaching: 'Brain Coaching — 8 weeks',
     design: 'AI Design & Content Pack',
     web: 'Website / App Build',
-    speaking: 'Speaking / Workshop'
+    speaking: 'Speaking / Workshop Booking'
   };
 
-  const prices = {
-    jumpstart: 2500,
-    brain30: 12000,
-    course: 4800,
-    retainer: 3500,
-    design: 2000,
-    web: 1500,
-    speaking: 3000
-  };
-
-  const weekMap = {
-    jumpstart: 2,
-    brain30: 4,
-    course: 8,
-    design: 2,
-    web: 3,
-    retainer: 0,
-    speaking: 0
-  };
-
-  function toggleCalc(el) {
-    const id = el.dataset.id;
-    const group = el.dataset.group;
-
-    if (group === 'entry' || group === 'core') {
-      // radio-like within group
-      document.querySelectorAll('[data-group="' + group + '"]').forEach(function(item) {
-        if (item !== el) {
-          item.classList.remove('active');
-          delete selected[item.dataset.id];
-        }
-      });
-    }
-
-    if (el.classList.contains('active')) {
-      el.classList.remove('active');
-      delete selected[id];
-    } else {
-      el.classList.add('active');
-      selected[id] = { price: prices[id], weeks: weekMap[id] };
-    }
-
-    updateResult();
+  function quizSelect(el, field) {
+    var group = el.closest('.quiz-options');
+    group.querySelectorAll('.quiz-option').forEach(function(o) {
+      o.classList.remove('active');
+      o.setAttribute('aria-checked', 'false');
+    });
+    el.classList.add('active');
+    el.setAttribute('aria-checked', 'true');
+    window.cortexQuiz[field] = el.dataset.value;
+    document.getElementById('quizNext').disabled = false;
   }
 
-  function updateResult() {
-    const keys = Object.keys(selected);
-    const itemsEl = document.getElementById('result-items');
-    const footerEl = document.getElementById('result-footer');
-    const totalEl = document.getElementById('result-total');
-    const savingsEl = document.getElementById('result-savings');
-    const timelineFill = document.getElementById('timeline-fill');
-    const timelineWeeks = document.getElementById('timeline-weeks');
+  function quizChip(el) {
+    var value = el.dataset.value;
+    var idx = window.cortexQuiz.painPoints.indexOf(value);
+    if (idx > -1) {
+      window.cortexQuiz.painPoints.splice(idx, 1);
+      el.classList.remove('active');
+      el.setAttribute('aria-checked', 'false');
+    } else {
+      if (window.cortexQuiz.painPoints.length >= 2) return;
+      window.cortexQuiz.painPoints.push(value);
+      el.classList.add('active');
+      el.setAttribute('aria-checked', 'true');
+    }
+    var full = window.cortexQuiz.painPoints.length >= 2;
+    document.querySelectorAll('.quiz-chip').forEach(function(c) {
+      if (!c.classList.contains('active')) {
+        c.classList.toggle('disabled', full);
+      }
+    });
+    document.getElementById('quizNext').disabled = window.cortexQuiz.painPoints.length === 0;
+  }
 
-    if (keys.length === 0) {
-      itemsEl.innerHTML = '<div class="result-empty">Select the components above<br>to build your package.</div>';
-      footerEl.style.display = 'none';
+  function quizAddon(el) {
+    var value = el.dataset.value;
+    var price = parseInt(el.dataset.price, 10);
+    if (window.cortexQuiz.addons[value]) {
+      delete window.cortexQuiz.addons[value];
+      el.classList.remove('active');
+      el.setAttribute('aria-checked', 'false');
+    } else {
+      window.cortexQuiz.addons[value] = price;
+      el.classList.add('active');
+      el.setAttribute('aria-checked', 'true');
+    }
+    updateQuizResult();
+  }
+
+  function quizGoToStep(n) {
+    window.cortexQuiz.step = n;
+    document.querySelectorAll('.quiz-step').forEach(function(s) {
+      s.classList.toggle('active', parseInt(s.dataset.step, 10) === n);
+    });
+    document.getElementById('quizProgressFill').style.width = ((n - 1) / 3 * 100) + '%';
+    document.getElementById('quizProgressBar').setAttribute('aria-valuenow', n);
+    document.getElementById('quizProgressLabel').textContent = 'Step ' + n + ' of 4';
+    document.getElementById('quizBack').style.visibility = n === 1 ? 'hidden' : 'visible';
+
+    var nextBtn = document.getElementById('quizNext');
+    if (n === 1) { nextBtn.disabled = !window.cortexQuiz.teamSize; nextBtn.textContent = 'Next →'; }
+    if (n === 2) { nextBtn.disabled = !window.cortexQuiz.maturity; nextBtn.textContent = 'Next →'; }
+    if (n === 3) { nextBtn.disabled = window.cortexQuiz.painPoints.length === 0; nextBtn.textContent = 'Next →'; }
+    if (n === 4) { nextBtn.disabled = false; nextBtn.textContent = 'See my result ↓'; updateQuizResult(); }
+  }
+
+  function quizNext() {
+    if (window.cortexQuiz.step >= 4) {
+      updateQuizResult();
+      var resultPanel = document.querySelector('.calc-result');
+      if (resultPanel) resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
+    quizGoToStep(window.cortexQuiz.step + 1);
+  }
 
-    let html = '';
-    let total = 0;
-    let maxWeeks = 0;
+  function quizBack() {
+    if (window.cortexQuiz.step <= 1) return;
+    quizGoToStep(window.cortexQuiz.step - 1);
+  }
 
-    keys.forEach(function(k) {
-      const suffix = k === 'retainer' ? '/mo' : '';
-      html += '<div class="result-line"><span class="result-line-name">' + labels[k] + '</span><span class="result-line-price">MYR ' + selected[k].price.toLocaleString() + suffix + '</span></div>';
-      total += selected[k].price;
-      if (selected[k].weeks > maxWeeks) maxWeeks = selected[k].weeks;
-    });
+  function updateQuizResult() {
+    var q = window.cortexQuiz;
+    if (!q.teamSize) return;
 
-    itemsEl.innerHTML = html;
-    totalEl.textContent = total.toLocaleString();
+    var tier = TIERS[q.teamSize];
+    var itemsEl = document.getElementById('result-items');
+    var footerEl = document.getElementById('result-footer');
+
+    itemsEl.style.display = 'none';
     footerEl.style.display = 'block';
 
-    // Bundle discount
-    if (keys.includes('brain30') && keys.includes('jumpstart')) {
-      savingsEl.textContent = '✦ Bundle: Jumpstart credited toward Company Brain build.';
-      savingsEl.classList.add('visible');
-    } else if (keys.length >= 3) {
-      savingsEl.textContent = '✦ Multi-service packages may qualify for a custom discount. Mention this when you book.';
-      savingsEl.classList.add('visible');
+    var gapEl = document.getElementById('result-gap');
+    if (q.maturity) {
+      var gap = tier.level - parseInt(q.maturity, 10);
+      if (gap > 0) {
+        gapEl.innerHTML = 'You\'re roughly <strong>' + gap + ' level' + (gap > 1 ? 's' : '') + '</strong> below where a business your size should be.';
+      } else {
+        gapEl.innerHTML = 'You\'re already operating <strong>at or above</strong> the typical level for your size — CORTEX locks it in and scales it.';
+      }
     } else {
-      savingsEl.classList.remove('visible');
+      gapEl.innerHTML = '';
     }
 
-    // Timeline
-    if (maxWeeks > 0) {
-      const pct = Math.min((maxWeeks / 10) * 100, 100);
-      setTimeout(function() { timelineFill.style.width = pct + '%'; }, 100);
-      timelineWeeks.textContent = maxWeeks + ' weeks estimated';
-    } else {
-      timelineFill.style.width = '10%';
-      timelineWeeks.textContent = 'Flexible / ongoing';
+    document.getElementById('result-tier-name').textContent = 'CORTEX — ' + tier.name;
+    document.getElementById('result-tier-desc').textContent = tier.desc + ' Built for: ' + tier.target + '.';
+
+    var layersEl = document.getElementById('result-layers');
+    layersEl.innerHTML = q.painPoints.length > 0
+      ? 'Priority layers: ' + q.painPoints.map(function(p) { return '<span>' + p + '</span>'; }).join('')
+      : '';
+
+    document.getElementById('result-total').textContent = tier.setup.toLocaleString();
+    document.getElementById('result-monthly').textContent = 'MYR ' + tier.monthly.toLocaleString() + '/mo';
+    document.getElementById('result-year1').textContent = 'MYR ' + tier.year1.toLocaleString();
+
+    var addonKeys = Object.keys(q.addons);
+    var addonLinesEl = document.getElementById('result-addon-lines');
+    addonLinesEl.innerHTML = addonKeys.length > 0
+      ? addonKeys.map(function(k) {
+          return '<div class="result-line"><span class="result-line-name">+ ' + ADDON_LABELS[k] + '</span><span class="result-line-price">MYR ' + q.addons[k].toLocaleString() + '</span></div>';
+        }).join('')
+      : '';
+  }
+
+  async function submitQuiz() {
+    var q = window.cortexQuiz;
+    if (!q.teamSize) return;
+    var tier = TIERS[q.teamSize];
+    var btn = document.getElementById('quizCta');
+    var addonTotal = Object.keys(q.addons).reduce(function(sum, k) { return sum + q.addons[k]; }, 0);
+    var packageTotal = tier.setup + addonTotal;
+    var packageItems = Object.assign({ tier: q.teamSize, maturity: q.maturity, painPoints: q.painPoints }, q.addons);
+
+    var tierLabel = 'CORTEX — ' + tier.name;
+    var serviceSelect = document.getElementById('cf-service');
+    Array.prototype.forEach.call(serviceSelect.options, function(o) {
+      if (o.textContent.trim() === tierLabel) serviceSelect.value = tierLabel;
+    });
+
+    var msgEl = document.getElementById('cf-message');
+    if (!msgEl.value.trim()) {
+      msgEl.value = 'CORTEX diagnostic result: ' + tierLabel + ' (team size: ' + tier.target + (q.painPoints.length ? ', priority layers: ' + q.painPoints.join(', ') : '') + ').';
     }
+
+    btn.disabled = true;
+    btn.textContent = 'Saving your result…';
+
+    try {
+      await submitBooking({
+        name: 'CORTEX Diagnostic Lead',
+        email: 'unknown@pending.com',
+        service: tierLabel,
+        packageTotal: packageTotal,
+        packageItems: packageItems
+      });
+      trackEvent('home', 'cortex_quiz_complete', { tier: q.teamSize, total: packageTotal });
+    } catch (err) {
+      console.error('Quiz booking save error:', err);
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Book my Brain Diagnostic call →';
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
   }
 
   // SCROLL ANIMATIONS
@@ -2713,30 +3146,6 @@
     btn.disabled = false;
     btn.textContent = 'Send message →';
   }
-
-  // ── CALCULATOR BOOKING ────────────────────────────────────
-  // Override the existing result CTA to also save to Supabase
-  document.querySelector('.result-cta') && (function() {
-    var origCta = document.querySelector('.result-cta');
-    origCta.addEventListener('click', function() {
-      var keys = Object.keys(window.selected || {});
-      if (keys.length === 0) return;
-      var total = parseInt(document.getElementById('result-total').textContent.replace(/,/g,''), 10);
-      var items = {};
-      keys.forEach(function(k) { items[k] = window.selected[k]; });
-
-      // Save booking intent silently
-      submitBooking({
-        name: 'Calculator Lead',
-        email: 'unknown@pending.com',
-        service: keys.join(', '),
-        packageTotal: total,
-        packageItems: items
-      }).catch(function() {});
-
-      trackEvent('home', 'cta_click', { element: 'calculator_book', total: total });
-    });
-  })();
 
   // ── CTA CLICK TRACKING ────────────────────────────────────
   document.querySelectorAll('.btn-primary, .btn-ghost, .nav-cta').forEach(function(el) {
