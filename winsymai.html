@@ -1300,6 +1300,53 @@
     background: radial-gradient(ellipse at 70% 50%, rgba(196,90,26,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
+  .academy-visual--hero {
+    padding: 0;
+    background: #000;
+    border-left: 1px solid var(--gray-dim);
+  }
+  .academy-visual--hero::after { display: none; }
+  .academy-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .academy-inner:hover .academy-hero-img { transform: scale(1.03); }
+  .academy-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    z-index: 2;
+  }
+  .academy-badge {
+    align-self: flex-end;
+  }
+  .academy-hero-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .academy-hero-chip {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.3rem 0.65rem;
+    display: inline-block;
+    width: fit-content;
+  }
   .academy-step-preview {
     display: flex;
     align-items: flex-start;
@@ -2361,27 +2408,13 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
-    <div class="academy-visual">
-      <div class="academy-badge">2 Courses · Free</div>
-      <div class="academy-step-preview is-active">
-        <div class="academy-step-preview-num">01</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">Higgsfield + Claude</div>
-          <div class="academy-step-preview-desc">11 steps · automate your full content pipeline</div>
-        </div>
-      </div>
-      <div class="academy-step-preview is-active">
-        <div class="academy-step-preview-num">02</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">Pro Websites with Claude Code</div>
-          <div class="academy-step-preview-desc">10 steps · build &amp; deploy real sites, no code needed</div>
-        </div>
-      </div>
-      <div class="academy-step-preview">
-        <div class="academy-step-preview-num">··</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">More coachings soon</div>
-          <div class="academy-step-preview-desc">Automation, launches, video editing — same format</div>
+    <div class="academy-visual academy-visual--hero">
+      <img src="images/claude-higgsfield-thumbnail.png" alt="Unlimited Content — Claude x Higgsfield Coaching" class="academy-hero-img">
+      <div class="academy-hero-overlay">
+        <div class="academy-badge">2 Courses · Free</div>
+        <div class="academy-hero-chips">
+          <span class="academy-hero-chip">Course 01 · Higgsfield + Claude</span>
+          <span class="academy-hero-chip">Course 02 · Pro Websites</span>
         </div>
       </div>
     </div>

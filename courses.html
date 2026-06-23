@@ -226,6 +226,37 @@ body::after {
   background: radial-gradient(circle at 30% 50%, var(--orange-glow), transparent 65%);
   pointer-events: none;
 }
+.course-visual--photo {
+  padding: 0;
+  background: #000;
+}
+.course-visual--photo::after { display: none; }
+.course-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.course-card:hover .course-thumb { transform: scale(1.04); }
+.course-visual-tag {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  z-index: 2;
+}
 .course-visual-num {
   font-family: var(--font-display);
   font-size: 8rem;
@@ -502,9 +533,9 @@ body::after {
 
     <!-- COURSE 01 — Higgsfield + Claude -->
     <a href="academy.html" class="course-card">
-      <div class="course-visual">
-        <div class="course-visual-num">01</div>
-        <span class="course-visual-icon">AI Creative</span>
+      <div class="course-visual course-visual--photo">
+        <img src="images/claude-higgsfield-thumbnail.png" alt="Unlimited Content — Claude x Higgsfield Coaching" class="course-thumb">
+        <span class="course-visual-tag">AI Creative</span>
       </div>
       <div class="course-body">
         <div class="course-tag">Course 01 · Free</div>
