@@ -142,6 +142,75 @@
 .result-total .v{font-family:var(--font-display);font-size:22px;color:var(--orange-cta);}
 .result-addons{margin-top:14px;font-size:13px;color:var(--gray-light);}
 
+/* ---- Quiz MODAL ---- */
+.qz-overlay{position:fixed;inset:0;z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;background:rgba(28,25,23,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+.qz-overlay.open{display:flex;animation:qzFade .25s var(--ease,ease) both;}
+@keyframes qzFade{from{opacity:0}to{opacity:1}}
+.qz-modal{position:relative;width:100%;max-width:920px;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);box-shadow:0 30px 80px rgba(28,25,23,.28);padding:0;margin:auto;animation:qzRise .3s var(--ease,ease) both;}
+@keyframes qzRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.qz-close{position:absolute;top:16px;right:16px;z-index:3;width:38px;height:38px;border-radius:var(--radius-full);border:1px solid var(--card-border);background:var(--cream);color:var(--black);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--duration-fast) var(--ease);}
+.qz-close:hover{background:var(--orange-cta);border-color:var(--orange-cta);color:var(--white);}
+.qz-head{padding:34px 40px 0;}
+.qz-head .eyebrow{color:var(--orange);}
+.qz-head h2{font-family:var(--font-display);font-weight:800;font-size:28px;margin-top:8px;}
+.qz-head p{color:var(--gray);font-size:14px;margin-top:8px;}
+.qz-body{display:grid;grid-template-columns:1.35fr .9fr;gap:0;padding:24px 40px 40px;}
+@media (max-width:780px){.qz-body{grid-template-columns:1fr;padding:20px 22px 28px;}.qz-head{padding:26px 22px 0;}.qz-head h2{font-size:23px;}}
+.qz-left{padding-right:32px;border-right:1px solid var(--card-border);}
+@media (max-width:780px){.qz-left{padding-right:0;border-right:none;border-bottom:1px solid var(--card-border);padding-bottom:24px;margin-bottom:24px;}}
+.qz-right{padding-left:32px;}
+@media (max-width:780px){.qz-right{padding-left:0;}}
+
+/* live tier ladder (right rail) */
+.qz-ladder-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gray-light);margin-bottom:14px;}
+.qz-ladder{display:flex;flex-direction:column;gap:8px;}
+.qz-rung{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--card-border);border-radius:var(--radius-md);background:var(--cream);opacity:.5;transition:all var(--duration-fast) var(--ease);}
+.qz-rung .rung-dot{width:9px;height:9px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:all var(--duration-fast) var(--ease);}
+.qz-rung .rung-name{font-weight:700;font-size:14px;color:var(--black);}
+.qz-rung .rung-sub{font-size:11.5px;color:var(--gray-light);}
+.qz-rung.dim{opacity:.5;}
+.qz-rung.active{opacity:1;border-color:var(--orange-cta);background:var(--orange-faint);box-shadow:0 4px 14px rgba(196,90,26,.14);}
+.qz-rung.active .rung-dot{background:var(--orange-cta);box-shadow:0 0 0 4px var(--orange-faint);}
+.qz-rung.passed{opacity:.85;}
+.qz-rung.passed .rung-dot{background:var(--orange);}
+.qz-ladder-hint{font-size:12px;color:var(--gray-light);margin-top:14px;line-height:1.5;}
+
+/* result inside modal */
+.qz-result{display:none;}
+.qz-result.show{display:block;animation:qzFade .3s var(--ease) both;}
+.qz-result-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--orange);background:var(--orange-faint);border-radius:var(--radius-full);padding:6px 14px;margin-bottom:14px;}
+.qz-result h3{font-family:var(--font-display);font-weight:800;font-size:30px;color:var(--black);}
+.qz-result .qz-tier-target{font-family:var(--font-mono);font-size:12px;color:var(--gray-light);margin:4px 0 14px;}
+.qz-result .qz-tier-desc{font-size:14.5px;color:var(--gray);line-height:1.6;margin-bottom:22px;}
+.qz-price-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.qz-price-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:16px;}
+.qz-price-card .pc-label{font-size:11.5px;color:var(--gray-light);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.qz-price-card .pc-val{font-family:var(--font-display);font-weight:800;font-size:22px;color:var(--black);}
+.qz-price-card.accent{background:var(--orange-faint);border-color:rgba(196,90,26,.25);}
+.qz-price-card.accent .pc-val{color:var(--orange-cta);}
+.qz-meta-row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray);padding:9px 0;border-top:1px solid var(--card-border);}
+.qz-meta-row .v{font-weight:700;color:var(--black);}
+.qz-disclaimer{font-size:11.5px;color:var(--gray-light);margin-top:12px;line-height:1.5;}
+
+/* lead form inside modal */
+.qz-lead{display:none;}
+.qz-lead.show{display:block;animation:qzFade .3s var(--ease) both;}
+.qz-lead h3{font-family:var(--font-display);font-weight:800;font-size:24px;margin-bottom:6px;}
+.qz-lead p.sub{font-size:13.5px;color:var(--gray);margin-bottom:20px;}
+.qz-lead-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:560px){.qz-lead-grid{grid-template-columns:1fr;}}
+.qz-lead-grid .full{grid-column:1 / -1;}
+.qz-summary-pill{display:inline-flex;align-items:center;gap:8px;background:var(--orange-faint);border-radius:var(--radius-full);padding:7px 14px;font-size:12.5px;color:var(--black);font-weight:600;margin-bottom:18px;}
+.qz-summary-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange-cta);}
+.qz-notice{margin-top:14px;font-size:13.5px;}
+
+/* submitted screen */
+.qz-done{display:none;text-align:center;padding:24px 10px 12px;}
+.qz-done.show{display:block;animation:qzFade .35s var(--ease) both;}
+.qz-done .qz-check{width:72px;height:72px;border-radius:50%;background:var(--orange-faint);color:var(--orange-cta);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:34px;}
+.qz-done h3{font-family:var(--font-display);font-weight:800;font-size:26px;margin-bottom:10px;}
+.qz-done p{font-size:14.5px;color:var(--gray);max-width:420px;margin:0 auto 26px;line-height:1.6;}
+
 /* ---- Academy teaser ---- */
 .academy-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
 @media (max-width:920px){.academy-grid{grid-template-columns:1fr;}}
@@ -211,7 +280,7 @@
     <h1 data-i18n="hero.h1" data-i18n-attr="html">Winning Systems.<br>Backed by a <span class="text-orange">Brain</span>.</h1>
     <p class="lead" data-i18n="hero.lead">winsym.ai installs CORTEX — a governed AI Brain your business runs on. Not another chatbot. A system that remembers, decides, and scales with you.</p>
     <div class="hero-ctas">
-      <a href="#calculator" class="btn btn-primary" data-i18n="hero.cta1">Find my CORTEX tier →</a>
+      <button type="button" onclick="openQuiz()" class="btn btn-primary" data-i18n="hero.cta1">Find my CORTEX tier →</button>
       <a href="#speaking" class="btn btn-ghost" data-i18n="hero.cta2">Speaking topics</a>
     </div>
     <div class="hero-stats">
@@ -320,7 +389,7 @@
       <span class="layer-chip" data-i18n="pillars.layer7">Risk</span>
       <span class="layer-chip" data-i18n="pillars.layer8">Automation</span>
     </div>
-    <a href="#calculator" class="btn btn-primary" data-i18n="pillars.cortexCta">Find my tier →</a>
+    <button type="button" onclick="openQuiz()" class="btn btn-primary" data-i18n="pillars.cortexCta">Find my tier →</button>
   </div>
 
   <div class="pillars-grid">
@@ -467,89 +536,156 @@
 
 <section class="section" id="calculator">
 <div class="wrap">
-  <div class="section-head-center fade-up">
+  <div class="final-cta fade-up" style="background:var(--card);">
     <span class="eyebrow" data-i18n="calc.tag">Find your fit</span>
-    <h2 data-i18n="calc.heading">What size is your CORTEX Brain?</h2>
-    <p style="color:var(--gray);margin-top:14px;" data-i18n="calc.intro">Four quick questions. Get a tier, a price range, and a clear next step.</p>
-  </div>
-
-  <div class="calc-wrap fade-up">
-    <div class="quiz-progress">
-      <div class="quiz-progress-seg done" data-seg="1"></div>
-      <div class="quiz-progress-seg" data-seg="2"></div>
-      <div class="quiz-progress-seg" data-seg="3"></div>
-      <div class="quiz-progress-seg" data-seg="4"></div>
-    </div>
-    <div class="quiz-step-label"><span data-i18n="calc.stepLabel">Step</span> <span id="quizStepNum">1</span> / 4</div>
-
-    <div class="quiz-step active" data-step="1">
-      <h3 data-i18n="calc.q1Title">How big is your team?</h3>
-      <div class="quiz-options-grid">
-        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="starter"><div class="t" data-i18n="calc.q1Opt1Title">Starter</div><div class="d" data-i18n="calc.q1Opt1Desc">Solo / micro team, 1–10 people</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="growth"><div class="t" data-i18n="calc.q1Opt2Title">Growth</div><div class="d" data-i18n="calc.q1Opt2Desc">Growing SME, 10–250 people</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="professional"><div class="t" data-i18n="calc.q1Opt3Title">Professional</div><div class="d" data-i18n="calc.q1Opt3Desc">Mid-market, 250–2,500 people</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="enterprise"><div class="t" data-i18n="calc.q1Opt4Title">Enterprise</div><div class="d" data-i18n="calc.q1Opt4Desc">Enterprise, 2,500+ people</div></div>
-      </div>
-    </div>
-
-    <div class="quiz-step" data-step="2">
-      <h3 data-i18n="calc.q2Title">Where does your business stand today?</h3>
-      <div class="quiz-options-grid">
-        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="1"><div class="t" data-i18n="calc.q2Opt1Title">Just starting</div><div class="d" data-i18n="calc.q2Opt1Desc">Little to no AI in the business yet</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="2"><div class="t" data-i18n="calc.q2Opt2Title">A few tools</div><div class="d" data-i18n="calc.q2Opt2Desc">Some AI tools, but disconnected</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="3"><div class="t" data-i18n="calc.q2Opt3Title">Partially connected</div><div class="d" data-i18n="calc.q2Opt3Desc">Some systems talk to each other</div></div>
-        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="4"><div class="t" data-i18n="calc.q2Opt4Title">Advanced</div><div class="d" data-i18n="calc.q2Opt4Desc">Mature stack, ready to unify it</div></div>
-      </div>
-    </div>
-
-    <div class="quiz-step" data-step="3">
-      <h3 data-i18n="calc.q3Title">Where does it hurt most right now? (pick up to 2)</h3>
-      <div class="quiz-chips-grid">
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Knowledge" data-i18n="pillars.layer1">Knowledge</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Operations" data-i18n="pillars.layer2">Operations</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Marketing" data-i18n="pillars.layer3">Marketing</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Sales" data-i18n="pillars.layer4">Sales</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Customer" data-i18n="pillars.layer5">Customer</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Decision" data-i18n="pillars.layer6">Decision</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Risk" data-i18n="pillars.layer7">Risk</div>
-        <div class="quiz-chip" onclick="quizChip(this)" data-value="Automation" data-i18n="pillars.layer8">Automation</div>
-      </div>
-    </div>
-
-    <div class="quiz-step" data-step="4">
-      <h3 data-i18n="calc.q4Title">Want to add anything else? (optional)</h3>
-      <div class="quiz-addons-grid">
-        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="jumpstart" data-price="2500"><div class="t" data-i18n="calc.addon1">AI Jumpstart / Brain Diagnostic</div><div class="p">RM 2,500</div></div>
-        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="coaching" data-price="4800"><div class="t" data-i18n="calc.addon2">Brain Coaching — 8 weeks</div><div class="p">RM 4,800</div></div>
-        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="design" data-price="2000"><div class="t" data-i18n="calc.addon3">AI Design &amp; Content Pack</div><div class="p">RM 2,000</div></div>
-        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="web" data-price="1500"><div class="t" data-i18n="calc.addon4">Website / App Build</div><div class="p">RM 1,500</div></div>
-        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="speaking" data-price="3000"><div class="t" data-i18n="calc.addon5">Speaking / Workshop Booking</div><div class="p">RM 3,000</div></div>
-      </div>
-    </div>
-
-    <div class="quiz-nav">
-      <button class="btn btn-ghost" id="quizBackBtn" onclick="quizBack()" style="visibility:hidden;" data-i18n="calc.back">← Back</button>
-      <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()" disabled data-i18n="calc.next">Next →</button>
-    </div>
-
-    <div class="calc-result" id="calcResult">
-      <div class="calc-result-empty" id="resultEmpty" data-i18n="calc.resultEmpty">Answer the questions to see your CORTEX tier and estimated investment.</div>
-      <div id="resultFooter" style="display:none;">
-        <div class="result-tier-name" id="resultTierName">Growth</div>
-        <div class="result-tier-target" id="resultTierTarget">Growing SMEs (10–250 people)</div>
-        <div class="result-tier-desc" id="resultTierDesc">—</div>
-        <div class="result-row"><span data-i18n="calc.layersLabel">Brain layers in scope</span><span class="v" id="resultLayers">—</span></div>
-        <div class="result-row"><span data-i18n="calc.gapLabel">Maturity gap</span><span class="v" id="resultGap">—</span></div>
-        <div class="result-row result-total"><span data-i18n="calc.totalLabel">Estimated setup</span><span class="v" id="resultTotal">RM 0</span></div>
-        <div class="result-row"><span data-i18n="calc.monthlyLabel">Monthly retainer</span><span class="v" id="resultMonthly">RM 0</span></div>
-        <div class="result-row"><span data-i18n="calc.year1Label">Year 1 total</span><span class="v" id="resultYear1">RM 0</span></div>
-        <div class="result-addons" id="resultAddonLines"></div>
-        <button class="btn btn-primary" id="quizCta" onclick="submitQuiz()" style="width:100%;justify-content:center;margin-top:20px;" data-i18n="calc.cta">Book my Brain Diagnostic call →</button>
-      </div>
-    </div>
+    <h2 data-i18n="calc.heading" style="margin-top:10px;">What size is your CORTEX Brain?</h2>
+    <p data-i18n="calc.intro" style="max-width:560px;margin:14px auto 26px;">Three quick questions. See your tier, your price range, and exactly where you stand — then send your request right here.</p>
+    <button class="btn btn-primary" onclick="openQuiz()" data-i18n="calc.openCta">Find my CORTEX tier →</button>
   </div>
 </div>
 </section>
+
+<!-- ============ CORTEX QUIZ MODAL ============ -->
+<div class="qz-overlay" id="quizOverlay" role="dialog" aria-modal="true" aria-labelledby="qzTitle">
+  <div class="qz-modal">
+    <button class="qz-close" id="quizCloseBtn" onclick="closeQuiz()" aria-label="Close">&times;</button>
+
+    <div class="qz-head">
+      <span class="eyebrow" data-i18n="calc.tag">Find your fit</span>
+      <h2 id="qzTitle" data-i18n="calc.heading">What size is your CORTEX Brain?</h2>
+      <p data-i18n="calc.intro">Three quick questions. See your tier, your price range, and where you stand today.</p>
+    </div>
+
+    <div class="qz-body">
+      <!-- LEFT: steps / result / lead / done -->
+      <div class="qz-left">
+
+        <!-- STEPS WRAPPER -->
+        <div id="qzSteps">
+          <div class="quiz-progress">
+            <div class="quiz-progress-seg done" data-seg="1"></div>
+            <div class="quiz-progress-seg" data-seg="2"></div>
+            <div class="quiz-progress-seg" data-seg="3"></div>
+          </div>
+          <div class="quiz-step-label"><span data-i18n="calc.stepLabel">Step</span> <span id="quizStepNum">1</span> / 3</div>
+
+          <div class="quiz-step active" data-step="1">
+            <h3 data-i18n="calc.q1Title">How big is your team?</h3>
+            <div class="quiz-options-grid">
+              <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="starter"><div class="t" data-i18n="calc.q1Opt1Title">Starter</div><div class="d" data-i18n="calc.q1Opt1Desc">Solo / micro team, 1–10 people</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="growth"><div class="t" data-i18n="calc.q1Opt2Title">Growth</div><div class="d" data-i18n="calc.q1Opt2Desc">Growing SME, 10–250 people</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="professional"><div class="t" data-i18n="calc.q1Opt3Title">Professional</div><div class="d" data-i18n="calc.q1Opt3Desc">Mid-market, 250–2,500 people</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="enterprise"><div class="t" data-i18n="calc.q1Opt4Title">Enterprise</div><div class="d" data-i18n="calc.q1Opt4Desc">Enterprise, 2,500+ people</div></div>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="2">
+            <h3 data-i18n="calc.q2Title">Where does your business stand today?</h3>
+            <div class="quiz-options-grid">
+              <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="1"><div class="t" data-i18n="calc.q2Opt1Title">Just starting</div><div class="d" data-i18n="calc.q2Opt1Desc">Little to no AI in the business yet</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="2"><div class="t" data-i18n="calc.q2Opt2Title">A few tools</div><div class="d" data-i18n="calc.q2Opt2Desc">Some AI tools, but disconnected</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="3"><div class="t" data-i18n="calc.q2Opt3Title">Partially connected</div><div class="d" data-i18n="calc.q2Opt3Desc">Some systems talk to each other</div></div>
+              <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="4"><div class="t" data-i18n="calc.q2Opt4Title">Advanced</div><div class="d" data-i18n="calc.q2Opt4Desc">Mature stack, ready to unify it</div></div>
+            </div>
+          </div>
+
+          <div class="quiz-step" data-step="3">
+            <h3 data-i18n="calc.q3Title">Where does it hurt most right now? (pick up to 2)</h3>
+            <div class="quiz-chips-grid">
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Knowledge" data-i18n="pillars.layer1">Knowledge</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Operations" data-i18n="pillars.layer2">Operations</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Marketing" data-i18n="pillars.layer3">Marketing</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Sales" data-i18n="pillars.layer4">Sales</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Customer" data-i18n="pillars.layer5">Customer</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Decision" data-i18n="pillars.layer6">Decision</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Risk" data-i18n="pillars.layer7">Risk</div>
+              <div class="quiz-chip" onclick="quizChip(this)" data-value="Automation" data-i18n="pillars.layer8">Automation</div>
+            </div>
+          </div>
+
+          <div class="quiz-nav">
+            <button class="btn btn-ghost" id="quizBackBtn" onclick="quizBack()" style="visibility:hidden;" data-i18n="calc.back">← Back</button>
+            <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()" disabled data-i18n="calc.next">Next →</button>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="qz-result" id="qzResult">
+          <span class="qz-result-badge"><span data-i18n="calc.matchBadge">Your match</span></span>
+          <h3 id="resultTierName">Growth</h3>
+          <div class="qz-tier-target" id="resultTierTarget">Growing SMEs (10–250 people)</div>
+          <div class="qz-tier-desc" id="resultTierDesc">—</div>
+          <div class="qz-price-grid">
+            <div class="qz-price-card"><div class="pc-label" data-i18n="calc.totalLabel">Estimated setup</div><div class="pc-val" id="resultTotal">RM 0</div></div>
+            <div class="qz-price-card"><div class="pc-label" data-i18n="calc.monthlyLabel">Monthly retainer</div><div class="pc-val" id="resultMonthly">RM 0</div></div>
+          </div>
+          <div class="qz-price-card accent" style="margin-bottom:14px;"><div class="pc-label" data-i18n="calc.year1Label">Year 1 total</div><div class="pc-val" id="resultYear1">RM 0</div></div>
+          <div class="qz-meta-row"><span data-i18n="calc.layersLabel">Brain layers in scope</span><span class="v" id="resultLayers">—</span></div>
+          <div class="qz-meta-row"><span data-i18n="calc.gapLabel">Maturity gap</span><span class="v" id="resultGap">—</span></div>
+          <p class="qz-disclaimer" data-i18n="calc.disclaimer">Indicative range based on your answers. Your exact scope is confirmed in a free 30-minute Brain Diagnostic call.</p>
+          <div class="quiz-nav">
+            <button class="btn btn-ghost" onclick="quizBackToSteps()" data-i18n="calc.back">← Back</button>
+            <button class="btn btn-primary" onclick="quizGoToLead()" data-i18n="calc.requestCta">Request this →</button>
+          </div>
+        </div>
+
+        <!-- LEAD FORM -->
+        <div class="qz-lead" id="qzLead">
+          <div class="qz-summary-pill"><span class="dot"></span><span data-i18n="calc.requestingLabel">Requesting:</span> <span id="leadTierLabel">CORTEX Growth</span></div>
+          <h3 data-i18n="calc.leadTitle">Where should we send your plan?</h3>
+          <p class="sub" data-i18n="calc.leadSub">We'll email you a tailored summary and reach out to book your free Brain Diagnostic call.</p>
+          <form id="quizLeadForm" onsubmit="submitQuizLead(event)">
+            <div class="qz-lead-grid">
+              <div class="ws-form-group full">
+                <label class="ws-label" for="qz-name" data-i18n="calc.leadName">Full name *</label>
+                <input class="ws-input" type="text" id="qz-name" required>
+              </div>
+              <div class="ws-form-group full">
+                <label class="ws-label" for="qz-company" data-i18n="calc.leadCompany">Company *</label>
+                <input class="ws-input" type="text" id="qz-company" required>
+              </div>
+              <div class="ws-form-group">
+                <label class="ws-label" for="qz-email" data-i18n="calc.leadEmail">Email *</label>
+                <input class="ws-input" type="email" id="qz-email" required>
+              </div>
+              <div class="ws-form-group">
+                <label class="ws-label" for="qz-phone" data-i18n="calc.leadPhone">Phone *</label>
+                <input class="ws-input" type="tel" id="qz-phone" required>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit" id="qzLeadSubmit" style="width:100%;justify-content:center;margin-top:18px;" data-i18n="calc.leadSubmit">Send my request →</button>
+            <div class="qz-notice" id="qzLeadNotice"></div>
+          </form>
+          <div class="quiz-nav" style="margin-top:14px;">
+            <button class="btn btn-ghost" onclick="quizGoToResult()" data-i18n="calc.back">← Back</button>
+          </div>
+        </div>
+
+        <!-- SUBMITTED -->
+        <div class="qz-done" id="qzDone">
+          <div class="qz-check">✓</div>
+          <h3 data-i18n="calc.doneTitle">Request received</h3>
+          <p data-i18n="calc.doneBody">Thanks — your CORTEX summary is on its way to your inbox. We'll be in touch within one business day to book your free Brain Diagnostic call.</p>
+          <button class="btn btn-primary" onclick="closeQuiz()" data-i18n="calc.doneClose">Close</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: live tier ladder -->
+      <div class="qz-right">
+        <div class="qz-ladder-title" data-i18n="calc.ladderTitle">Where you land</div>
+        <div class="qz-ladder" id="qzLadder">
+          <div class="qz-rung" data-tier="starter"><span class="rung-dot"></span><div><div class="rung-name" data-i18n="calc.q1Opt1Title">Starter</div><div class="rung-sub" data-i18n="calc.q1Opt1Desc">Solo / micro team, 1–10 people</div></div></div>
+          <div class="qz-rung" data-tier="growth"><span class="rung-dot"></span><div><div class="rung-name" data-i18n="calc.q1Opt2Title">Growth</div><div class="rung-sub" data-i18n="calc.q1Opt2Desc">Growing SME, 10–250 people</div></div></div>
+          <div class="qz-rung" data-tier="professional"><span class="rung-dot"></span><div><div class="rung-name" data-i18n="calc.q1Opt3Title">Professional</div><div class="rung-sub" data-i18n="calc.q1Opt3Desc">Mid-market, 250–2,500 people</div></div></div>
+          <div class="qz-rung" data-tier="enterprise"><span class="rung-dot"></span><div><div class="rung-name" data-i18n="calc.q1Opt4Title">Enterprise</div><div class="rung-sub" data-i18n="calc.q1Opt4Desc">Enterprise, 2,500+ people</div></div></div>
+        </div>
+        <p class="qz-ladder-hint" data-i18n="calc.ladderHint">Pick your team size and we'll highlight your tier instantly — so you always know where you stand.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <section class="section" style="background:var(--white);">
 <div class="wrap academy-grid">
@@ -778,13 +914,63 @@ var LAYER_LABELS = {
 
 function currentLang(){ return (window.winsymI18n && window.winsymI18n.getLanguage()) || 'en'; }
 
-window.cortexQuiz = { step: 1, teamSize: null, maturity: null, painPoints: [], addons: {} };
+function T(key, fallback){
+  var lang = currentLang();
+  var table = (window.I18N && window.I18N[lang]) || {};
+  if(table[key]) return table[key];
+  return fallback;
+}
+
+window.cortexQuiz = { step: 1, teamSize: null, maturity: null, painPoints: [], view: 'steps' };
+
+/* ----- Modal open / close ----- */
+function openQuiz(){
+  var ov = document.getElementById('quizOverlay');
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if(window.trackEvent) window.trackEvent('home', 'cortex_quiz_open', {});
+}
+function closeQuiz(){
+  document.getElementById('quizOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && document.getElementById('quizOverlay').classList.contains('open')) closeQuiz();
+});
+document.getElementById('quizOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeQuiz();
+});
+
+/* ----- View switching inside modal ----- */
+function quizShowView(view){
+  window.cortexQuiz.view = view;
+  document.getElementById('qzSteps').style.display  = view === 'steps'  ? 'block' : 'none';
+  document.getElementById('qzResult').classList.toggle('show', view === 'result');
+  document.getElementById('qzLead').classList.toggle('show', view === 'lead');
+  document.getElementById('qzDone').classList.toggle('show', view === 'done');
+}
+
+/* ----- Live tier ladder ----- */
+var TIER_ORDER = ['starter','growth','professional','enterprise'];
+function updateLadder(){
+  var sel = window.cortexQuiz.teamSize;
+  var selIdx = TIER_ORDER.indexOf(sel);
+  document.querySelectorAll('#qzLadder .qz-rung').forEach(function(rung){
+    var idx = TIER_ORDER.indexOf(rung.getAttribute('data-tier'));
+    rung.classList.remove('active','passed','dim');
+    if(selIdx === -1){ rung.classList.add('dim'); }
+    else if(idx === selIdx){ rung.classList.add('active'); }
+    else if(idx < selIdx){ rung.classList.add('passed'); }
+    else { rung.classList.add('dim'); }
+  });
+}
 
 function quizSelect(el, field){
   var group = el.parentElement;
   group.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('selected'); });
   el.classList.add('selected');
   window.cortexQuiz[field] = field === 'maturity' ? parseInt(el.getAttribute('data-value'), 10) : el.getAttribute('data-value');
+  if(field === 'teamSize') updateLadder();
   document.getElementById('quizNextBtn').disabled = false;
 }
 
@@ -808,20 +994,8 @@ function quizChip(el){
   document.getElementById('quizNextBtn').disabled = q.painPoints.length === 0;
 }
 
-function quizAddon(el){
-  var addon = el.getAttribute('data-addon');
-  var price = parseInt(el.getAttribute('data-price'), 10);
-  var q = window.cortexQuiz;
-  if(q.addons[addon]){
-    delete q.addons[addon];
-    el.classList.remove('selected');
-  } else {
-    q.addons[addon] = price;
-    el.classList.add('selected');
-  }
-}
-
 function quizGoToStep(n){
+  quizShowView('steps');
   window.cortexQuiz.step = n;
   document.querySelectorAll('.quiz-step').forEach(function(s){ s.classList.toggle('active', parseInt(s.getAttribute('data-step'),10) === n); });
   document.querySelectorAll('.quiz-progress-seg').forEach(function(seg){ seg.classList.toggle('done', parseInt(seg.getAttribute('data-seg'),10) <= n); });
@@ -831,63 +1005,87 @@ function quizGoToStep(n){
   var q = window.cortexQuiz;
   if(n === 1) nextBtn.disabled = !q.teamSize;
   if(n === 2) nextBtn.disabled = !q.maturity;
-  if(n === 3) nextBtn.disabled = q.painPoints.length === 0;
-  if(n === 4){ nextBtn.style.display = 'none'; updateQuizResult(); } else { nextBtn.style.display = ''; }
+  if(n === 3){ nextBtn.disabled = q.painPoints.length === 0; nextBtn.textContent = T('calc.seeResult','See my result →'); }
+  else { nextBtn.textContent = T('calc.next','Next →'); }
 }
 
 function quizNext(){
-  if(window.cortexQuiz.step < 4) quizGoToStep(window.cortexQuiz.step + 1);
+  var q = window.cortexQuiz;
+  if(q.step < 3){ quizGoToStep(q.step + 1); }
+  else { renderResult(); quizShowView('result'); }
 }
 function quizBack(){
   if(window.cortexQuiz.step > 1) quizGoToStep(window.cortexQuiz.step - 1);
 }
+function quizBackToSteps(){ quizGoToStep(3); }
+function quizGoToResult(){ quizShowView('result'); }
+function quizGoToLead(){
+  var lang = currentLang();
+  var tier = TIERS[window.cortexQuiz.teamSize];
+  var tierI18n = (TIERS_I18N[lang] || TIERS_I18N.en)[window.cortexQuiz.teamSize];
+  if(tier) document.getElementById('leadTierLabel').textContent = 'CORTEX ' + tierI18n.name;
+  quizShowView('lead');
+  if(window.trackEvent) window.trackEvent('home', 'cortex_quiz_result', { tier: window.cortexQuiz.teamSize });
+}
 
-function updateQuizResult(){
+function renderResult(){
   var q = window.cortexQuiz;
   var lang = currentLang();
   var tier = TIERS[q.teamSize];
   var tierI18n = (TIERS_I18N[lang] || TIERS_I18N.en)[q.teamSize];
   if(!tier) return;
-  document.getElementById('resultEmpty').style.display = 'none';
-  document.getElementById('resultFooter').style.display = 'block';
   document.getElementById('resultTierName').textContent = tierI18n.name;
   document.getElementById('resultTierTarget').textContent = tierI18n.target;
   document.getElementById('resultTierDesc').textContent = tierI18n.desc;
   var layerLabels = LAYER_LABELS[lang] || LAYER_LABELS.en;
-  document.getElementById('resultLayers').textContent = q.painPoints.map(function(p){ return layerLabels[p] || p; }).join(', ');
+  document.getElementById('resultLayers').textContent = q.painPoints.map(function(p){ return layerLabels[p] || p; }).join(', ') || '—';
   var gap = Math.max(0, tier.level - (q.maturity || 1));
   document.getElementById('resultGap').textContent = gap + ' / 4';
-  var addonTotal = Object.keys(q.addons).reduce(function(sum,k){ return sum + q.addons[k]; }, 0);
-  document.getElementById('resultTotal').textContent = 'RM ' + (tier.setup + addonTotal).toLocaleString();
+  document.getElementById('resultTotal').textContent = 'RM ' + tier.setup.toLocaleString();
   document.getElementById('resultMonthly').textContent = 'RM ' + tier.monthly.toLocaleString() + ' /mo';
-  document.getElementById('resultYear1').textContent = 'RM ' + (tier.year1 + addonTotal).toLocaleString();
-  var addonLabels = ADDON_LABELS[lang] || ADDON_LABELS.en;
-  var lines = Object.keys(q.addons).map(function(k){ return '+ ' + (addonLabels[k]||k) + ' (RM ' + q.addons[k].toLocaleString() + ')'; });
-  document.getElementById('resultAddonLines').innerHTML = lines.join('<br>');
+  document.getElementById('resultYear1').textContent = 'RM ' + tier.year1.toLocaleString();
+  updateLadder();
 }
 
 document.addEventListener('winsym:langchange', function(){
-  if(window.cortexQuiz.step === 4 && window.cortexQuiz.teamSize) updateQuizResult();
+  if(window.cortexQuiz.teamSize && (window.cortexQuiz.view === 'result' || window.cortexQuiz.view === 'lead')) renderResult();
 });
 
-async function submitQuiz(){
+async function submitQuizLead(e){
+  e.preventDefault();
   var q = window.cortexQuiz;
   var tier = TIERS[q.teamSize];
   if(!tier) return;
-  var addonTotal = Object.keys(q.addons).reduce(function(sum,k){ return sum + q.addons[k]; }, 0);
-  var packageTotal = tier.setup + addonTotal;
-  var packageItems = Object.assign({ tier: q.teamSize, painPoints: q.painPoints, maturity: q.maturity }, q.addons);
-  var serviceSelect = document.getElementById('cf-service');
-  var messageField = document.getElementById('cf-message');
-  if(serviceSelect && !serviceSelect.value) serviceSelect.value = 'CORTEX ' + (tier.name || q.teamSize);
-  if(messageField && !messageField.value) messageField.value = 'CORTEX tier match: ' + tier.name + '. Pain points: ' + q.painPoints.join(', ') + '.';
+  var name    = document.getElementById('qz-name').value.trim();
+  var company = document.getElementById('qz-company').value.trim();
+  var email   = document.getElementById('qz-email').value.trim();
+  var phone   = document.getElementById('qz-phone').value.trim();
+  var notice  = document.getElementById('qzLeadNotice');
+  if(!name || !company || !email || !phone){
+    notice.style.color = 'var(--danger)';
+    notice.textContent = T('calc.leadError','Please fill in all fields.');
+    return;
+  }
+  var btn = document.getElementById('qzLeadSubmit');
+  btn.disabled = true;
+  var packageItems = { tier: q.teamSize, painPoints: q.painPoints, maturity: q.maturity, phone: phone };
   try{
     if(window.submitBooking){
-      await window.submitBooking({ name: '', email: '', company: '', service: 'CORTEX ' + tier.name, packageTotal: packageTotal, packageItems: packageItems, notes: 'Calculator submission' });
+      await window.submitBooking({
+        name: name, email: email, company: company,
+        service: 'CORTEX ' + tier.name,
+        packageTotal: tier.setup,
+        packageItems: packageItems,
+        notes: 'CORTEX quiz · phone: ' + phone + ' · pain points: ' + q.painPoints.join(', ') + ' · maturity: ' + q.maturity
+      });
     }
-    if(window.trackEvent) window.trackEvent('home', 'cortex_quiz_complete', { tier: q.teamSize, total: packageTotal });
-  } catch(e){ /* non-blocking */ }
-  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    if(window.trackEvent) window.trackEvent('home', 'cortex_quiz_complete', { tier: q.teamSize, total: tier.setup });
+    quizShowView('done');
+  } catch(err){
+    notice.style.color = 'var(--danger)';
+    notice.textContent = T('calc.leadFail','Something went wrong. Please try again or email work@edgegraphics.co.');
+    btn.disabled = false;
+  }
 }
 
 /* ---------- Contact form ---------- */
@@ -1062,7 +1260,8 @@ window.I18N.de = Object.assign({}, window.I18N.de, {
   // ---- Calculator ----
   'calc.tag': 'Finden Sie Ihre Passung',
   'calc.heading': 'Welche Größe hat Ihr CORTEX-Brain?',
-  'calc.intro': 'Vier kurze Fragen. Erhalten Sie eine Stufe, eine Preisspanne und einen klaren nächsten Schritt.',
+  'calc.intro': 'Drei kurze Fragen. Sehen Sie Ihre Stufe, Ihre Preisspanne und wo Sie heute stehen — und senden Sie Ihre Anfrage direkt hier.',
+  'calc.openCta': 'Meine CORTEX-Stufe finden →',
   'calc.stepLabel': 'Schritt',
   'calc.back': '← Zurück',
   'calc.next': 'Weiter →',
@@ -1085,6 +1284,25 @@ window.I18N.de = Object.assign({}, window.I18N.de, {
   'calc.q2Opt4Title': 'Fortgeschritten',
   'calc.q2Opt4Desc': 'Reifer Stack, bereit zur Vereinheitlichung',
   'calc.q3Title': 'Wo tut es gerade am meisten weh? (bis zu 2 wählen)',
+  'calc.seeResult': 'Mein Ergebnis ansehen →',
+  'calc.matchBadge': 'Ihre Passung',
+  'calc.disclaimer': 'Richtwert auf Basis Ihrer Antworten. Ihr genauer Umfang wird im kostenlosen 30-minütigen Brain-Diagnose-Call festgelegt.',
+  'calc.requestCta': 'Das anfragen →',
+  'calc.requestingLabel': 'Anfrage:',
+  'calc.ladderTitle': 'Wo Sie landen',
+  'calc.ladderHint': 'Wählen Sie Ihre Teamgröße und wir markieren Ihre Stufe sofort — so wissen Sie immer, wo Sie stehen.',
+  'calc.leadTitle': 'Wohin sollen wir Ihren Plan senden?',
+  'calc.leadSub': 'Wir senden Ihnen eine maßgeschneiderte Zusammenfassung und melden uns, um Ihren kostenlosen Brain-Diagnose-Call zu vereinbaren.',
+  'calc.leadName': 'Vollständiger Name *',
+  'calc.leadCompany': 'Unternehmen *',
+  'calc.leadEmail': 'E-Mail *',
+  'calc.leadPhone': 'Telefon *',
+  'calc.leadSubmit': 'Meine Anfrage senden →',
+  'calc.leadError': 'Bitte füllen Sie alle Felder aus.',
+  'calc.leadFail': 'Etwas ist schiefgelaufen. Bitte erneut versuchen oder an work@edgegraphics.co schreiben.',
+  'calc.doneTitle': 'Anfrage erhalten',
+  'calc.doneBody': 'Danke — Ihre CORTEX-Zusammenfassung ist auf dem Weg in Ihr Postfach. Wir melden uns innerhalb eines Werktags, um Ihren kostenlosen Brain-Diagnose-Call zu vereinbaren.',
+  'calc.doneClose': 'Schließen',
   'calc.q4Title': 'Möchten Sie noch etwas ergänzen? (optional)',
   'calc.addon1': 'KI-Jumpstart / Brain-Diagnose',
   'calc.addon2': 'Brain-Coaching — 8 Wochen',
