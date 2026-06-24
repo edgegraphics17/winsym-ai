@@ -45,11 +45,40 @@
     }
   }
 
+  /* ---------- kill the google translate top banner / tooltip ---------- */
+  function suppressGoogleChrome() {
+    if (document.getElementById('gt-suppress-style')) return;
+    var css = ''
+      + '.goog-te-banner-frame,.goog-te-banner-frame.skiptranslate,iframe.goog-te-banner-frame,'
+      + '.skiptranslate>iframe,#goog-gt-tt,.goog-te-balloon-frame,div#goog-gt-{display:none!important;visibility:hidden!important;}'
+      + 'body{top:0!important;position:static!important;}'
+      + '.goog-tooltip,.goog-tooltip:hover{display:none!important;}'
+      + '.goog-text-highlight{background:none!important;box-shadow:none!important;}'
+      + '#google_translate_element{display:none!important;}';
+    var st = document.createElement('style');
+    st.id = 'gt-suppress-style';
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    /* Google can inject the banner asynchronously — keep removing it. */
+    function strip() {
+      var f = document.querySelector('.goog-te-banner-frame, iframe.goog-te-banner-frame');
+      if (f && f.parentNode) f.parentNode.removeChild(f);
+      if (document.body && document.body.style.top) document.body.style.top = '0px';
+    }
+    strip();
+    var obs = new MutationObserver(strip);
+    try { obs.observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+    setTimeout(strip, 500);
+    setTimeout(strip, 1500);
+  }
+
   /* ---------- load the google widget once ---------- */
   var widgetInjected = false;
   function injectWidget() {
     if (widgetInjected) return;
     widgetInjected = true;
+    suppressGoogleChrome();
 
     if (!document.getElementById('google_translate_element')) {
       var holder = document.createElement('div');
@@ -151,6 +180,7 @@
     syncSwitchers(lang);
     document.documentElement.setAttribute('lang', lang);
     if (lang !== DEFAULT_LANG) {
+      suppressGoogleChrome();
       setGoogTrans(lang);
       injectWidget();
     }
