@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="meta.title">CORTEX — Business Intelligence Operating System · by winsym.ai</title>
+<meta name="description" data-i18n="meta.desc" data-i18n-attr="content" content="CORTEX is the governed AI Operating System that captures what your company knows, maps how it works, and helps decide — without ever making things up. By winsym.ai.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script src="js/i18n.js"></script>
+<style>
+/* ===== cortex.html — page-specific ===== */
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
+@media (max-width:920px){.hero-grid{grid-template-columns:1fr;}}
+.graph-visual{width:100%;max-width:440px;margin:0 auto;}
+.trust{background:var(--black);color:var(--cream);padding:36px 0;}
+.trust-row{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.trust-quote{font-family:var(--font-display);font-style:italic;font-size:16px;color:#E8E3DA;max-width:620px;}
+.badges{display:flex;gap:12px;flex-wrap:wrap;}
+.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(245,242,238,0.18);color:var(--cream);border-radius:var(--radius-full);padding:8px 14px;font-size:12.5px;}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--orange-bright);}
+.prop-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:30px;transition:border-color var(--duration-base);}
+.prop-card:hover{border-color:var(--orange);}
+.prop-card h3{margin-bottom:10px;}
+.maturity{background:var(--white);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);}
+.industries-scroll{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 32px 12px;scrollbar-width:thin;}
+@media (max-width:768px){.industries-scroll{padding:0 20px 12px;}}
+.industry-card{scroll-snap-align:start;flex:0 0 280px;border-radius:var(--radius-lg);padding:28px;height:300px;display:flex;flex-direction:column;justify-content:flex-end;color:var(--white);position:relative;overflow:hidden;}
+.industry-card::before{content:'';position:absolute;inset:0;opacity:0.94;}
+.industry-card.ind-1::before{background:linear-gradient(145deg,#2A1810,#46210e);}
+.industry-card.ind-2::before{background:linear-gradient(145deg,#16221C,#143028);}
+.industry-card.ind-3::before{background:linear-gradient(145deg,#241620,#3a1424);}
+.industry-card.ind-4::before{background:linear-gradient(145deg,#1a2030,#142238);}
+.industry-card.ind-5::before{background:linear-gradient(145deg,#2a2412,#3a3014);}
+.industry-card.ind-6::before{background:linear-gradient(145deg,#241a16,#3a2418);}
+.ic-content{position:relative;z-index:1;}
+.industry-card h3{color:var(--white);font-size:20px;margin-bottom:8px;}
+.industry-card .compliance{font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,0.82);margin-bottom:14px;}
+.ic-link{font-size:13px;font-weight:600;color:var(--white);text-decoration:underline;}
+.cred{background:var(--black);color:var(--cream);}
+.cred .eyebrow{color:var(--orange-bright);}
+.cred h2{color:var(--cream);}
+.cred-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;margin-top:32px;align-items:start;}
+@media (max-width:880px){.cred-grid{grid-template-columns:1fr;}}
+.cred-grid p{color:#C9C2B6;margin-bottom:16px;}
+.cred-list{list-style:none;margin:0;padding:0;background:#262220;border-radius:var(--radius-lg);padding:28px;}
+.cred-list li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid rgba(245,242,238,0.08);font-size:14.5px;color:#E8E3DA;}
+.cred-list li:last-child{border-bottom:none;}
+.cred-list .check{flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:var(--orange);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.region-toggle{display:inline-flex;background:var(--card);border-radius:var(--radius-full);padding:4px;gap:2px;margin-bottom:32px;}
+.region-btn{border:none;background:none;padding:9px 20px;border-radius:var(--radius-full);cursor:pointer;font-family:var(--font-mono);font-size:13px;color:var(--gray);transition:all var(--duration-fast);}
+.region-btn[aria-pressed="true"]{background:var(--black);color:var(--cream);}
+.scroll-ctrls{display:flex;gap:10px;margin-top:18px;justify-content:flex-end;}
+.fade-up{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.fade-up.is-visible{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#top" data-i18n="a11y.skip">Skip to content</a>
+
+<header class="ws-header">
+<nav class="ws-nav">
+<a href="/" class="ws-nav-logo">
+  <span class="brand-mark">win<span class="accent">sym</span>.ai</span>
+  <span class="brand-tag" data-i18n="nav.tag">AI Operating Systems</span>
+</a>
+<ul class="ws-nav-links" id="wsNavLinks">
+  <li><a href="/" class="ws-nav-link" data-i18n="nav.home">Home</a></li>
+  <li><a href="/cortex.html" class="ws-nav-link" aria-current="page" data-i18n="nav.cortex">CORTEX</a></li>
+  <li><a href="/about" class="ws-nav-link" data-i18n="nav.about">About</a></li>
+  <li><a href="/projects" class="ws-nav-link" data-i18n="nav.projects">Projects</a></li>
+  <li><a href="academy.html" class="ws-nav-link" data-i18n="nav.academy">Academy</a></li>
+  <li><a href="/#contact" class="ws-nav-link" data-i18n="nav.contact">Contact</a></li>
+  <li class="ws-lang-switch">
+    <button class="ws-lang-btn" type="button" aria-label="Change language"><span class="ws-lang-btn-text">EN</span></button>
+    <div class="ws-lang-menu" role="listbox">
+      <button class="ws-lang-option" type="button" data-lang="en" role="option">English<span>EN</span></button>
+      <button class="ws-lang-option" type="button" data-lang="de" role="option">Deutsch<span>DE</span></button>
+    </div>
+  </li>
+</ul>
+<div class="ws-nav-ctas">
+  <a href="/#contact" class="btn btn-ghost btn-sm" data-i18n="nav.demo">Book a demo</a>
+  <a href="#assessment" class="btn btn-primary btn-sm" data-i18n="nav.maturity">Start Maturity Check</a>
+</div>
+<button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="wsNavLinks">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+</button>
+</nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero" style="padding-top:80px;">
+<div class="wrap hero-grid">
+  <div>
+    <span class="eyebrow" data-i18n="hero.eyebrow">Business Intelligence Operating System</span>
+    <h1 style="margin:18px 0 22px;" data-i18n="hero.h1">Your company already has a brain. It's just scattered across people, files and apps.</h1>
+    <p class="lead" style="font-size:18px;max-width:540px;color:var(--gray);" data-i18n="hero.lead">CORTEX is the governed AI Operating System that captures what your company knows, maps how it works, and helps decide — without ever making things up.</p>
+    <div class="hero-ctas" style="display:flex;gap:14px;flex-wrap:wrap;margin:30px 0 14px;">
+      <a href="#assessment" class="btn btn-primary" data-i18n="hero.cta1">Start Maturity Check (2 min)</a>
+      <a href="/#contact" class="btn btn-ghost" data-i18n="hero.cta2">Book a demo</a>
+    </div>
+    <p class="hero-note" style="font-size:13px;color:var(--gray-light);" data-i18n="hero.note">Free · no credit card · result in 2 minutes</p>
+  </div>
+  <div aria-hidden="true">
+    <svg class="graph-visual" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#C45A1A" stroke-width="1.4" opacity="0.55">
+        <line x1="240" y1="240" x2="120" y2="120"/><line x1="240" y1="240" x2="360" y2="100"/><line x1="240" y1="240" x2="380" y2="260"/><line x1="240" y1="240" x2="300" y2="380"/><line x1="240" y1="240" x2="140" y2="350"/><line x1="240" y1="240" x2="90" y2="240"/><line x1="120" y1="120" x2="360" y2="100"/><line x1="380" y1="260" x2="300" y2="380"/><line x1="140" y1="350" x2="90" y2="240"/>
+      </g>
+      <g fill="#C45A1A">
+        <circle cx="240" cy="240" r="22"/><circle cx="120" cy="120" r="10" opacity="0.85"/><circle cx="360" cy="100" r="13" opacity="0.85"/><circle cx="380" cy="260" r="10" opacity="0.85"/><circle cx="300" cy="380" r="14" opacity="0.85"/><circle cx="140" cy="350" r="9" opacity="0.85"/><circle cx="90" cy="240" r="11" opacity="0.85"/>
+      </g>
+      <g fill="#1C1917"><circle cx="240" cy="240" r="6"/></g>
+    </svg>
+  </div>
+</div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust">
+<div class="wrap trust-row">
+  <p class="trust-quote" data-i18n="trust.quote">"Productized from a system built for a national organisation — in a field where one invented fact does real damage."</p>
+  <div class="badges">
+    <span class="badge"><span class="dot"></span>Google Partner</span>
+    <span class="badge"><span class="dot"></span>Meta Partner</span>
+    <span class="badge"><span class="dot"></span>winsym.ai · Kuala Lumpur</span>
+  </div>
+</div>
+</div>
+
+<!-- VALUE PROPS -->
+<section>
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="props.eyebrow">Why CORTEX</span>
+    <h2 style="margin-top:14px;" data-i18n="props.heading">Three guarantees no chat tool gives you</h2>
+  </div>
+  <div class="props-grid">
+    <div class="prop-card fade-up"><div class="prop-icon" aria-hidden="true">◆</div><h3 data-i18n="props.p1Title">Never lose knowledge again</h3><p data-i18n="props.p1Desc">A trusted single source of truth instead of scattered heads, folders and chats.</p><a href="#solutions" class="prop-link" data-i18n="props.learn">Learn more →</a></div>
+    <div class="prop-card fade-up"><div class="prop-icon" aria-hidden="true">✓</div><h3 data-i18n="props.p2Title">Decisions on evidence, not opinion</h3><p data-i18n="props.p2Desc">Every answer is sourced and confidence-scored — traceable, not guessed.</p><a href="#solutions" class="prop-link" data-i18n="props.learn">Learn more →</a></div>
+    <div class="prop-card fade-up"><div class="prop-icon" aria-hidden="true">⚿</div><h3 data-i18n="props.p3Title">Built for trust</h3><p data-i18n="props.p3Desc">No fabrication, full access control, human sign-off on critical outputs.</p><a href="#cred" class="prop-link" data-i18n="props.learn">Learn more →</a></div>
+  </div>
+</div>
+</section>
+
+<!-- MATURITY STEPPER -->
+<section class="maturity">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="mat.eyebrow">The CORTEX Maturity Ladder</span>
+    <h2 style="margin-top:14px;" data-i18n="mat.heading">Where does your company stand today?</h2>
+    <p data-i18n="mat.intro">No competitor has this: a diagnosis, not a feature catalogue. Five levels, one clear path up — you're never re-platformed, only unlocked.</p>
+  </div>
+  <div class="stepper-track" role="tablist" aria-label="Maturity levels">
+    <button class="step-btn" role="tab" aria-selected="true" aria-controls="step-panel" id="step-tab-0" data-step="0"><span class="step-num">Level 1</span><span class="step-name" data-i18n="mat.l1Name">Scattered</span></button>
+    <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-1" data-step="1"><span class="step-num">Level 2</span><span class="step-name" data-i18n="mat.l2Name">Captured</span></button>
+    <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-2" data-step="2"><span class="step-num">Level 3</span><span class="step-name" data-i18n="mat.l3Name">Connected</span></button>
+    <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-3" data-step="3"><span class="step-num">Level 4</span><span class="step-name" data-i18n="mat.l4Name">Decision-ready</span></button>
+    <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-4" data-step="4"><span class="step-num">Level 5</span><span class="step-name" data-i18n="mat.l5Name">Autonomous</span></button>
+  </div>
+  <div class="step-panel" role="tabpanel" id="step-panel" aria-labelledby="step-tab-0">
+    <div id="step-text">
+      <h3 id="step-title">Level 1 — Scattered</h3>
+      <p id="step-body">Knowledge lives in heads, files and chat logs. Every question needs the one colleague who knows — and they're on holiday.</p>
+    </div>
+    <div class="step-stat" id="step-stat">
+      <span class="num" id="step-num">0</span>
+      <span class="label" id="step-label">Layers active</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SOLUTIONS TABS -->
+<section id="solutions">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="sol.eyebrow">Solutions</span>
+    <h2 style="margin-top:14px;" data-i18n="sol.heading">One brain, eight functions, zero hallucinations.</h2>
+    <p data-i18n="sol.intro">Eight layers, each framed as an outcome — not a feature. You unlock what your current maturity level allows.</p>
+  </div>
+  <div class="tabs-nav" role="tablist" aria-label="CORTEX layers">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-panel" id="tab-tab-0" data-tab="0">Knowledge</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-1" data-tab="1">Operations</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-2" data-tab="2">Marketing</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-3" data-tab="3">Sales</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-4" data-tab="4">Customer</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-5" data-tab="5">Decision</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-6" data-tab="6">Intelligence</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-7" data-tab="7">Automation</button>
+  </div>
+  <div class="tab-panel" id="tab-panel" role="tabpanel" aria-labelledby="tab-tab-0">
+    <div id="tab-text">
+      <span class="level-chip" id="tab-chip">Unlocks from Level 1–2</span>
+      <h3 id="tab-title">Knowledge</h3>
+      <p id="tab-body">No more "ask the veteran". A governed knowledge source answers, instead of guessing.</p>
+    </div>
+    <div class="tab-visual" aria-hidden="true">
+      <svg width="140" height="140" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C45A1A" stroke-width="2" opacity="0.5"/><circle cx="50" cy="50" r="8" fill="#C45A1A"/></svg>
+    </div>
+  </div>
+  <p class="closing-line" data-i18n="sol.closing">"One brain, eight functions, zero hallucinations."</p>
+</div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="ind.eyebrow">Industries</span>
+    <h2 style="margin-top:14px;" data-i18n="ind.heading">We configure the brain to your industry.</h2>
+    <p data-i18n="ind.intro">Six hardened templates, each with its own compliance guardrails — here the trust layer is the hero, not a nice-to-have.</p>
+  </div>
+</div>
+<div class="industries-scroll" id="industries-scroll" tabindex="0" role="region" aria-label="Industries, horizontally scrollable">
+  <article class="industry-card ind-1"><div class="ic-content"><h3 data-i18n="ind.c1Name">Law firms</h3><p class="compliance" data-i18n="ind.c1Comp">Protects attorney-client privilege</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+  <article class="industry-card ind-2"><div class="ic-content"><h3 data-i18n="ind.c2Name">Medical practices</h3><p class="compliance" data-i18n="ind.c2Comp">HIPAA / PDPA compliant</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+  <article class="industry-card ind-3"><div class="ic-content"><h3 data-i18n="ind.c3Name">Hotels &amp; Hospitality</h3><p class="compliance" data-i18n="ind.c3Comp">Guest data privacy first</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+  <article class="industry-card ind-4"><div class="ic-content"><h3 data-i18n="ind.c4Name">Real estate</h3><p class="compliance" data-i18n="ind.c4Comp">Contract &amp; deadline certainty</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+  <article class="industry-card ind-5"><div class="ic-content"><h3 data-i18n="ind.c5Name">Marketing agencies</h3><p class="compliance" data-i18n="ind.c5Comp">On-brand for every client</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+  <article class="industry-card ind-6"><div class="ic-content"><h3 data-i18n="ind.c6Name">Restaurants</h3><p class="compliance" data-i18n="ind.c6Comp">Food safety baked in</p><a href="/#contact" class="ic-link" data-i18n="ind.view">View industry page</a></div></article>
+</div>
+<div class="wrap">
+  <div class="scroll-ctrls">
+    <button class="scroll-btn" id="ind-prev" aria-label="Previous industry">‹</button>
+    <button class="scroll-btn" id="ind-next" aria-label="Next industry">›</button>
+  </div>
+</div>
+</section>
+
+<!-- CREDIBILITY -->
+<section class="cred" id="cred">
+<div class="wrap">
+  <span class="eyebrow" data-i18n="cred.eyebrow">Why this is credible</span>
+  <h2 style="margin-top:14px;" data-i18n="cred.heading">Productized from a system that already works.</h2>
+  <div class="cred-grid">
+    <div class="fade-up">
+      <p data-i18n="cred.p1">CORTEX is the domain-neutral extraction of the MIPP PIOS — a real, governed "Leadership Brain" built for a national organisation.</p>
+      <p data-i18n="cred.p2">It solved the hardest version of a universal problem: capture what leadership knows, stop the AI from inventing things, and control who sees what — in a field where one invented fact does real damage.</p>
+    </div>
+    <ul class="cred-list fade-up">
+      <li><span class="check">✓</span><span data-i18n="cred.l1">Proven governed architecture (graph + RBAC + grounded RAG)</span></li>
+      <li><span class="check">✓</span><span data-i18n="cred.l2">The CORTEX Method as a delivery system</span></li>
+      <li><span class="check">✓</span><span data-i18n="cred.l3">One framework, ready for any industry</span></li>
+      <li><span class="check">✓</span><span data-i18n="cred.l4">Founder with a Google + Meta Partner track record, KL-based</span></li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="price.eyebrow">Pricing</span>
+    <h2 style="margin-top:14px;" data-i18n="price.heading">One platform. Five maturity levels. You buy your way up.</h2>
+    <p data-i18n="price.intro">Priced by value &amp; maturity, not by seats. No re-platforming as you grow — just new layers.</p>
+  </div>
+  <div class="region-toggle" role="group" aria-label="Choose region">
+    <button class="region-btn" aria-pressed="true" data-region="myr">MYR</button>
+    <button class="region-btn" aria-pressed="false" data-region="eur">EUR</button>
+    <button class="region-btn" aria-pressed="false" data-region="usd">USD</button>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <span class="price-tier-name">Starter</span>
+      <p class="price-target" data-i18n="price.t1Target">Solo / Micro (1–10 staff)</p>
+      <p class="price-num" data-myr="RM 1,200/mo" data-eur="€ 450/mo" data-usd="$ 600/mo">RM 1,200/mo</p>
+      <p class="price-sub" data-myr="Setup RM 6,000 · Year 1 RM 20,400" data-eur="Setup € 2,500 · Year 1 € 7,900" data-usd="Setup $ 3,000 · Year 1 $ 10,200">Setup RM 6,000 · Year 1 RM 20,400</p>
+      <p class="price-outcome" data-i18n="price.t1Out">Find answers &amp; trust them</p>
+      <p class="price-level" data-i18n="price.t1Lvl">Level 1 → 2 · 2–3 layers active</p>
+      <a href="#assessment" class="btn btn-ghost" data-i18n="price.t1Cta">Maturity Check</a>
+    </div>
+    <div class="price-card featured">
+      <span class="price-tier-name">Growth</span>
+      <p class="price-target" data-i18n="price.t2Target">SME (10–250 staff)</p>
+      <p class="price-num" data-myr="RM 3,500/mo" data-eur="€ 1,400/mo" data-usd="$ 2,000/mo">RM 3,500/mo</p>
+      <p class="price-sub" data-myr="Setup RM 18,000 · Year 1 RM 60,000" data-eur="Setup € 8,000 · Year 1 € 24,800" data-usd="Setup $ 12,000 · Year 1 $ 36,000">Setup RM 18,000 · Year 1 RM 60,000</p>
+      <p class="price-outcome" data-i18n="price.t2Out">The brain does the work</p>
+      <p class="price-level" data-i18n="price.t2Lvl">Level 2 → 3 · 4–5 layers active</p>
+      <a href="/#contact" class="btn btn-primary" data-i18n="price.t2Cta">Book a demo</a>
+    </div>
+    <div class="price-card">
+      <span class="price-tier-name">Professional</span>
+      <p class="price-target" data-i18n="price.t3Target">Mid-Market (250–2,500)</p>
+      <p class="price-num" data-myr="RM 8,000/mo" data-eur="€ 3,500/mo" data-usd="$ 6,000/mo">RM 8,000/mo</p>
+      <p class="price-sub" data-myr="Setup RM 45,000 · Year 1 RM 141,000" data-eur="Setup € 22,000 · Year 1 € 64,000" data-usd="Setup $ 35,000 · Year 1 $ 107,000">Setup RM 45,000 · Year 1 RM 141,000</p>
+      <p class="price-outcome" data-i18n="price.t3Out">The brain helps decide</p>
+      <p class="price-level" data-i18n="price.t3Lvl">Level 3 → 4 · 6–7 layers active</p>
+      <a href="/#contact" class="btn btn-ghost" data-i18n="price.t3Cta">Book a demo</a>
+    </div>
+    <div class="price-card">
+      <span class="price-tier-name">Enterprise</span>
+      <p class="price-target" data-i18n="price.t4Target">Enterprise (2,500–10,000+)</p>
+      <p class="price-num" data-myr="RM 18,000+/mo" data-eur="€ 8,500+/mo" data-usd="$ 15,000+/mo">RM 18,000+/mo</p>
+      <p class="price-sub" data-myr="Setup RM 120,000+ · Year 1 RM 336,000+" data-eur="Setup € 65,000+ · Year 1 € 167,000+" data-usd="Setup $ 90,000+ · Year 1 $ 270,000+">Setup RM 120,000+ · Year 1 RM 336,000+</p>
+      <p class="price-outcome" data-i18n="price.t4Out">The company runs on it</p>
+      <p class="price-level" data-i18n="price.t4Lvl">Level 4 → 5 · all 8 layers</p>
+      <a href="/#contact" class="btn btn-ghost" data-i18n="price.t4Cta">Request a conversation</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="assessment">
+<div class="wrap">
+  <div class="final-cta fade-up">
+    <span class="eyebrow" style="color:rgba(255,255,255,0.85);" data-i18n="fcta.eyebrow">Ready?</span>
+    <h2 data-i18n="fcta.heading">Ready to build your company's brain?</h2>
+    <p data-i18n="fcta.body">A 2-minute diagnosis, no commitment — you'll see instantly where you stand on the Maturity Ladder.</p>
+    <div class="cta-row">
+      <a href="/#contact" class="btn btn-primary" data-i18n="fcta.cta1">Start Maturity Check</a>
+      <a href="/#contact" class="btn btn-ghost" data-i18n="fcta.cta2">Book a demo</a>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer class="ws-footer">
+<div class="wrap footer-grid">
+  <div>
+    <span class="brand-mark" style="color:var(--cream);">win<span class="accent">sym</span>.ai</span>
+    <p style="margin-top:12px;font-size:14px;" data-i18n="footer.tagline">Winning Systems · Backed by AI</p>
+    <div class="badges-row" style="margin-top:18px;">
+      <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Google Partner</span>
+      <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Meta Partner</span>
+    </div>
+  </div>
+  <div>
+    <h4 data-i18n="footer.productHead">Product</h4>
+    <ul>
+      <li><a href="#solutions" data-i18n="sol.eyebrow">Solutions</a></li>
+      <li><a href="#pricing" data-i18n="price.eyebrow">Pricing</a></li>
+      <li><a href="#cred" data-i18n="footer.method">CORTEX Method</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4 data-i18n="footer.pagesHead">Pages</h4>
+    <ul>
+      <li><a href="/" data-i18n="nav.home">Home</a></li>
+      <li><a href="/about" data-i18n="nav.about">About</a></li>
+      <li><a href="/projects" data-i18n="nav.projects">Projects</a></li>
+      <li><a href="academy.html" data-i18n="nav.academy">Academy</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4 data-i18n="footer.contactHead">Contact</h4>
+    <ul>
+      <li><a href="mailto:work@edgegraphics.co">work@edgegraphics.co</a></li>
+      <li><a href="tel:+601124487055">+60 112 4487055</a></li>
+      <li><a href="https://wa.me/491622035499" target="_blank" rel="noopener">WhatsApp</a></li>
+    </ul>
+  </div>
+</div>
+<div class="wrap footer-bottom">
+  <span data-i18n="footer.copyright">© 2026 CORTEX · a winsym.ai product</span>
+  <div class="footer-legal">
+    <span data-i18n="footer.location">Kuala Lumpur, Malaysia</span>
+  </div>
+</div>
+</footer>
+
+<a href="https://wa.me/491622035499?text=Hi%20Karim%2C%20I%27d%20like%20to%20talk%20about%20CORTEX%20for%20my%20business." class="wa-float" target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 00-8.5 15.2L2 22l4.9-1.5A10 10 0 1012 2z" stroke="white" stroke-width="1.4"/><path d="M8 9.5c0 4 3.5 7 7 7" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+</a>
+
+<script>
+/* mobile nav (shared chrome) */
+(function(){
+  var burger=document.getElementById('navBurger'),links=document.getElementById('wsNavLinks');
+  if(!burger||!links)return;
+  burger.addEventListener('click',function(){var o=links.classList.toggle('open');burger.setAttribute('aria-expanded',o?'true':'false');});
+  links.querySelectorAll('a.ws-nav-link').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');burger.setAttribute('aria-expanded','false');});});
+})();
+</script>
+
+<script>
+window.I18N = window.I18N || {};
+window.I18N.de = Object.assign({}, window.I18N.de, {
+  'meta.title': 'CORTEX — Business Intelligence Operating System · von winsym.ai',
+  'meta.desc': 'CORTEX ist das governte AI Operating System, das festhält, was Ihr Unternehmen weiß, abbildet, wie es arbeitet, und mitentscheidet — ohne sich jemals etwas auszudenken. Von winsym.ai.',
+  'a11y.skip': 'Zum Inhalt springen',
+  'nav.tag': 'KI-Betriebssysteme',
+  'nav.home': 'Start', 'nav.cortex': 'CORTEX', 'nav.about': 'Über', 'nav.projects': 'Projekte', 'nav.academy': 'Academy', 'nav.contact': 'Kontakt',
+  'nav.demo': 'Demo buchen', 'nav.maturity': 'Maturity Check starten',
+  'hero.eyebrow': 'Business Intelligence Operating System',
+  'hero.h1': 'Ihr Unternehmen hat bereits ein Gehirn. Es ist nur über Mitarbeiter, Dateien und Apps verstreut.',
+  'hero.lead': 'CORTEX ist das governte AI Operating System, das festhält, was Ihr Unternehmen weiß, abbildet, wie es arbeitet, und mitentscheidet — ohne sich jemals etwas auszudenken.',
+  'hero.cta1': 'Maturity Check starten (2 Min.)', 'hero.cta2': 'Demo buchen',
+  'hero.note': 'Kostenlos · keine Kreditkarte · Ergebnis in 2 Minuten',
+  'trust.quote': '„Productized aus einem System, das für eine nationale Organisation gebaut wurde — in einem Bereich, in dem eine erfundene Tatsache realen Schaden anrichtet."',
+  'props.eyebrow': 'Warum CORTEX',
+  'props.heading': 'Drei Garantien, die kein Chat-Tool gibt',
+  'props.p1Title': 'Wissen geht nie wieder verloren', 'props.p1Desc': 'Eine vertrauenswürdige Quelle der Wahrheit statt verstreuter Köpfe, Ordner und Chats.',
+  'props.p2Title': 'Entscheidungen auf Evidenz, nicht Meinung', 'props.p2Desc': 'Jede Antwort ist belegt und mit Konfidenz bewertet — nachvollziehbar statt geraten.',
+  'props.p3Title': 'Gebaut für Vertrauen', 'props.p3Desc': 'Keine Erfindungen, volle Zugriffskontrolle, menschliche Freigabe bei kritischen Outputs.',
+  'props.learn': 'Mehr erfahren →',
+  'mat.eyebrow': 'Der CORTEX Maturity Ladder',
+  'mat.heading': 'Wo steht Ihr Unternehmen heute?',
+  'mat.intro': 'Das hat kein Wettbewerber: eine Diagnose statt eines Feature-Katalogs. Fünf Stufen, ein klarer Weg nach oben — Sie werden nie neu plattformiert, nur freigeschaltet.',
+  'mat.l1Name': 'Verstreut', 'mat.l2Name': 'Festgehalten', 'mat.l3Name': 'Vernetzt', 'mat.l4Name': 'Entscheidungsfähig', 'mat.l5Name': 'Autonom',
+  'sol.eyebrow': 'Lösungen',
+  'sol.heading': 'Ein Gehirn, acht Funktionen, null Halluzinationen.',
+  'sol.intro': 'Acht Layer, jeder als Outcome formuliert — nicht als Feature. Sie schalten frei, was Ihre aktuelle Maturity-Stufe erlaubt.',
+  'sol.closing': '„Ein Gehirn, acht Funktionen, null Halluzinationen."',
+  'ind.eyebrow': 'Branchen',
+  'ind.heading': 'Wir konfigurieren das Gehirn an Ihre Branche.',
+  'ind.intro': 'Sechs gehärtete Templates, jedes mit eigenen Compliance-Leitplanken — die Vertrauensebene ist hier der Held, nicht ein Nice-to-have.',
+  'ind.view': 'Branchenseite ansehen',
+  'ind.c1Name': 'Anwaltskanzleien', 'ind.c1Comp': 'Wahrt das Anwaltsgeheimnis',
+  'ind.c2Name': 'Arztpraxen', 'ind.c2Comp': 'HIPAA / PDPA-konform',
+  'ind.c3Name': 'Hotels & Hospitality', 'ind.c3Comp': 'Gäste-Datenschutz first',
+  'ind.c4Name': 'Immobilien', 'ind.c4Comp': 'Vertrags- & Fristensicherheit',
+  'ind.c5Name': 'Marketing-Agenturen', 'ind.c5Comp': 'On-Brand für jeden Kunden',
+  'ind.c6Name': 'Restaurants', 'ind.c6Comp': 'Lebensmittelsicherheit verankert',
+  'cred.eyebrow': 'Warum das glaubwürdig ist',
+  'cred.heading': 'Productized von einem System, das bereits funktioniert.',
+  'cred.p1': 'CORTEX ist die domänen-neutrale Extraktion des MIPP PIOS — ein echtes, governtes „Leadership Brain", gebaut für eine nationale Organisation.',
+  'cred.p2': 'Es hat die schwerste Version eines universellen Problems gelöst: festhalten, was die Führung weiß, die KI davon abhalten, sich etwas auszudenken, und kontrollieren, wer was sieht — in einem Bereich, in dem eine erfundene Tatsache realen Schaden anrichtet.',
+  'cred.l1': 'Bewährte governte Architektur (Graph + RBAC + grounded RAG)',
+  'cred.l2': 'Die CORTEX Method als Delivery-System',
+  'cred.l3': 'Ein Framework, bereit für jede Branche',
+  'cred.l4': 'Gründer mit Google + Meta Partner Track Record, KL-basiert',
+  'price.eyebrow': 'Preise',
+  'price.heading': 'Eine Plattform. Fünf Maturity-Stufen. Sie kaufen sich nach oben.',
+  'price.intro': 'Bepreist nach Wert & Maturity, nicht nach Sitzplätzen. Kein Re-Platforming beim Wachsen — nur neue Layer.',
+  'price.t1Target': 'Solo / Micro (1–10 Mitarbeiter)', 'price.t1Out': 'Antworten finden & vertrauen', 'price.t1Lvl': 'Level 1 → 2 · 2–3 Layer aktiv', 'price.t1Cta': 'Maturity Check',
+  'price.t2Target': 'SME (10–250 Mitarbeiter)', 'price.t2Out': 'Das Gehirn übernimmt die Arbeit', 'price.t2Lvl': 'Level 2 → 3 · 4–5 Layer aktiv', 'price.t2Cta': 'Demo buchen',
+  'price.t3Target': 'Mid-Market (250–2.500)', 'price.t3Out': 'Das Gehirn hilft entscheiden', 'price.t3Lvl': 'Level 3 → 4 · 6–7 Layer aktiv', 'price.t3Cta': 'Demo buchen',
+  'price.t4Target': 'Enterprise (2.500–10.000+)', 'price.t4Out': 'Das Unternehmen läuft darauf', 'price.t4Lvl': 'Level 4 → 5 · Alle 8 Layer', 'price.t4Cta': 'Gespräch anfragen',
+  'fcta.eyebrow': 'Bereit?',
+  'fcta.heading': 'Bereit, das Gehirn Ihres Unternehmens zu bauen?',
+  'fcta.body': '2 Minuten Diagnose, keine Verpflichtung — Sie sehen sofort, wo Sie auf der Maturity Ladder stehen.',
+  'fcta.cta1': 'Maturity Check starten', 'fcta.cta2': 'Demo buchen',
+  'footer.tagline': 'Winning Systems · Backed by AI',
+  'footer.productHead': 'Produkt', 'footer.method': 'CORTEX Method',
+  'footer.pagesHead': 'Seiten', 'footer.contactHead': 'Kontakt',
+  'footer.copyright': '© 2026 CORTEX · ein Produkt von winsym.ai', 'footer.location': 'Kuala Lumpur, Malaysia'
+});
+
+/* CORTEX interactive: stepper, tabs, industries scroll, pricing region — i18n-aware */
+(function(){
+  var STEP=[
+    {tk:'cortex.step1Title',t:'Level 1 — Scattered',bk:'cortex.step1Body',b:'Knowledge lives in heads, files and chat logs. Every question needs the one colleague who knows — and they\'re on holiday.',stat:'0'},
+    {tk:'cortex.step2Title',t:'Level 2 — Captured',bk:'cortex.step2Body',b:'A governed knowledge source answers with evidence instead of guessing. Onboarding time drops noticeably.',stat:'2–3'},
+    {tk:'cortex.step3Title',t:'Level 3 — Connected',bk:'cortex.step3Body',b:'Several layers active — Operations, Marketing and Sales share one brain instead of separate silos.',stat:'4–5'},
+    {tk:'cortex.step4Title',t:'Level 4 — Decision-ready',bk:'cortex.step4Body',b:'High-risk decisions are scored and given a confidence level — not just informed.',stat:'6–7'},
+    {tk:'cortex.step5Title',t:'Level 5 — Autonomous',bk:'cortex.step5Body',b:'Verified knowledge drives automation — never the other way round. The business runs at the brain\'s pace.',stat:'8/8'}
+  ];
+  var TAB=[
+    {ck:'cortex.tab1Chip',c:'Unlocks from Level 1–2',ti:'Knowledge',bk:'cortex.tab1Body',b:'No more "ask the veteran". A governed knowledge source answers, instead of guessing.'},
+    {ck:'cortex.tab2Chip',c:'Unlocks from Level 2–3',ti:'Operations',bk:'cortex.tab2Body',b:'Meetings become assigned work — minutes turn into tasks automatically.'},
+    {ck:'cortex.tab3Chip',c:'Unlocks from Level 2–3',ti:'Marketing & Content',bk:'cortex.tab3Body',b:'On-brand, at any scale. Content stays consistent no matter who creates it.'},
+    {ck:'cortex.tab4Chip',c:'Unlocks from Level 3',ti:'Sales',bk:'cortex.tab4Body',b:'Every rep performs like your best rep — objections, arguments and context instantly available.'},
+    {ck:'cortex.tab5Chip',c:'Unlocks from Level 3',ti:'Customer',bk:'cortex.tab5Body',b:'A memory of every relationship — no customer has to tell their story twice.'},
+    {ck:'cortex.tab6Chip',c:'Unlocks from Level 3–4',ti:'Decision',bk:'cortex.tab6Body',b:'Critical decisions are scored, given a confidence level and traceably documented.'},
+    {ck:'cortex.tab7Chip',c:'Unlocks from Level 4',ti:'Intelligence & Risk',bk:'cortex.tab7Body',b:'Live radar on market & risk, plus a prepared crisis plan for when it matters.'},
+    {ck:'cortex.tab8Chip',c:'Unlocks from Level 4–5',ti:'Automation',bk:'cortex.tab8Body',b:'The business runs in rhythm — automation only after the knowledge is verified.'}
+  ];
+  /* DE strings for the dynamic panels */
+  Object.assign(window.I18N.de, {
+    'cortex.step1Title':'Level 1 — Verstreut','cortex.step1Body':'Wissen lebt in Köpfen, Dateien und Chat-Verläufen. Jede Frage braucht den einen Kollegen, der es weiß — und der ist im Urlaub.',
+    'cortex.step2Title':'Level 2 — Festgehalten','cortex.step2Body':'Eine governte Wissensquelle beantwortet Fragen mit Beleg, statt zu raten. Onboarding-Zeit sinkt spürbar.',
+    'cortex.step3Title':'Level 3 — Vernetzt','cortex.step3Body':'Mehrere Layer aktiv — Operations, Marketing und Sales teilen ein Gehirn statt eigener Insellösungen.',
+    'cortex.step4Title':'Level 4 — Entscheidungsfähig','cortex.step4Body':'Hochrisiko-Entscheidungen werden bewertet und mit Konfidenz versehen, nicht nur informiert.',
+    'cortex.step5Title':'Level 5 — Autonom','cortex.step5Body':'Verifiziertes Wissen treibt Automatisierung — nie umgekehrt. Das Geschäft läuft im Takt des Gehirns.',
+    'cortex.layersActive':'Layer aktiv',
+    'cortex.tab1Chip':'Schaltet sich frei ab Level 1–2','cortex.tab1Body':'Schluss mit „Frag den Veteranen". Eine governte Wissensquelle beantwortet, statt zu erraten.',
+    'cortex.tab2Chip':'Schaltet sich frei ab Level 2–3','cortex.tab2Body':'Meetings werden zu zugewiesener Arbeit — Protokolle verwandeln sich automatisch in Aufgaben.',
+    'cortex.tab3Chip':'Schaltet sich frei ab Level 2–3','cortex.tab3Body':'On-Brand, in jeder Größenordnung. Content bleibt konsistent, egal wer ihn erstellt.',
+    'cortex.tab4Chip':'Schaltet sich frei ab Level 3','cortex.tab4Body':'Jeder Rep performt wie Ihr bester Rep — Einwände, Argumente und Kontext sofort verfügbar.',
+    'cortex.tab5Chip':'Schaltet sich frei ab Level 3','cortex.tab5Body':'Eine Erinnerung an jede Beziehung — kein Kunde muss seine Geschichte zweimal erzählen.',
+    'cortex.tab6Chip':'Schaltet sich frei ab Level 3–4','cortex.tab6Body':'Kritische Entscheidungen werden bewertet, mit Konfidenz versehen, nachvollziehbar dokumentiert.',
+    'cortex.tab7Chip':'Schaltet sich frei ab Level 4','cortex.tab7Body':'Live-Radar auf Markt & Risiko, plus ein vorbereiteter Krisenplan für den Ernstfall.',
+    'cortex.tab8Chip':'Schaltet sich frei ab Level 4–5','cortex.tab8Body':'Das Geschäft läuft im Takt — Automatisierung erst, nachdem das Wissen verifiziert ist.'
+  });
+
+  function T(key,fb){var lang=(window.winsymI18n&&window.winsymI18n.getLanguage())||'en';var d=(window.I18N&&window.I18N[lang])||{};return (key in d)?d[key]:fb;}
+
+  var stepBtns=document.querySelectorAll('.step-btn');
+  var stepTitle=document.getElementById('step-title'),stepBody=document.getElementById('step-body'),stepNum=document.getElementById('step-num'),stepLabel=document.getElementById('step-label');
+  var stepPanel=document.getElementById('step-panel');var curStep=0;
+  function setStep(i){curStep=i;stepBtns.forEach(function(b,idx){b.setAttribute('aria-selected',idx===i?'true':'false');});stepPanel.setAttribute('aria-labelledby','step-tab-'+i);var d=STEP[i];stepTitle.textContent=T(d.tk,d.t);stepBody.textContent=T(d.bk,d.b);stepNum.textContent=d.stat;stepLabel.textContent=T('cortex.layersActive','Layers active');}
+  stepBtns.forEach(function(b){b.addEventListener('click',function(){setStep(parseInt(b.dataset.step,10));});});
+
+  var tabBtns=document.querySelectorAll('.tab-btn');
+  var tabChip=document.getElementById('tab-chip'),tabTitle=document.getElementById('tab-title'),tabBody=document.getElementById('tab-body'),tabPanel=document.getElementById('tab-panel');var curTab=0;
+  function setTab(i){curTab=i;tabBtns.forEach(function(b,idx){b.setAttribute('aria-selected',idx===i?'true':'false');});tabPanel.setAttribute('aria-labelledby','tab-tab-'+i);var d=TAB[i];tabChip.textContent=T(d.ck,d.c);tabTitle.innerHTML=d.ti;tabBody.textContent=T(d.bk,d.b);}
+  tabBtns.forEach(function(b){b.addEventListener('click',function(){setTab(parseInt(b.dataset.tab,10));});});
+
+  /* re-render active panels on language change */
+  document.addEventListener('winsym:langchange',function(){setStep(curStep);setTab(curTab);});
+  /* initialise once i18n has applied default lang */
+  setStep(0);setTab(0);
+
+  var scrollEl=document.getElementById('industries-scroll');
+  document.getElementById('ind-prev').addEventListener('click',function(){scrollEl.scrollBy({left:-300,behavior:'smooth'});});
+  document.getElementById('ind-next').addEventListener('click',function(){scrollEl.scrollBy({left:300,behavior:'smooth'});});
+
+  var regionBtns=document.querySelectorAll('.region-btn');
+  regionBtns.forEach(function(btn){btn.addEventListener('click',function(){var region=btn.dataset.region;regionBtns.forEach(function(b){b.setAttribute('aria-pressed',b===btn?'true':'false');});document.querySelectorAll('[data-'+region+']').forEach(function(el){el.textContent=el.getAttribute('data-'+region);});});});
+
+  /* fade-up */
+  if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target);}});},{threshold:0.12});document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el);});}else{document.querySelectorAll('.fade-up').forEach(function(el){el.classList.add('is-visible');});}
+})();
+</script>
+</body>
+</html>

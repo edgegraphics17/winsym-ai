@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORTEX — Business Intelligence Operating System | by winsym.ai</title>
+<meta name="description" content="CORTEX ist das governte AI Operating System, das festhält, was Ihr Unternehmen weiß, abbildet, wie es arbeitet, und mitentscheidet — ohne sich etwas auszudenken.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5F2EE;
+    --card:#EFEAE1;
+    --card-border:#E3DCCF;
+    --black:#1C1917;
+    --orange:#C45A1A;
+    --orange-bright:#E06820;
+    --orange-cta:#A64C16;
+    --orange-cta-bright:#934313;
+    --orange-faint:rgba(196,90,26,0.08);
+    --orange-glow:rgba(196,90,26,0.18);
+    --gray:#5A5550;
+    --gray-light:#6E6860;
+    --white:#FFFFFF;
+    --font-display:'Fraunces', serif;
+    --font-body:'DM Sans', sans-serif;
+    --font-mono:'DM Mono', monospace;
+    --ease:cubic-bezier(.4,0,.2,1);
+    --radius-lg:28px;
+    --radius-md:18px;
+    --maxw:1240px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--black);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);
+    font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--orange);font-weight:500;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange);}
+  h1,h2,h3{font-family:var(--font-display);font-weight:700;color:var(--black);margin:0;letter-spacing:-0.01em;}
+  h2{font-size:clamp(28px,3.4vw,44px);line-height:1.1;}
+  h3{font-size:20px;line-height:1.25;}
+  p{margin:0;color:var(--gray);}
+  .closing-line{
+    font-family:var(--font-display);font-style:italic;font-weight:500;
+    color:var(--black);font-size:18px;line-height:1.5;margin-top:40px;
+    border-top:1px solid var(--card-border);padding-top:24px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--font-body);font-weight:600;font-size:15px;
+    padding:14px 26px;border-radius:100px;border:1.5px solid transparent;
+    cursor:pointer;transition:transform 180ms var(--ease), background 180ms var(--ease), box-shadow 180ms var(--ease);
+    text-decoration:none;white-space:nowrap;
+  }
+  .btn-primary{background:var(--orange-cta);color:var(--white);box-shadow:0 8px 20px -8px var(--orange-glow);}
+  .btn-primary:hover{background:var(--orange-cta-bright);transform:translateY(-1px);}
+  .btn-ghost{background:transparent;color:var(--black);border-color:var(--card-border);}
+  .btn-ghost:hover{border-color:var(--orange);color:var(--orange);}
+  .btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,242,238,0.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--card-border);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;max-width:var(--maxw);margin:0 auto;}
+  .brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;}
+  .brand-mark{font-family:var(--font-display);font-weight:900;font-size:24px;letter-spacing:-0.02em;color:var(--black);}
+  .brand-tag{font-family:var(--font-mono);font-size:11px;color:var(--gray-light);letter-spacing:0.04em;}
+  .nav-links{display:flex;gap:32px;align-items:center;list-style:none;margin:0;padding:0;}
+  .nav-links a{font-size:14.5px;font-weight:500;text-decoration:none;color:var(--gray);transition:color 150ms;}
+  .nav-links a:hover{color:var(--orange);}
+  .nav-ctas{display:flex;gap:12px;align-items:center;}
+  .nav-burger{
+    display:none;background:none;border:1.5px solid var(--card-border);border-radius:10px;
+    cursor:pointer;padding:8px;width:44px;height:44px;align-items:center;justify-content:center;
+  }
+  .nav-burger:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+  @media (max-width:880px){
+    .nav-burger{display:flex;}
+    .nav-links{
+      display:flex;flex-direction:column;gap:0;position:absolute;top:100%;left:0;right:0;
+      background:var(--cream);border-bottom:1px solid var(--card-border);padding:8px 0;
+      max-height:0;overflow:hidden;opacity:0;transition:max-height 220ms var(--ease),opacity 200ms var(--ease);
+    }
+    .nav-links.open{max-height:340px;opacity:1;}
+    .nav-links li{width:100%;}
+    .nav-links a{display:block;padding:14px 32px;}
+    .nav-ctas .btn-ghost{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){.nav-links{transition:none;}}
+
+  section{padding:96px 0;}
+  @media (max-width:768px){section{padding:64px 0;} .wrap{padding:0 20px;}}
+
+  /* ===== HERO ===== */
+  .hero{padding-top:88px;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
+  @media (max-width:920px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{font-size:clamp(34px,4.6vw,56px);line-height:1.08;margin:18px 0 22px;}
+  .hero p.lead{font-size:18px;max-width:540px;margin-bottom:32px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+  .hero-note{font-size:13px;color:var(--gray-light);}
+  .graph-visual{aspect-ratio:1/1;}
+
+  /* ===== TRUST STRIP ===== */
+  .trust{background:var(--black);color:var(--cream);padding:36px 0;}
+  .trust-row{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .trust-quote{font-family:var(--font-display);font-style:italic;font-size:16px;color:#E8E3DA;max-width:620px;}
+  .badges{display:flex;gap:14px;flex-wrap:wrap;}
+  .badge{
+    display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:100px;
+    border:1px solid rgba(245,242,238,0.18);font-size:13px;font-weight:500;color:var(--cream);
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--orange-bright);}
+
+  /* ===== VALUE PROPS ===== */
+  .section-head{max-width:680px;margin-bottom:48px;}
+  .section-head p{font-size:17px;margin-top:14px;}
+  .props-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  @media (max-width:880px){.props-grid{grid-template-columns:1fr;}}
+  .prop-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:32px;}
+  .prop-icon{
+    width:46px;height:46px;border-radius:50%;background:var(--orange);
+    display:flex;align-items:center;justify-content:center;color:var(--white);margin-bottom:20px;
+  }
+  .prop-card h3{margin-bottom:10px;}
+  .prop-card p{font-size:15px;}
+  .prop-link{display:inline-block;margin-top:16px;font-size:13.5px;font-weight:600;color:var(--orange);text-decoration:none;}
+  .prop-link:hover{text-decoration:underline;}
+
+  /* ===== MATURITY STEPPER ===== */
+  .maturity{background:var(--white);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);}
+  .stepper-track{display:flex;gap:6px;margin-bottom:36px;flex-wrap:wrap;}
+  .step-btn{
+    flex:1;min-width:120px;background:var(--cream);border:1.5px solid var(--card-border);
+    border-radius:14px;padding:14px 16px;cursor:pointer;text-align:left;
+    transition:border-color 160ms,background 160ms;font-family:var(--font-body);
+  }
+  .step-btn .step-num{font-family:var(--font-mono);font-size:12px;color:var(--gray-light);}
+  .step-btn .step-name{display:block;font-weight:700;font-size:14.5px;margin-top:4px;color:var(--black);}
+  .step-btn[aria-selected="true"]{background:var(--orange-cta);border-color:var(--orange-cta);}
+  .step-btn[aria-selected="true"] .step-num,.step-btn[aria-selected="true"] .step-name{color:var(--white);}
+  .step-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+  .step-panel{
+    background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);
+    padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;
+  }
+  @media (max-width:768px){.step-panel{grid-template-columns:1fr;padding:28px;}}
+  .step-panel h3{font-size:26px;margin-bottom:12px;}
+  .step-panel p{font-size:15.5px;}
+  .step-stat{
+    background:var(--white);border-radius:var(--radius-md);padding:28px;text-align:center;
+    border:1px solid var(--card-border);
+  }
+  .step-stat .num{font-family:var(--font-display);font-weight:900;font-size:42px;color:var(--orange);display:block;}
+  .step-stat .label{font-size:13px;color:var(--gray-light);margin-top:6px;display:block;}
+
+  /* ===== SOLUTIONS TABS ===== */
+  .tabs-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;border-bottom:1px solid var(--card-border);padding-bottom:0;}
+  .tab-btn{
+    background:none;border:none;border-bottom:2.5px solid transparent;cursor:pointer;
+    padding:12px 4px;margin-right:22px;font-family:var(--font-body);font-weight:600;font-size:14.5px;
+    color:var(--gray-light);transition:color 150ms,border-color 150ms;
+  }
+  .tab-btn:hover{color:var(--black);}
+  .tab-btn[aria-selected="true"]{color:var(--orange);border-color:var(--orange);}
+  .tab-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
+  .tab-panel{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  @media (max-width:768px){.tab-panel{grid-template-columns:1fr;}}
+  .tab-panel .level-chip{
+    display:inline-block;font-family:var(--font-mono);font-size:12px;color:var(--orange);
+    background:var(--orange-faint);padding:5px 12px;border-radius:100px;margin-bottom:16px;
+  }
+  .tab-panel h3{font-size:28px;margin-bottom:14px;}
+  .tab-panel p{font-size:16px;margin-bottom:8px;}
+  .tab-visual{
+    background:var(--black);border-radius:var(--radius-lg);aspect-ratio:4/3;
+    display:flex;align-items:center;justify-content:center;padding:32px;
+  }
+
+  /* ===== INDUSTRIES ===== */
+  .industries-scroll{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:12px;margin:0 -32px;padding-left:32px;padding-right:32px;
+    scrollbar-width:thin;
+  }
+  @media (max-width:768px){.industries-scroll{margin:0 -20px;padding-left:20px;padding-right:20px;}}
+  .industry-card{
+    scroll-snap-align:start;flex:0 0 280px;border-radius:var(--radius-lg);
+    padding:28px;height:340px;display:flex;flex-direction:column;justify-content:flex-end;
+    color:var(--white);position:relative;overflow:hidden;
+  }
+  .industry-card::before{content:'';position:absolute;inset:0;opacity:0.92;}
+  .industry-card .ic-content{position:relative;z-index:1;}
+  .industry-card h3{color:var(--white);font-size:21px;margin-bottom:8px;}
+  .industry-card .compliance{font-size:12.5px;color:rgba(255,255,255,0.78);font-family:var(--font-mono);}
+  .industry-card .ic-link{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--white);text-decoration:underline;}
+  .ind-1::before{background:linear-gradient(160deg,#2b2420,#5a3a22);}
+  .ind-2::before{background:linear-gradient(160deg,#23302c,#1c2420);}
+  .ind-3::before{background:linear-gradient(160deg,#4a3322,#7a4a1f);}
+  .ind-4::before{background:linear-gradient(160deg,#2e2926,#534239);}
+  .ind-5::before{background:linear-gradient(160deg,#3a2418,#c45a1a);}
+  .ind-6::before{background:linear-gradient(160deg,#262220,#46352a);}
+  .scroll-ctrls{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
+  .scroll-btn{
+    width:44px;height:44px;border-radius:50%;border:1.5px solid var(--card-border);background:var(--white);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 150ms;
+  }
+  .scroll-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  /* ===== CREDIBILITY ===== */
+  .cred{background:var(--black);color:var(--cream);}
+  .cred .eyebrow{color:var(--orange-bright);}
+  .cred h2{color:var(--cream);}
+  .cred-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;margin-top:40px;align-items:start;}
+  @media (max-width:880px){.cred-grid{grid-template-columns:1fr;}}
+  .cred-grid p{color:#C9C2B6;font-size:16px;margin-bottom:16px;}
+  .cred-list{background:#262220;border-radius:var(--radius-lg);padding:32px;list-style:none;margin:0;}
+  .cred-list li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(245,242,238,0.08);font-size:15px;}
+  .cred-list li:last-child{border-bottom:none;}
+  .check{
+    flex:0 0 24px;width:24px;height:24px;border-radius:50%;background:var(--orange);
+    display:flex;align-items:center;justify-content:center;color:var(--white);font-size:13px;font-weight:700;
+  }
+
+  /* ===== PRICING ===== */
+  .region-toggle{display:inline-flex;background:var(--card);border-radius:100px;padding:4px;gap:2px;margin-bottom:36px;}
+  .region-btn{
+    border:none;background:none;padding:9px 20px;border-radius:100px;cursor:pointer;
+    font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--gray);transition:all 150ms;
+  }
+  .region-btn[aria-pressed="true"]{background:var(--black);color:var(--cream);}
+  .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  @media (max-width:1000px){.pricing-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.pricing-grid{grid-template-columns:1fr;}}
+  .price-card{
+    background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius-lg);
+    padding:28px 24px;display:flex;flex-direction:column;
+  }
+  .price-card.featured{border-color:var(--orange);box-shadow:0 16px 32px -16px var(--orange-glow);}
+  .price-tier-name{font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;color:var(--gray-light);text-transform:uppercase;}
+  .price-target{font-size:13.5px;color:var(--gray);margin:6px 0 18px;min-height:36px;}
+  .price-num{font-family:var(--font-display);font-weight:800;font-size:30px;margin:0 0 2px;}
+  .price-sub{font-size:12.5px;color:var(--gray-light);margin-bottom:18px;}
+  .price-outcome{font-size:13.5px;font-weight:600;color:var(--black);margin:18px 0 14px;padding-top:16px;border-top:1px solid var(--card-border);}
+  .price-level{font-size:12.5px;color:var(--orange);font-family:var(--font-mono);margin-bottom:20px;}
+  .price-card .btn{margin-top:auto;width:100%;}
+
+  /* ===== FINAL CTA ===== */
+  .final-cta{
+    background:linear-gradient(135deg,var(--orange-cta),var(--orange-cta-bright));
+    border-radius:var(--radius-lg);padding:64px 48px;text-align:center;color:var(--white);
+  }
+  @media (max-width:768px){.final-cta{padding:44px 24px;}}
+  .final-cta h2{color:var(--white);max-width:640px;margin:0 auto 16px;}
+  .final-cta p{color:rgba(255,255,255,0.88);max-width:520px;margin:0 auto 32px;font-size:16px;}
+  .final-cta .btn-primary{background:var(--black);}
+  .final-cta .btn-primary:hover{background:#2A2520;}
+  .final-cta .btn-ghost{border-color:rgba(255,255,255,0.4);color:var(--white);}
+  .final-cta .btn-ghost:hover{border-color:var(--white);}
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--black);color:#C9C2B6;padding:64px 0 32px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+  @media (max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  .footer-grid h4{font-family:var(--font-body);font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:#8A8278;margin-bottom:18px;font-weight:600;}
+  .footer-grid ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .footer-grid a{font-size:14px;color:#C9C2B6;text-decoration:none;}
+  .footer-grid a:hover{color:var(--orange-bright);}
+  .footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-top:28px;border-top:1px solid rgba(245,242,238,0.1);font-size:13px;color:#8A8278;}
+  .footer-bottom a{color:#8A8278;text-decoration:none;}
+  .footer-bottom a:hover{color:var(--orange-bright);}
+  .footer-legal{display:flex;gap:18px;flex-wrap:wrap;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition-duration:0.01ms !important;}
+  }
+  .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="Hauptnavigation">
+    <a href="#top" class="brand">
+      <span class="brand-mark">CORTEX</span>
+      <span class="brand-tag">by winsym.ai</span>
+    </a>
+    <ul class="nav-links" id="nav-links-list">
+      <li><a href="#solutions">Lösungen</a></li>
+      <li><a href="#industries">Branchen</a></li>
+      <li><a href="#pricing">Preise</a></li>
+      <li><a href="#cases">Case Studies</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <a href="#assessment" class="btn btn-ghost">Demo buchen</a>
+      <a href="#assessment" class="btn btn-primary">Maturity Check starten</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-links-list">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 5h16M2 10h16M2 15h16" stroke="#1C1917" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Business Intelligence Operating System</span>
+        <h1>Ihr Unternehmen hat bereits ein Gehirn. Es ist nur über Mitarbeiter, Dateien und Apps verstreut.</h1>
+        <p class="lead">CORTEX ist das governte AI Operating System, das festhält, was Ihr Unternehmen weiß, abbildet, wie es arbeitet, und mitentscheidet — ohne sich jemals etwas auszudenken.</p>
+        <div class="hero-ctas">
+          <a href="#assessment" class="btn btn-primary">Maturity Check starten (2 Min.)</a>
+          <a href="#assessment" class="btn btn-ghost">Demo buchen</a>
+        </div>
+        <p class="hero-note">Kostenlos · keine Kreditkarte · Ergebnis in 2 Minuten</p>
+      </div>
+      <div aria-hidden="true">
+        <svg class="graph-visual" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#C45A1A" stroke-width="1.4" opacity="0.55">
+            <line x1="240" y1="240" x2="120" y2="120"/>
+            <line x1="240" y1="240" x2="360" y2="100"/>
+            <line x1="240" y1="240" x2="380" y2="260"/>
+            <line x1="240" y1="240" x2="300" y2="380"/>
+            <line x1="240" y1="240" x2="140" y2="350"/>
+            <line x1="240" y1="240" x2="90" y2="240"/>
+            <line x1="120" y1="120" x2="360" y2="100"/>
+            <line x1="380" y1="260" x2="300" y2="380"/>
+            <line x1="140" y1="350" x2="90" y2="240"/>
+          </g>
+          <g fill="#C45A1A">
+            <circle cx="240" cy="240" r="22"/>
+            <circle cx="120" cy="120" r="10" opacity="0.85"/>
+            <circle cx="360" cy="100" r="13" opacity="0.85"/>
+            <circle cx="380" cy="260" r="10" opacity="0.85"/>
+            <circle cx="300" cy="380" r="14" opacity="0.85"/>
+            <circle cx="140" cy="350" r="9" opacity="0.85"/>
+            <circle cx="90" cy="240" r="11" opacity="0.85"/>
+          </g>
+          <g fill="#1C1917">
+            <circle cx="240" cy="240" r="6"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="wrap trust-row">
+      <p class="trust-quote">"Productized aus einem System, das für eine nationale Organisation gebaut wurde — in einem Bereich, in dem eine erfundene Tatsache realen Schaden anrichtet."</p>
+      <div class="badges">
+        <span class="badge"><span class="dot"></span>Google Partner</span>
+        <span class="badge"><span class="dot"></span>Meta Partner</span>
+        <span class="badge"><span class="dot"></span>winsym.ai · Kuala Lumpur</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE PROPS -->
+  <section id="value-props">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Warum CORTEX</span>
+        <h2 style="margin-top:14px;">Drei Garantien, die kein Chat-Tool gibt</h2>
+      </div>
+      <div class="props-grid">
+        <div class="prop-card">
+          <div class="prop-icon" aria-hidden="true">◆</div>
+          <h3>Wissen geht nie wieder verloren</h3>
+          <p>Eine vertrauenswürdige Quelle der Wahrheit statt verstreuter Köpfe, Ordner und Chats.</p>
+          <a href="#solutions" class="prop-link">Mehr erfahren →</a>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon" aria-hidden="true">✓</div>
+          <h3>Entscheidungen auf Evidenz, nicht Meinung</h3>
+          <p>Jede Antwort ist belegt und mit Konfidenz bewertet — nachvollziehbar statt geraten.</p>
+          <a href="#solutions" class="prop-link">Mehr erfahren →</a>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon" aria-hidden="true">⚿</div>
+          <h3>Gebaut für Vertrauen</h3>
+          <p>Keine Erfindungen, volle Zugriffskontrolle, menschliche Freigabe bei kritischen Outputs.</p>
+          <a href="#cred" class="prop-link">Mehr erfahren →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATURITY STEPPER -->
+  <section class="maturity">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Der CORTEX Maturity Ladder</span>
+        <h2 style="margin-top:14px;">Wo steht Ihr Unternehmen heute?</h2>
+        <p>Das hat kein Wettbewerber: eine Diagnose statt eines Feature-Katalogs. Fünf Stufen, ein klarer Weg nach oben — Sie werden nie neu plattformiert, nur freigeschaltet.</p>
+      </div>
+
+      <div class="stepper-track" role="tablist" aria-label="Maturity-Stufen">
+        <button class="step-btn" role="tab" aria-selected="true" aria-controls="step-panel" id="step-tab-0" data-step="0">
+          <span class="step-num">Level 1</span><span class="step-name">Verstreut</span>
+        </button>
+        <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-1" data-step="1">
+          <span class="step-num">Level 2</span><span class="step-name">Festgehalten</span>
+        </button>
+        <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-2" data-step="2">
+          <span class="step-num">Level 3</span><span class="step-name">Vernetzt</span>
+        </button>
+        <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-3" data-step="3">
+          <span class="step-num">Level 4</span><span class="step-name">Entscheidungsfähig</span>
+        </button>
+        <button class="step-btn" role="tab" aria-selected="false" aria-controls="step-panel" id="step-tab-4" data-step="4">
+          <span class="step-num">Level 5</span><span class="step-name">Autonom</span>
+        </button>
+      </div>
+
+      <div class="step-panel" role="tabpanel" id="step-panel" aria-labelledby="step-tab-0">
+        <div id="step-text">
+          <h3>Level 1 — Verstreut</h3>
+          <p>Wissen lebt in Köpfen, Dateien und Chat-Verläufen. Jede Frage braucht den einen Kollegen, der's weiß — und der ist im Urlaub.</p>
+        </div>
+        <div class="step-stat" id="step-stat">
+          <span class="num">0</span>
+          <span class="label">Layer aktiv</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTIONS TABS -->
+  <section id="solutions">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Lösungen</span>
+        <h2 style="margin-top:14px;">Ein Gehirn, acht Funktionen, null Halluzinationen.</h2>
+        <p>Acht Layer, jeder als Outcome formuliert — nicht als Feature. Sie schalten frei, was Ihre aktuelle Maturity-Stufe erlaubt.</p>
+      </div>
+
+      <div class="tabs-nav" role="tablist" aria-label="CORTEX Layer">
+        <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-panel" id="tab-tab-0" data-tab="0">Knowledge</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-1" data-tab="1">Operations</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-2" data-tab="2">Marketing</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-3" data-tab="3">Sales</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-4" data-tab="4">Customer</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-5" data-tab="5">Decision</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-6" data-tab="6">Intelligence</button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-panel" id="tab-tab-7" data-tab="7">Automation</button>
+      </div>
+
+      <div class="tab-panel" id="tab-panel" role="tabpanel" aria-labelledby="tab-tab-0">
+        <div id="tab-text">
+          <span class="level-chip">Schaltet sich frei ab Level 1–2</span>
+          <h3>Knowledge</h3>
+          <p>Schluss mit "Frag den Veteranen". Eine governte Wissensquelle beantwortet, statt zu erraten.</p>
+        </div>
+        <div class="tab-visual" aria-hidden="true">
+          <svg width="140" height="140" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C45A1A" stroke-width="2" opacity="0.5"/><circle cx="50" cy="50" r="8" fill="#C45A1A"/></svg>
+        </div>
+      </div>
+      <p class="closing-line">"Ein Gehirn, acht Funktionen, null Halluzinationen."</p>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES -->
+  <section id="industries">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Branchen</span>
+        <h2 style="margin-top:14px;">Wir konfigurieren das Gehirn an Ihre Branche.</h2>
+        <p>Sechs gehärtete Templates, jedes mit eigenen Compliance-Leitplanken — die Vertrauensebene ist hier der Held, nicht ein Nice-to-have.</p>
+      </div>
+    </div>
+    <div class="wrap" style="padding:0;">
+      <div class="industries-scroll" id="industries-scroll" tabindex="0" role="region" aria-label="Branchen, horizontal scrollbar">
+        <article class="industry-card ind-1">
+          <div class="ic-content">
+            <h3>Anwaltskanzleien</h3>
+            <p class="compliance">Wahrt das Anwaltsgeheimnis</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+        <article class="industry-card ind-2">
+          <div class="ic-content">
+            <h3>Arztpraxen</h3>
+            <p class="compliance">HIPAA / PDPA-konform</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+        <article class="industry-card ind-3">
+          <div class="ic-content">
+            <h3>Hotels &amp; Hospitality</h3>
+            <p class="compliance">Gäste-Datenschutz first</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+        <article class="industry-card ind-4">
+          <div class="ic-content">
+            <h3>Immobilien</h3>
+            <p class="compliance">Vertrags- &amp; Fristensicherheit</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+        <article class="industry-card ind-5">
+          <div class="ic-content">
+            <h3>Marketing-Agenturen</h3>
+            <p class="compliance">On-Brand für jeden Kunden</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+        <article class="industry-card ind-6">
+          <div class="ic-content">
+            <h3>Restaurants</h3>
+            <p class="compliance">Lebensmittelsicherheit verankert</p>
+            <a href="#" class="ic-link">Branchenseite ansehen</a>
+          </div>
+        </article>
+      </div>
+      <div class="wrap" style="padding-top:0;">
+        <div class="scroll-ctrls">
+          <button class="scroll-btn" id="ind-prev" aria-label="Vorherige Branche">‹</button>
+          <button class="scroll-btn" id="ind-next" aria-label="Nächste Branche">›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDIBILITY -->
+  <section class="cred" id="cred">
+    <div class="wrap">
+      <span class="eyebrow">Warum das glaubwürdig ist</span>
+      <h2 style="margin-top:14px;">Productized von einem System, das bereits funktioniert.</h2>
+      <div class="cred-grid">
+        <div>
+          <p>CORTEX ist die domänen-neutrale Extraktion des MIPP PIOS — ein echtes, governtes "Leadership Brain", gebaut für eine nationale Organisation.</p>
+          <p>Es hat die schwerste Version eines universellen Problems gelöst: festhalten, was die Führung weiß, die KI davon abhalten, sich etwas auszudenken, und kontrollieren, wer was sieht — in einem Bereich, in dem eine erfundene Tatsache realen Schaden anrichtet.</p>
+        </div>
+        <ul class="cred-list">
+          <li><span class="check">✓</span><span>Bewährte governte Architektur (Graph + RBAC + grounded RAG)</span></li>
+          <li><span class="check">✓</span><span>Die CORTEX Method als Delivery-System</span></li>
+          <li><span class="check">✓</span><span>Ein Framework, bereit für jede Branche</span></li>
+          <li><span class="check">✓</span><span>Gründer mit Google + Meta Partner Track Record, KL-basiert</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Preise</span>
+        <h2 style="margin-top:14px;">Eine Plattform. Fünf Maturity-Stufen. Sie kaufen sich nach oben.</h2>
+        <p>Bepreist nach Wert &amp; Maturity, nicht nach Sitzplätzen. Kein Re-Platforming beim Wachsen — nur neue Layer.</p>
+      </div>
+
+      <div class="region-toggle" role="group" aria-label="Region wählen">
+        <button class="region-btn" aria-pressed="true" data-region="myr">MYR</button>
+        <button class="region-btn" aria-pressed="false" data-region="eur">EUR</button>
+        <button class="region-btn" aria-pressed="false" data-region="usd">USD</button>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <span class="price-tier-name">Starter</span>
+          <p class="price-target">Solo / Micro (1–10 Mitarbeiter)</p>
+          <p class="price-num" data-myr="RM 1.200/mo" data-eur="€ 450/mo" data-usd="$ 600/mo">RM 1.200/mo</p>
+          <p class="price-sub" data-myr="Setup RM 6.000 · Jahr 1 RM 20.400" data-eur="Setup € 2.500 · Jahr 1 € 7.900" data-usd="Setup $ 3.000 · Jahr 1 $ 10.200">Setup RM 6.000 · Jahr 1 RM 20.400</p>
+          <p class="price-outcome">Antworten finden &amp; vertrauen</p>
+          <p class="price-level">Level 1 → 2 · 2–3 Layer aktiv</p>
+          <a href="#assessment" class="btn btn-ghost">Maturity Check</a>
+        </div>
+        <div class="price-card featured">
+          <span class="price-tier-name">Growth</span>
+          <p class="price-target">SME (10–250 Mitarbeiter)</p>
+          <p class="price-num" data-myr="RM 3.500/mo" data-eur="€ 1.400/mo" data-usd="$ 2.000/mo">RM 3.500/mo</p>
+          <p class="price-sub" data-myr="Setup RM 18.000 · Jahr 1 RM 60.000" data-eur="Setup € 8.000 · Jahr 1 € 24.800" data-usd="Setup $ 12.000 · Jahr 1 $ 36.000">Setup RM 18.000 · Jahr 1 RM 60.000</p>
+          <p class="price-outcome">Das Gehirn übernimmt die Arbeit</p>
+          <p class="price-level">Level 2 → 3 · 4–5 Layer aktiv</p>
+          <a href="#assessment" class="btn btn-primary">Demo buchen</a>
+        </div>
+        <div class="price-card">
+          <span class="price-tier-name">Professional</span>
+          <p class="price-target">Mid-Market (250–2.500)</p>
+          <p class="price-num" data-myr="RM 8.000/mo" data-eur="€ 3.500/mo" data-usd="$ 6.000/mo">RM 8.000/mo</p>
+          <p class="price-sub" data-myr="Setup RM 45.000 · Jahr 1 RM 141.000" data-eur="Setup € 22.000 · Jahr 1 € 64.000" data-usd="Setup $ 35.000 · Jahr 1 $ 107.000">Setup RM 45.000 · Jahr 1 RM 141.000</p>
+          <p class="price-outcome">Das Gehirn hilft entscheiden</p>
+          <p class="price-level">Level 3 → 4 · 6–7 Layer aktiv</p>
+          <a href="#assessment" class="btn btn-ghost">Demo buchen</a>
+        </div>
+        <div class="price-card">
+          <span class="price-tier-name">Enterprise</span>
+          <p class="price-target">Enterprise (2.500–10.000+)</p>
+          <p class="price-num" data-myr="RM 18.000+/mo" data-eur="€ 8.500+/mo" data-usd="$ 15.000+/mo">RM 18.000+/mo</p>
+          <p class="price-sub" data-myr="Setup RM 120.000+ · Jahr 1 RM 336.000+" data-eur="Setup € 65.000+ · Jahr 1 € 167.000+" data-usd="Setup $ 90.000+ · Jahr 1 $ 270.000+">Setup RM 120.000+ · Jahr 1 RM 336.000+</p>
+          <p class="price-outcome">Das Unternehmen läuft darauf</p>
+          <p class="price-level">Level 4 → 5 · Alle 8 Layer</p>
+          <a href="#assessment" class="btn btn-ghost">Gespräch anfragen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="assessment">
+    <div class="wrap">
+      <div class="final-cta">
+        <span class="eyebrow" style="color:rgba(255,255,255,0.85);">Bereit?</span>
+        <h2>Bereit, das Gehirn Ihres Unternehmens zu bauen?</h2>
+        <p>2 Minuten Diagnose, keine Verpflichtung — Sie sehen sofort, wo Sie auf der Maturity Ladder stehen.</p>
+        <div class="cta-row">
+          <a href="#" class="btn btn-primary">Maturity Check starten</a>
+          <a href="#" class="btn btn-ghost">Demo buchen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-mark" style="color:var(--cream);">CORTEX</span>
+        <p style="margin-top:14px;font-size:14px;color:#8A8278;max-width:280px;">Business Intelligence Operating System — by winsym.ai. Winning systems, backed by a brain.</p>
+      </div>
+      <div>
+        <h4>Produkt</h4>
+        <ul>
+          <li><a href="#solutions">Lösungen</a></li>
+          <li><a href="#pricing">Preise</a></li>
+          <li><a href="#">CORTEX Method</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Branchen</h4>
+        <ul>
+          <li><a href="#industries">Recht &amp; Medizin</a></li>
+          <li><a href="#industries">Hospitality</a></li>
+          <li><a href="#industries">Agenturen</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Unternehmen</h4>
+        <ul>
+          <li><a href="https://winsym-ai.vercel.app" target="_blank" rel="noopener">winsym.ai</a></li>
+          <li><a href="#cases">Case Studies</a></li>
+          <li><a href="mailto:work@edgegraphics.co">Kontakt</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CORTEX · ein Produkt von winsym.ai</span>
+      <div class="footer-legal">
+        <a href="#">Impressum</a>
+        <a href="#">Datenschutz (PDPA/GDPR)</a>
+        <a href="#">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ===== Maturity Stepper =====
+  var stepData = [
+    {title:'Level 1 — Verstreut', text:'Wissen lebt in Köpfen, Dateien und Chat-Verläufen. Jede Frage braucht den einen Kollegen, der es weiß — und der ist im Urlaub.', stat:'0', label:'Layer aktiv'},
+    {title:'Level 2 — Festgehalten', text:'Eine governte Wissensquelle beantwortet Fragen mit Beleg, statt zu raten. Onboarding-Zeit sinkt spürbar.', stat:'2–3', label:'Layer aktiv'},
+    {title:'Level 3 — Vernetzt', text:'Mehrere Layer aktiv — Operations, Marketing, Sales teilen ein Gehirn statt eigener Insellösungen.', stat:'4–5', label:'Layer aktiv'},
+    {title:'Level 4 — Entscheidungsfähig', text:'Hochrisiko-Entscheidungen werden bewertet und mit Konfidenz versehen, nicht nur informiert.', stat:'6–7', label:'Layer aktiv'},
+    {title:'Level 5 — Autonom', text:'Verifiziertes Wissen treibt Automatisierung — nie umgekehrt. Das Geschäft läuft im Takt des Gehirns.', stat:'8/8', label:'Layer aktiv'}
+  ];
+  var stepBtns = document.querySelectorAll('.step-btn');
+  var stepPanel = document.getElementById('step-panel');
+  var stepTitle = document.querySelector('#step-text h3');
+  var stepText = document.querySelector('#step-text p');
+  var stepNum = document.querySelector('#step-stat .num');
+  var stepLabel = document.querySelector('#step-stat .label');
+
+  function setStep(i){
+    stepBtns.forEach(function(b,idx){ b.setAttribute('aria-selected', idx===i ? 'true':'false'); });
+    stepPanel.setAttribute('aria-labelledby', 'step-tab-'+i);
+    var d = stepData[i];
+    stepTitle.textContent = d.title;
+    stepText.textContent = d.text;
+    stepNum.textContent = d.stat;
+    stepLabel.textContent = d.label;
+  }
+  stepBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){ setStep(parseInt(btn.dataset.step,10)); });
+  });
+
+  // ===== Solutions Tabs =====
+  var tabData = [
+    {chip:'Schaltet sich frei ab Level 1–2', title:'Knowledge', text:'Schluss mit "Frag den Veteranen". Eine governte Wissensquelle beantwortet, statt zu erraten.'},
+    {chip:'Schaltet sich frei ab Level 2–3', title:'Operations', text:'Meetings werden zu zugewiesener Arbeit — Protokolle verwandeln sich automatisch in Aufgaben.'},
+    {chip:'Schaltet sich frei ab Level 2–3', title:'Marketing &amp; Content', text:'On-Brand, in jeder Größenordnung. Content bleibt konsistent, egal wer ihn erstellt.'},
+    {chip:'Schaltet sich frei ab Level 3', title:'Sales', text:'Jeder Rep performt wie Ihr bester Rep — Einwände, Argumente und Kontext sofort verfügbar.'},
+    {chip:'Schaltet sich frei ab Level 3', title:'Customer', text:'Eine Erinnerung an jede Beziehung — kein Kunde muss seine Geschichte zweimal erzählen.'},
+    {chip:'Schaltet sich frei ab Level 3–4', title:'Decision', text:'Kritische Entscheidungen werden bewertet, mit Konfidenz versehen, nachvollziehbar dokumentiert.'},
+    {chip:'Schaltet sich frei ab Level 4', title:'Intelligence &amp; Risk', text:'Live-Radar auf Markt &amp; Risiko, plus ein vorbereiteter Krisenplan für den Ernstfall.'},
+    {chip:'Schaltet sich frei ab Level 4–5', title:'Automation', text:'Das Geschäft läuft im Takt — Automatisierung erst, nachdem das Wissen verifiziert ist.'}
+  ];
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanel = document.getElementById('tab-panel');
+  var tabChip = document.querySelector('#tab-text .level-chip');
+  var tabTitle = document.querySelector('#tab-text h3');
+  var tabText = document.querySelector('#tab-text p');
+
+  function setTab(i){
+    tabBtns.forEach(function(b,idx){ b.setAttribute('aria-selected', idx===i ? 'true':'false'); });
+    tabPanel.setAttribute('aria-labelledby', 'tab-tab-'+i);
+    var d = tabData[i];
+    tabChip.textContent = d.chip;
+    tabTitle.innerHTML = d.title;
+    tabText.textContent = d.text;
+  }
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){ setTab(parseInt(btn.dataset.tab,10)); });
+  });
+
+  // ===== Industries scroll controls =====
+  var scrollEl = document.getElementById('industries-scroll');
+  document.getElementById('ind-prev').addEventListener('click', function(){
+    scrollEl.scrollBy({left:-300, behavior:'smooth'});
+  });
+  document.getElementById('ind-next').addEventListener('click', function(){
+    scrollEl.scrollBy({left:300, behavior:'smooth'});
+  });
+
+  // ===== Mobile nav burger =====
+  var burger = document.getElementById('nav-burger');
+  var navLinks = document.getElementById('nav-links-list');
+  function closeNav(){
+    navLinks.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    burger.setAttribute('aria-label','Menü öffnen');
+  }
+  function openNav(){
+    navLinks.classList.add('open');
+    burger.setAttribute('aria-expanded','true');
+    burger.setAttribute('aria-label','Menü schließen');
+  }
+  burger.addEventListener('click', function(){
+    var isOpen = navLinks.classList.contains('open');
+    if(isOpen){ closeNav(); } else { openNav(); }
+  });
+  navLinks.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeNav);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && navLinks.classList.contains('open')){ closeNav(); burger.focus(); }
+  });
+
+  // ===== Pricing region toggle =====
+  var regionBtns = document.querySelectorAll('.region-btn');
+  regionBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var region = btn.dataset.region;
+      regionBtns.forEach(function(b){ b.setAttribute('aria-pressed', b===btn ? 'true':'false'); });
+      document.querySelectorAll('[data-'+region+']').forEach(function(el){
+        el.textContent = el.getAttribute('data-'+region);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

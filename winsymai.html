@@ -3,3173 +3,1169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karim Azzaoui — AI Coach & Speaker · winsym.ai</title>
+<title data-i18n="meta.title">winsym.ai — Company Brain · AI Operating Systems for Business</title>
+<meta name="description" data-i18n="meta.desc" data-i18n-attr="content" content="winsym.ai builds the AI Brain your company runs on. Company Brain Build, AI coaching and Academy programmes for non-technical leaders in Kuala Lumpur and DACH.">
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- Supabase CDN -->
-<script src="js/theme.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // Inject credentials from Vercel env (replaced at build/runtime via _headers or inline)
-  window.SUPABASE_URL     = '%%SUPABASE_URL%%';
-  window.SUPABASE_ANON_KEY = '%%SUPABASE_ANON_KEY%%';
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/design-system.css">
+<script src="js/i18n.js"></script>
 <style>
-  :root {
-    --black: #1C1917;
-    --orange: #C45A1A;
-    --orange-bright: #E06820;
-    --orange-dim: #7a3010;
-    --orange-glow: rgba(196,90,26,0.15);
-    --white: #F5F2EE;
-    --gray: #8a8278;
-    --gray-dim: #2E2A27;
-    --gray-mid: #5a5550;
-    --font-display: 'Bebas Neue', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'DM Mono', monospace;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-    cursor: default;
-  }
-
-  /* WHATSAPP */
-  .wa-nav-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #25D366;
-    color: #fff;
-    text-decoration: none;
-    padding: 0.45rem 1rem;
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    transition: background 0.2s, transform 0.2s;
-    white-space: nowrap;
-  }
-  .wa-nav-btn:hover { background: #1ebe5d; transform: translateY(-1px); }
-  .wa-nav-btn svg { flex-shrink: 0; }
-
-  /* Floating WhatsApp button */
-  .wa-float {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 9990;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    background: #25D366;
-    color: #fff;
-    text-decoration: none;
-    padding: 0.85rem 1.4rem;
-    border-radius: 50px;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-    transition: all 0.25s;
-    animation: waPulse 3s ease-in-out infinite;
-  }
-  .wa-float:hover {
-    background: #1ebe5d;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(37,211,102,0.5);
-    animation: none;
-  }
-  .wa-float-label { display: inline; }
-  @keyframes waPulse {
-    0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.35); }
-    50%       { box-shadow: 0 4px 30px rgba(37,211,102,0.6); }
-  }
-  @media (max-width: 900px) {
-    .wa-float-label { display: none; }
-    .wa-float { padding: 1rem; border-radius: 50%; }
-    .wa-nav-btn span { display: none; }
-    .wa-nav-btn { padding: 0.45rem 0.6rem; }
-  }
-
-  /* NOISE TEXTURE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9500;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem 4rem;
-    background: rgba(28,25,23,0.97);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    transition: background 0.3s, transform 0.35s cubic-bezier(0.4,0,0.2,1);
-  }
-  nav.scrolled { background: rgba(8,8,8,0.99); }
-  nav.nav-hidden { transform: translateY(-100%); }
-
-  .nav-logo {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    letter-spacing: 2px;
-    color: var(--white);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--orange); }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-    text-decoration: none;
-    transition: color 0.2s;
-    font-weight: 400;
-  }
-  .nav-links a:hover { color: var(--white); }
-
-  .nav-cta {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--orange);
-    text-decoration: none;
-    border: 1px solid var(--orange-dim);
-    padding: 0.5rem 1.2rem;
-    transition: all 0.2s;
-    font-weight: 400;
-  }
-  .nav-cta:hover { background: var(--orange); color: var(--black); }
-
-  /* AUTH NAV BUTTON */
-  .nav-auth-btn {
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-    text-decoration: none;
-    border: 1px solid var(--gray-dim);
-    padding: 0.45rem 0.9rem;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    background: none;
-  }
-  .nav-auth-btn:hover { color: var(--white); border-color: var(--gray-mid); }
-  .nav-auth-avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--orange);
-    color: var(--black);
-    font-size: 0.6rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    line-height: 1;
-  }
-  [data-theme="light"] .nav-auth-btn { color: #7A7066; border-color: #DDD8CF; }
-  [data-theme="light"] .nav-auth-btn:hover { color: #2C2416; border-color: #9E9589; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 8rem 4rem 6rem;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    width: 30px;
-    height: 1px;
-    background: var(--orange);
-  }
-
-  .hero-name {
-    font-family: var(--font-display);
-    font-size: clamp(5rem, 10vw, 9rem);
-    line-height: 0.9;
-    letter-spacing: 2px;
-    color: var(--white);
-    margin-bottom: 0.5rem;
-  }
-  .hero-name .last { color: var(--orange); display: block; }
-
-  .hero-title {
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    font-weight: 400;
-    margin-bottom: 2.5rem;
-    border-left: 2px solid var(--orange);
-    padding-left: 1rem;
-  }
-
-  .hero-desc {
-    font-size: 1rem;
-    color: #aaa;
-    max-width: 380px;
-    line-height: 1.8;
-    margin-bottom: 3rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .btn-primary {
-    background: var(--orange);
-    color: var(--black);
-    padding: 0.9rem 2rem;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: inline-block;
-  }
-  .btn-primary:hover { background: var(--orange-bright); transform: translateY(-1px); }
-
-  .btn-ghost {
-    color: var(--gray);
-    padding: 0.9rem 1.5rem;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-weight: 400;
-    border: 1px solid var(--gray-dim);
-    transition: all 0.2s;
-    display: inline-block;
-  }
-  .btn-ghost:hover { color: var(--white); border-color: var(--gray); }
-
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-visual {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a0800 0%, #0d0400 40%, #080808 100%);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Photo layer — sits below animated bars, partially transparent */
-  .hero-photo-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    overflow: hidden;
-  }
-  .hero-photo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    opacity: 0.42;
-    mix-blend-mode: luminosity;
-    display: block;
-    filter: contrast(1.05) brightness(0.9);
-  }
-
-  /* Animated vertical bars like in the business card */
-  .bar-container {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    gap: 0;
-    overflow: hidden;
-    z-index: 2;
-  }
-
-  .bar {
-    flex: 1;
-    background: linear-gradient(180deg, transparent 0%, rgba(196,90,26,0.3) 50%, transparent 100%);
-    animation: barPulse 3s ease-in-out infinite;
-    transform-origin: bottom;
-  }
-  .bar:nth-child(1) { animation-delay: 0s; opacity: 0.3; }
-  .bar:nth-child(2) { animation-delay: 0.3s; opacity: 0.5; background: linear-gradient(180deg, transparent 0%, rgba(196,90,26,0.6) 50%, transparent 100%); }
-  .bar:nth-child(3) { animation-delay: 0.6s; opacity: 0.4; }
-  .bar:nth-child(4) { animation-delay: 0.2s; opacity: 0.6; background: linear-gradient(180deg, transparent 0%, rgba(160,60,10,0.5) 50%, transparent 100%); }
-  .bar:nth-child(5) { animation-delay: 0.8s; opacity: 0.3; }
-  .bar:nth-child(6) { animation-delay: 0.4s; opacity: 0.5; }
-  .bar:nth-child(7) { animation-delay: 1s; opacity: 0.2; }
-
-  @keyframes barPulse {
-    0%, 100% { transform: scaleY(0.6); opacity: 0.2; }
-    50% { transform: scaleY(1); opacity: 1; }
-  }
-
-  .hero-badge {
-    position: absolute;
-    bottom: 3rem;
-    right: 3rem;
-    z-index: 3;
-    text-align: right;
-  }
-  .hero-badge-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-  }
-  .hero-badge-text {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    color: var(--white);
-  }
-
-  .hero-stats {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 3rem;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .hero-stat-num {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    color: var(--orange);
-    line-height: 1;
-  }
-  .hero-stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    color: var(--gray);
-    text-transform: uppercase;
-  }
-
-  .hero-divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--orange-dim), transparent);
-  }
-
-  /* TICKER */
-  .ticker {
-    background: var(--orange);
-    padding: 0.7rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .ticker-inner {
-    display: inline-flex;
-    animation: tickerScroll 20s linear infinite;
-    gap: 0;
-  }
-  .ticker-item {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    letter-spacing: 3px;
-    color: var(--black);
-    padding: 0 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-  .ticker-dot {
-    width: 4px;
-    height: 4px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 50%;
-    display: inline-block;
-  }
-  @keyframes tickerScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* SECTION LAYOUT */
-  section {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .section-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .section-tag::before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    background: var(--orange);
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    line-height: 0.95;
-    letter-spacing: 1px;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-title .accent { color: var(--orange); }
-
-  /* ABOUT / SPEAKER SECTION */
-  .about-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .about-visual {
-    position: relative;
-  }
-
-  .about-frame {
-    aspect-ratio: 3/4;
-    background: linear-gradient(135deg, #1a0800, #0d0400);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .about-frame-bars {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    gap: 3px;
-  }
-
-  .about-bar {
-    flex: 1;
-    background: linear-gradient(180deg, transparent 20%, rgba(196,90,26,0.4) 60%, transparent 100%);
-    animation: barPulse 4s ease-in-out infinite;
-  }
-  .about-bar:nth-child(odd) { animation-delay: 0.5s; }
-
-  .about-frame-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(8,8,8,0.7) 0%, transparent 50%);
-  }
-
-  .about-frame-label {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
-  }
-  .about-frame-name {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    color: var(--white);
-    line-height: 1;
-  }
-  .about-frame-role {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-top: 0.5rem;
-  }
-
-  .about-accent-box {
-    position: absolute;
-    top: -1.5rem;
-    right: -1.5rem;
-    width: 80px;
-    height: 80px;
-    border: 2px solid var(--orange);
-    z-index: -1;
-  }
-  .about-accent-box2 {
-    position: absolute;
-    bottom: -1.5rem;
-    left: -1.5rem;
-    width: 120px;
-    height: 2px;
-    background: var(--orange);
-  }
-
-  .about-content { }
-
-  .about-quote {
-    font-size: 1.3rem;
-    line-height: 1.6;
-    color: var(--white);
-    font-weight: 300;
-    margin-bottom: 2rem;
-    font-style: italic;
-    border-left: 2px solid var(--orange);
-    padding-left: 1.5rem;
-  }
-
-  .about-body {
-    color: #999;
-    font-size: 0.95rem;
-    line-height: 1.9;
-    margin-bottom: 2.5rem;
-  }
-
-  .credential-row {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-bottom: 2.5rem;
-  }
-
-  .credential {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--orange);
-    border: 1px solid var(--orange-dim);
-    padding: 0.4rem 0.8rem;
-  }
-
-  .about-numbers {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    border-top: 1px solid var(--gray-dim);
-    padding-top: 2rem;
-  }
-  .about-num {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    color: var(--orange);
-    line-height: 1;
-  }
-  .about-num-label {
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    color: var(--gray);
-    text-transform: uppercase;
-    margin-top: 0.3rem;
-  }
-
-  /* WHAT I DO */
-  .pillars-section {
-    background: #1E1B18;
-    padding: 7rem 0;
-  }
-  .pillars-inner {
-    padding: 0 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .pillars-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    margin-bottom: 5rem;
-    align-items: end;
-  }
-
-  /* CORTEX FEATURE STRIP — the foundational "00" card above the pillar grid */
-  .cortex-feature {
-    border: 1px solid var(--orange-dim);
-    background: linear-gradient(135deg, rgba(196,90,26,0.1), rgba(196,90,26,0.02));
-    padding: 3rem;
-    margin-bottom: 1px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 2.5rem;
-    align-items: center;
-  }
-  .cortex-feature-num {
-    font-family: var(--font-display);
-    font-size: 5rem;
-    color: var(--orange);
-    line-height: 1;
-  }
-  .cortex-feature-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-  .cortex-feature-title {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    letter-spacing: 0.5px;
-    color: var(--white);
-    margin-bottom: 0.75rem;
-  }
-  .cortex-feature-desc {
-    font-size: 0.9rem;
-    color: var(--gray);
-    line-height: 1.8;
-    max-width: 560px;
-  }
-  .cortex-layer-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
-  }
-  .cortex-layer-chips span {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--gray);
-    border: 1px solid var(--gray-dim);
-    padding: 0.3rem 0.6rem;
-  }
-  .cortex-feature-cta {
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--black);
-    background: var(--orange);
-    padding: 0.9rem 1.5rem;
-    white-space: nowrap;
-    transition: background 0.2s;
-    text-decoration: none;
-    display: inline-block;
-  }
-  .cortex-feature-cta:hover { background: var(--orange-bright); }
-
-  .pillar-powered {
-    margin-top: 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--orange-dim);
-  }
-
-  .pillars-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    border: 1px solid var(--gray-dim);
-  }
-
-  .pillar-card {
-    padding: 2.5rem 2rem;
-    border-right: 1px solid var(--gray-dim);
-    position: relative;
-    transition: background 0.3s;
-  }
-  .pillar-card:last-child { border-right: none; }
-  .pillar-card:hover { background: rgba(196,90,26,0.05); }
-
-  .pillar-num {
-    font-family: var(--font-display);
-    font-size: 4rem;
-    color: var(--gray-dim);
-    line-height: 1;
-    margin-bottom: 1.5rem;
-    transition: color 0.3s;
-  }
-  .pillar-card:hover .pillar-num { color: var(--orange-dim); }
-
-  .pillar-icon {
-    width: 40px;
-    height: 2px;
-    background: var(--orange);
-    margin-bottom: 1rem;
-  }
-
-  .pillar-title {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.75rem;
-    letter-spacing: 0.5px;
-  }
-
-  .pillar-desc {
-    font-size: 0.85rem;
-    color: var(--gray);
-    line-height: 1.8;
-  }
-
-  /* COMPANY BRAIN SECTION */
-  .brain-section {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .brain-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 5rem;
-  }
-
-  .brain-flow {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    align-items: center;
-    margin-bottom: 4rem;
-  }
-
-  .brain-step {
-    text-align: center;
-    padding: 2rem 1rem;
-    position: relative;
-  }
-
-  .brain-step-num {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    color: var(--orange);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .brain-step-title {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--white);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .brain-step-desc {
-    font-size: 0.75rem;
-    color: var(--gray);
-    line-height: 1.7;
-  }
-
-  .brain-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--orange-dim);
-    font-size: 1.5rem;
-  }
-
-  .cortex-quote {
-    text-align: center;
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    color: var(--white);
-    letter-spacing: 0.3px;
-    max-width: 700px;
-    margin: 0 auto 4rem;
-    line-height: 1.4;
-  }
-  .cortex-quote span { color: var(--orange); }
-
-  .cortex-values {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 4rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--gray-dim);
-  }
-  .cortex-value-icon {
-    color: var(--orange);
-    font-size: 1.2rem;
-    margin-bottom: 0.75rem;
-  }
-  .cortex-value-title {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.5rem;
-  }
-  .cortex-value-desc {
-    font-size: 0.8rem;
-    color: var(--gray);
-    line-height: 1.7;
-  }
-
-  /* PRICE CALCULATOR */
-  .calculator-section {
-    background: #1C1917;
-    border-top: 1px solid var(--gray-dim);
-    border-bottom: 1px solid var(--gray-dim);
-  }
-
-  .calculator-inner {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .calc-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: start;
-    margin-bottom: 4rem;
-  }
-
-  .calc-subtitle {
-    color: #999;
-    font-size: 0.95rem;
-    line-height: 1.9;
-    margin-top: 1.5rem;
-  }
-
-  .calc-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  .calc-options { }
-
-  .calc-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    margin-top: 2rem;
-  }
-  .calc-label:first-child { margin-top: 0; }
-
-  .calc-toggle-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .calc-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 1.1rem;
-    border: 1px solid var(--gray-dim);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.85rem;
-    color: var(--gray);
-    user-select: none;
-    position: relative;
-  }
-  .calc-toggle:hover { border-color: var(--orange-dim); color: var(--white); }
-  .calc-toggle.active {
-    border-color: var(--orange);
-    background: rgba(196,90,26,0.08);
-    color: var(--white);
-  }
-
-  .calc-toggle-check {
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--gray-dim);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-  .calc-toggle.active .calc-toggle-check {
-    background: var(--orange);
-    border-color: var(--orange);
-  }
-  .calc-toggle-check::after {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--black);
-    display: none;
-  }
-  .calc-toggle.active .calc-toggle-check::after { display: block; }
-
-  .calc-toggle-price {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--orange);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .calc-toggle.active .calc-toggle-price { opacity: 1; }
-
-  /* Result panel */
-  .calc-result {
-    background: linear-gradient(135deg, #120800, #0a0a0a);
-    border: 1px solid var(--orange-dim);
-    padding: 2.5rem;
-    position: sticky;
-    top: 6rem;
-  }
-
-  .result-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-  }
-
-  .result-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 0.85rem;
-  }
-  .result-line-name { color: var(--gray); }
-  .result-line-price {
-    font-family: var(--font-mono);
-    color: var(--white);
-    font-size: 0.8rem;
-  }
-
-  .result-total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--orange-dim);
-  }
-  .result-total-label {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-  }
-  .result-total-num {
-    font-family: var(--font-display);
-    font-size: 2.8rem;
-    color: var(--orange);
-    line-height: 1;
-  }
-  .result-total-curr {
-    font-size: 0.85rem;
-    color: var(--gray);
-    margin-bottom: 0.5rem;
-  }
-
-  .result-savings {
-    background: rgba(196,90,26,0.1);
-    border: 1px solid rgba(196,90,26,0.2);
-    padding: 0.75rem 1rem;
-    font-size: 0.8rem;
-    color: var(--orange);
-    margin-top: 1rem;
-    display: none;
-  }
-  .result-savings.visible { display: block; }
-
-  .result-cta {
-    width: 100%;
-    background: var(--orange);
-    color: var(--black);
-    border: none;
-    padding: 1rem;
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 1.5rem;
-    transition: all 0.2s;
-  }
-  .result-cta:hover { background: var(--orange-bright); }
-
-  .result-empty {
-    text-align: center;
-    color: var(--gray-mid);
-    font-size: 0.85rem;
-    padding: 2rem 0;
-    line-height: 1.8;
-  }
-
-  .result-timeline {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
-  .result-timeline-label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 2px;
-    color: var(--gray);
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-  }
-  .result-timeline-bar {
-    height: 3px;
-    background: var(--gray-dim);
-    position: relative;
-    margin-bottom: 0.5rem;
-  }
-  .result-timeline-fill {
-    height: 100%;
-    background: var(--orange);
-    transition: width 0.5s ease;
-    width: 0%;
-  }
-  .result-timeline-weeks {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--orange);
-  }
-
-  /* CORTEX DIAGNOSTIC QUIZ */
-  .quiz-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  .quiz-panel {
-    min-height: 440px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .quiz-progress { margin-bottom: 2.5rem; }
-  .quiz-progress-bar {
-    height: 3px;
-    background: var(--gray-dim);
-    position: relative;
-    margin-bottom: 0.6rem;
-  }
-  .quiz-progress-fill {
-    height: 100%;
-    background: var(--orange);
-    width: 25%;
-    transition: width 0.3s ease;
-  }
-  .quiz-progress-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--orange);
-  }
-
-  .quiz-step { display: none; flex: 1; }
-  .quiz-step.active { display: block; animation: quizFade 0.3s ease; }
-  @keyframes quizFade {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .quiz-question {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    letter-spacing: 0.5px;
-    color: var(--white);
-    margin-bottom: 1.75rem;
-    line-height: 1.25;
-  }
-  .quiz-question-hint {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    color: var(--gray);
-    font-weight: 400;
-  }
-
-  .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
-  .quiz-option {
-    border: 1px solid var(--gray-dim);
-    padding: 1rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .quiz-option:hover { border-color: var(--orange-dim); }
-  .quiz-option:focus-visible, .quiz-chip:focus-visible, .quiz-addon:focus-visible {
-    outline: 2px solid var(--orange);
-    outline-offset: 2px;
-  }
-  .quiz-option.active { border-color: var(--orange); background: rgba(196,90,26,0.08); }
-  .quiz-option-title { font-size: 0.9rem; font-weight: 500; color: var(--white); }
-  .quiz-option-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.3rem; line-height: 1.5; }
-
-  .quiz-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .quiz-chip {
-    border: 1px solid var(--gray-dim);
-    padding: 0.7rem 1rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: var(--gray);
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-  .quiz-chip span { font-size: 0.68rem; color: var(--gray-mid); }
-  .quiz-chip:hover { border-color: var(--orange-dim); color: var(--white); }
-  .quiz-chip.active { border-color: var(--orange); background: rgba(196,90,26,0.08); color: var(--white); }
-  .quiz-chip.active span { color: var(--orange); }
-  .quiz-chip.disabled { opacity: 0.35; cursor: not-allowed; }
-
-  .quiz-toggle-group { display: flex; flex-direction: column; gap: 0.6rem; }
-  .quiz-addon {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 1.1rem;
-    border: 1px solid var(--gray-dim);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.85rem;
-    color: var(--gray);
-  }
-  .quiz-addon:hover { border-color: var(--orange-dim); color: var(--white); }
-  .quiz-addon.active { border-color: var(--orange); background: rgba(196,90,26,0.08); color: var(--white); }
-  .quiz-addon-check {
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--gray-dim);
-    flex-shrink: 0;
-  }
-  .quiz-addon.active .quiz-addon-check { background: var(--orange); border-color: var(--orange); }
-  .quiz-addon-title { font-size: 0.85rem; color: var(--white); font-weight: 500; }
-  .quiz-addon-desc { font-size: 0.72rem; color: var(--gray); margin-top: 2px; }
-  .quiz-addon-price { margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange); white-space: nowrap; }
-
-  .quiz-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--gray-dim);
-  }
-  .quiz-btn-back, .quiz-btn-next {
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
-  }
-  .quiz-btn-back { background: none; color: var(--gray); padding: 0.8rem 0; }
-  .quiz-btn-back:hover { color: var(--white); }
-  .quiz-btn-next { background: var(--orange); color: var(--black); padding: 0.9rem 2rem; }
-  .quiz-btn-next:hover { background: var(--orange-bright); }
-  .quiz-btn-next:disabled { background: var(--gray-dim); color: var(--gray-mid); cursor: not-allowed; }
-
-  .result-gap {
-    font-size: 0.82rem;
-    color: var(--gray);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .result-gap strong { color: var(--orange); font-weight: 500; }
-  .result-tier-name { font-family: var(--font-display); font-size: 2rem; color: var(--white); line-height: 1; }
-  .result-tier-desc { font-size: 0.8rem; color: var(--gray); margin: 0.5rem 0 1.25rem; line-height: 1.6; }
-  .result-layers { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
-  .result-layers span {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--orange);
-    border: 1px solid var(--orange-dim);
-    padding: 0.3rem 0.6rem;
-  }
-  .result-cta-sub { text-align: center; font-size: 0.7rem; color: var(--gray-mid); margin-top: 0.75rem; }
-
-  /* SPEAKING SECTION */
-  .speaking-section {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-  }
-
-  .speaking-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-top: 2.5rem;
-  }
-
-  .speaking-item {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--gray-dim);
-    transition: all 0.2s;
-    cursor: default;
-  }
-  .speaking-item:hover .speaking-item-arrow { color: var(--orange); transform: translateX(4px); }
-
-  .speaking-num {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--orange-dim);
-    line-height: 1;
-    min-width: 2rem;
-    margin-top: 2px;
-  }
-
-  .speaking-item-body { flex: 1; }
-  .speaking-item-title {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.3rem;
-  }
-  .speaking-item-desc {
-    font-size: 0.8rem;
-    color: var(--gray);
-    line-height: 1.7;
-  }
-
-  .speaking-item-arrow {
-    color: var(--gray-mid);
-    font-size: 1.1rem;
-    margin-top: 4px;
-    transition: all 0.2s;
-  }
-
-  .speaking-visual {
-    position: relative;
-  }
-
-  .speaking-card {
-    background: #222018;
-    border: 1px solid var(--gray-dim);
-    padding: 2.5rem;
-    position: relative;
-  }
-
-  .speaking-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--orange);
-  }
-
-  .speaking-quote {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--white);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    font-weight: 300;
-  }
-
-  .speaking-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 0.75rem;
-    color: var(--gray);
-  }
-  .speaking-meta::before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    background: var(--orange);
-  }
-
-  .speaking-formats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--gray-dim);
-    border: 1px solid var(--gray-dim);
-    margin-top: 2rem;
-  }
-
-  .speaking-format {
-    background: #1C1917;
-    padding: 1.5rem;
-  }
-  .speaking-format-icon {
-    font-size: 1.2rem;
-    color: var(--orange);
-    margin-bottom: 0.5rem;
-  }
-  .speaking-format-title {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.25rem;
-  }
-  .speaking-format-desc {
-    font-size: 0.75rem;
-    color: var(--gray);
-  }
-
-  /* PROCESS SECTION */
-  .process-section {
-    background: #1E1B18;
-    padding: 7rem 0;
-  }
-  .process-inner {
-    padding: 0 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  .process-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    margin-top: 4rem;
-    border-left: 1px solid var(--gray-dim);
-  }
-  .process-step {
-    padding: 2.5rem 2rem;
-    border-right: 1px solid var(--gray-dim);
-    border-bottom: 1px solid var(--gray-dim);
-    border-top: 1px solid var(--gray-dim);
-    position: relative;
-  }
-  .process-step-num {
-    font-family: var(--font-display);
-    font-size: 5rem;
-    color: #1a1a1a;
-    position: absolute;
-    top: 0;
-    right: 1rem;
-    line-height: 1;
-  }
-  .process-step-tag {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .process-step-title {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.75rem;
-    position: relative;
-    z-index: 1;
-  }
-  .process-step-desc {
-    font-size: 0.8rem;
-    color: var(--gray);
-    line-height: 1.8;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ACADEMY TEASER */
-  .academy-teaser {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  .academy-inner {
-    background: #1E1B18;
-    border: 1px solid var(--gray-dim);
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-  }
-  .academy-inner::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(to right, var(--orange), var(--orange-bright), transparent);
-  }
-  .academy-content {
-    padding: 4rem;
-    position: relative;
-    z-index: 2;
-  }
-  .academy-tag {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .academy-tag::before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    background: var(--orange);
-  }
-  .academy-heading {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 4.5vw, 4rem);
-    line-height: 0.95;
-    letter-spacing: 1px;
-    margin-bottom: 1.25rem;
-    color: var(--white);
-  }
-  .academy-heading .accent { color: var(--orange); }
-  .academy-desc {
-    font-size: 0.95rem;
-    color: #999;
-    line-height: 1.85;
-    margin-bottom: 2rem;
-    max-width: 420px;
-  }
-  .academy-modules {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-  }
-  .academy-module {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    font-size: 0.82rem;
-    color: var(--gray);
-  }
-  .academy-module-num {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: var(--orange);
-    letter-spacing: 1px;
-    background: rgba(196,90,26,0.1);
-    border: 1px solid var(--orange-dim);
-    padding: 0.15rem 0.4rem;
-    min-width: 2rem;
-    text-align: center;
-  }
-  .academy-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: var(--orange);
-    color: var(--black);
-    text-decoration: none;
-    padding: 0.9rem 2rem;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-  .academy-cta:hover { background: var(--orange-bright); transform: translateY(-1px); }
-  .academy-cta svg { transition: transform 0.2s; }
-  .academy-cta:hover svg { transform: translateX(4px); }
-  .academy-visual {
-    position: relative;
-    background: #1C1917;
-    border-left: 1px solid var(--gray-dim);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3rem;
-    gap: 1rem;
-    overflow: hidden;
-  }
-  .academy-visual::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 70% 50%, rgba(196,90,26,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .academy-step-preview {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    background: #222018;
-    border: 1px solid var(--gray-dim);
-    transition: all 0.2s;
-    position: relative;
-    z-index: 2;
-  }
-  .academy-step-preview.is-active {
-    border-color: var(--orange-dim);
-    background: rgba(196,90,26,0.06);
-  }
-  .academy-step-preview-num {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--orange-dim);
-    line-height: 1;
-    min-width: 1.8rem;
-  }
-  .academy-step-preview.is-active .academy-step-preview-num { color: var(--orange); }
-  .academy-step-preview-body {}
-  .academy-step-preview-title {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--white);
-    margin-bottom: 0.2rem;
-  }
-  .academy-step-preview-desc {
-    font-size: 0.72rem;
-    color: var(--gray);
-    line-height: 1.5;
-  }
-  .academy-badge {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 2px;
-    color: var(--orange);
-    border: 1px solid var(--orange-dim);
-    padding: 0.3rem 0.65rem;
-    text-transform: uppercase;
-    z-index: 3;
-  }
-  @media (max-width: 900px) {
-    .academy-teaser { padding: 3.5rem 1.25rem; }
-    .academy-inner { grid-template-columns: 1fr; }
-    .academy-content { padding: 2.5rem 1.5rem; }
-    .academy-visual { display: none; }
-  }
-
-  /* CONTACT / CTA */
-  .cta-section {
-    padding: 7rem 4rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-  }
-
-  .cta-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 6vw, 5rem);
-    line-height: 0.95;
-    margin-bottom: 1.5rem;
-  }
-
-  .cta-body {
-    color: #999;
-    font-size: 0.95rem;
-    line-height: 1.9;
-    margin-bottom: 2.5rem;
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .form-label {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-  }
-
-  .form-input, .form-select, .form-textarea {
-    background: #222018;
-    border: 1px solid var(--gray-dim);
-    color: var(--white);
-    padding: 0.85rem 1rem;
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    font-weight: 300;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--orange);
-  }
-  .form-select option { background: #222018; }
-  .form-textarea { resize: vertical; min-height: 100px; }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-  .form-submit {
-    background: var(--orange);
-    color: var(--black);
-    border: none;
-    padding: 1rem 2rem;
-    font-family: var(--font-body);
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    align-self: flex-start;
-    position: relative;
-    min-width: 180px;
-  }
-  .form-submit:hover { background: var(--orange-bright); }
-  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .form-notice {
-    padding: 0.85rem 1rem;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    display: none;
-  }
-  .form-notice.success {
-    background: rgba(60,160,60,0.08);
-    border: 1px solid rgba(60,160,60,0.25);
-    color: #6c6;
-    display: block;
-  }
-  .form-notice.error {
-    background: rgba(196,90,26,0.08);
-    border: 1px solid var(--orange-dim);
-    color: var(--orange-bright);
-    display: block;
-  }
-
-  /* FOOTER */
-  footer {
-    background: #050505;
-    border-top: 1px solid var(--gray-dim);
-    padding: 4rem;
-  }
-  .footer-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 4rem;
-  }
-  .footer-logo {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    letter-spacing: 2px;
-    color: var(--white);
-    margin-bottom: 1rem;
-  }
-  .footer-logo span { color: var(--orange); }
-  .footer-tagline {
-    font-size: 0.8rem;
-    color: var(--gray);
-    line-height: 1.8;
-    max-width: 250px;
-  }
-  .footer-col-title {
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    margin-bottom: 1.25rem;
-  }
-  .footer-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .footer-links a {
-    font-size: 0.8rem;
-    color: var(--gray);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--white); }
-  .footer-bottom {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding-top: 2rem;
-    margin-top: 3rem;
-    border-top: 1px solid #1a1a1a;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.7rem;
-    color: var(--gray-mid);
-  }
-  .footer-partners { display: flex; gap: 1rem; }
-  .partner-badge {
-    border: 1px solid var(--gray-dim);
-    padding: 0.3rem 0.7rem;
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-    color: var(--gray);
-    text-transform: uppercase;
-  }
-
-  /* Scroll animations */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── LIGHT THEME ────────────────────────────────────────── */
-  /* Refined: Claude-inspired warm beige, softer contrasts     */
-  [data-theme="light"] {
-    --black: #F5F1EB;
-    --white: #2C2416;
-    --gray: #7A7066;
-    --gray-dim: #DDD8CF;
-    --gray-mid: #9E9589;
-    --orange: #B84F12;
-    --orange-bright: #D06018;
-    --orange-dim: #C0845A;
-    --orange-glow: rgba(184,79,18,0.08);
-  }
-  [data-theme="light"] body {
-    background: #F5F1EB;
-    color: #2C2416;
-  }
-  [data-theme="light"] body::before { opacity: 0.08; }
-  [data-theme="light"] body::after { opacity: 0.015; }
-  [data-theme="light"] nav {
-    background: rgba(245,241,235,0.97);
-    border-bottom-color: rgba(0,0,0,0.06);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-  }
-  [data-theme="light"] nav.scrolled { background: rgba(245,241,235,1); }
-  [data-theme="light"] .mobile-menu { background: #EDE9E2; }
-  [data-theme="light"] .nav-links a { color: #7A7066; }
-  [data-theme="light"] .nav-links a:hover { color: #2C2416; }
-  [data-theme="light"] .nav-links a.active { color: var(--orange); }
-  [data-theme="light"] .hero-visual {
-    background: linear-gradient(135deg, #2a1a08 0%, #1C1917 40%, #1C1917 100%);
-    box-shadow: none;
-  }
-  [data-theme="light"] .hero-photo-img {
-    opacity: 0.35;
-    filter: contrast(1.1) brightness(0.85) saturate(0.7);
-  }
-  [data-theme="light"] .hero-desc { color: #7A7066; }
-  [data-theme="light"] .ticker { background: var(--orange); }
-  [data-theme="light"] .about-section { background: #F5F1EB; }
-  [data-theme="light"] .about-text p { color: #7A7066; }
-  [data-theme="light"] .brain-section { background: #EDE9E2; }
-  [data-theme="light"] .brain-flow { background: #DDD8CF; border-color: #D0CAC0; }
-  [data-theme="light"] .brain-node { background: #F5F1EB; border-color: #DDD8CF; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-  [data-theme="light"] .brain-node-title { color: #2C2416; }
-  [data-theme="light"] .brain-node-desc { color: #7A7066; }
-  [data-theme="light"] .process-section { background: #EDE9E2; }
-  [data-theme="light"] .process-step { border-color: #DDD8CF; }
-  [data-theme="light"] .process-step-title { color: #2C2416; }
-  [data-theme="light"] .process-step-desc { color: #7A7066; }
-  [data-theme="light"] .speaking-card { background: #F5F1EB; border-color: #DDD8CF; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-  [data-theme="light"] .speaking-quote { color: #2C2416; }
-  [data-theme="light"] .speaking-format { background: #EDE9E2; border-color: #DDD8CF; }
-  [data-theme="light"] .speaking-format-title { color: #2C2416; }
-  [data-theme="light"] .calculator-inner { background: #EDE9E2; }
-  [data-theme="light"] .calc-item { background: #F5F1EB; border-color: #DDD8CF; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
-  [data-theme="light"] .calc-item:hover { border-color: var(--orange-dim); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-  [data-theme="light"] .calc-item.selected { background: rgba(184,79,18,0.05); border-color: var(--orange); }
-  [data-theme="light"] .calc-item-title { color: #2C2416; }
-  [data-theme="light"] .calc-item-desc { color: #7A7066; }
-  [data-theme="light"] .result-box { background: #F5F1EB; border-color: #DDD8CF; }
-  [data-theme="light"] .result-total { color: var(--orange); }
-  [data-theme="light"] .result-cta { background: var(--orange); color: #F5F1EB; }
-  [data-theme="light"] .cta-section { background: #F5F1EB; }
-  [data-theme="light"] .cta-body { color: #7A7066; }
-  [data-theme="light"] .form-input,
-  [data-theme="light"] .form-select,
-  [data-theme="light"] .form-textarea {
-    background: #FAF8F4;
-    border-color: #DDD8CF;
-    color: #2C2416;
-  }
-  [data-theme="light"] .form-input:focus,
-  [data-theme="light"] .form-select:focus,
-  [data-theme="light"] .form-textarea:focus {
-    border-color: var(--orange);
-    background: #fff;
-    box-shadow: 0 0 0 3px rgba(184,79,18,0.08);
-  }
-  [data-theme="light"] .form-select option { background: #F5F1EB; color: #2C2416; }
-  [data-theme="light"] .form-label { color: #7A7066; }
-  [data-theme="light"] footer { background: #EDE9E2; border-top-color: #DDD8CF; }
-  [data-theme="light"] .footer-bottom { border-top-color: #DDD8CF; color: #9E9589; }
-  [data-theme="light"] .footer-links a { color: #7A7066; }
-  [data-theme="light"] .footer-links a:hover { color: #2C2416; }
-  [data-theme="light"] .footer-col-title { color: #2C2416; }
-  [data-theme="light"] .footer-tagline { color: #7A7066; }
-  [data-theme="light"] .partner-badge { border-color: #DDD8CF; color: #7A7066; background: rgba(245,241,235,0.6); }
-  [data-theme="light"] .btn-ghost { border-color: #DDD8CF; color: #7A7066; }
-  [data-theme="light"] .btn-ghost:hover { color: #2C2416; border-color: #9E9589; }
-  [data-theme="light"] .hero-title { color: #7A7066; border-color: var(--orange); }
-  [data-theme="light"] .section-tag { color: var(--orange); }
-  [data-theme="light"] .section-tag::before { background: var(--orange); }
-  [data-theme="light"] .pillars-inner { background: #F5F1EB; }
-  [data-theme="light"] .pillar { background: #EDE9E2; border-color: #DDD8CF; box-shadow: 0 1px 6px rgba(0,0,0,0.04); }
-  [data-theme="light"] .pillar:hover { border-color: var(--orange-dim); box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
-  [data-theme="light"] .pillar-title { color: #2C2416; }
-  [data-theme="light"] .pillar-desc { color: #7A7066; }
-  [data-theme="light"] .academy-teaser .academy-inner { background: #EDE9E2; border-color: #DDD8CF; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
-  [data-theme="light"] .academy-visual { background: #E5E0D8; border-color: #DDD8CF; }
-  [data-theme="light"] .academy-step-preview { background: #F5F1EB; border-color: #DDD8CF; }
-  [data-theme="light"] .academy-step-preview.is-active { background: rgba(184,79,18,0.05); border-color: var(--orange-dim); }
-  [data-theme="light"] .academy-desc { color: #7A7066; }
-  /* Light theme overrides for hardcoded dark section backgrounds */
-  [data-theme="light"] .pillars-section { background: #EDE9E2; }
-  [data-theme="light"] .pillars-inner { background: #EDE9E2; }
-  [data-theme="light"] .calculator-section { background: #F5F1EB; border-top-color: #DDD8CF; border-bottom-color: #DDD8CF; }
-  [data-theme="light"] .calculator-inner { background: #EDE9E2; }
-  [data-theme="light"] .speaking-section { background: #F5F1EB; }
-  [data-theme="light"] .speaking-card { background: #F5F1EB; border-color: #DDD8CF; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-  [data-theme="light"] .speaking-format { background: #EDE9E2; border-color: #DDD8CF; }
-  [data-theme="light"] .speaking-format-title { color: #2C2416; }
-  [data-theme="light"] .process-section { background: #EDE9E2; }
-  [data-theme="light"] .process-inner { background: transparent; }
-  [data-theme="light"] footer { background: #EDE9E2; border-top-color: #DDD8CF; }
-  [data-theme="light"] .footer-bottom { border-top-color: #DDD8CF; color: #9E9589; }
-  [data-theme="light"] .academy-inner { background: #EDE9E2; border-color: #DDD8CF; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
-  [data-theme="light"] .academy-visual { background: #E5DDD2; border-left-color: #DDD8CF; }
-  [data-theme="light"] .academy-step-preview { background: #F5F1EB; border-color: #DDD8CF; }
-  [data-theme="light"] .academy-step-preview.is-active { background: rgba(184,79,18,0.05); border-color: var(--orange-dim); }
-
-  /* Theme toggle button */
-  .theme-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: 1px solid var(--gray-dim);
-    color: var(--gray);
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .theme-toggle-btn:hover { border-color: var(--orange); color: var(--orange); }
-  .theme-icon { font-size: 0.85rem; line-height: 1; }
-
-  /* Orange glow line */
-  .glow-line {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--orange), transparent);
-    margin: 0;
-  }
-
-  /* HAMBURGER */
-  .nav-hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 4px;
-    background: none;
-    border: none;
-    z-index: 9600;
-  }
-  .nav-hamburger span {
-    display: block;
-    width: 22px;
-    height: 1px;
-    background: var(--white);
-    transition: all 0.3s;
-  }
-  .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-  /* MOBILE MENU OVERLAY */
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(8,8,8,0.98);
-    z-index: 9400;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-  }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    letter-spacing: 3px;
-    color: var(--white);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .mobile-menu a:hover, .mobile-menu a.active { color: var(--orange); }
-  .mobile-menu-divider {
-    width: 40px;
-    height: 1px;
-    background: var(--orange-dim);
-  }
-  .mobile-menu-sub {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .mobile-menu-sub a {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
-    color: var(--gray);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 0.65rem;
-  }
-  .mobile-menu-sub a:hover { color: var(--orange); }
-
-  /* NAV ACTIVE STATE */
-  .nav-links a.active { color: var(--orange); }
-
-  @media (max-width: 900px) {
-    /* ── NAV ── */
-    nav { padding: 1rem 1.25rem; }
-    .nav-links { display: none; }
-    .nav-hamburger { display: flex; }
-    .nav-cta { display: none; }
-    .wa-nav-btn { display: none; }
-
-    /* ── HERO ── */
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-right { display: none; }
-    .hero-left {
-      padding: 7rem 1.25rem 4rem;
-      justify-content: flex-start;
-    }
-    .hero-name { font-size: clamp(3.5rem, 16vw, 6rem); }
-    .hero-desc { max-width: 100%; font-size: 0.95rem; margin-bottom: 2rem; }
-    .hero-actions { flex-direction: column; align-items: stretch; }
-    .hero-actions a { text-align: center; }
-
-    /* ── SECTIONS: full-width, centred, tighter padding ── */
-    section,
-    .brain-section,
-    .calculator-inner,
-    .speaking-section,
-    .cta-section,
-    .process-inner,
-    .pillars-inner {
-      padding: 3.5rem 1.25rem;
-      max-width: 100%;
-      width: 100%;
-    }
-
-    /* ── ABOUT ── */
-    .about-section {
-      grid-template-columns: 1fr;
-      padding: 3.5rem 1.25rem;
-      gap: 2.5rem;
-      max-width: 100%;
-    }
-    .about-visual { display: none; }
-    .about-numbers { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .about-num { font-size: 2rem; }
-
-    /* ── PILLARS ── */
-    .pillars-header { grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2.5rem; }
-    .cortex-feature { grid-template-columns: 1fr; text-align: left; padding: 2rem 1.25rem; gap: 1.25rem; }
-    .cortex-feature-num { font-size: 3rem; }
-    .cortex-feature-cta { width: 100%; text-align: center; }
-    .pillars-grid { grid-template-columns: 1fr; }
-    .pillar-card { border-right: none; border-bottom: 1px solid var(--gray-dim); padding: 2rem 1.25rem; }
-    .pillar-num { font-size: 2.5rem; margin-bottom: 0.75rem; }
-
-    /* ── BRAIN FLOW ── */
-    .brain-flow { grid-template-columns: 1fr 1fr; gap: 1px; background: var(--gray-dim); }
-    .brain-step { background: var(--black); padding: 1.5rem 1rem; }
-    .brain-arrow { display: none; }
-    .brain-step-num { font-size: 2.5rem; }
-    .cortex-values { grid-template-columns: 1fr; gap: 1.5rem; }
-
-    /* ── CALCULATOR / CORTEX DIAGNOSTIC ── */
-    .calc-header { grid-template-columns: 1fr; gap: 1.5rem; }
-    .calc-body, .quiz-body { grid-template-columns: 1fr; gap: 2rem; }
-    .calc-result { position: static; }
-    .quiz-panel { min-height: auto; }
-    .quiz-chip { flex: 1 1 100%; }
-
-    /* ── SPEAKING ── */
-    .speaking-section { grid-template-columns: 1fr; gap: 2.5rem; }
-    .speaking-visual { display: none; }
-    .speaking-formats { grid-template-columns: 1fr; }
-
-    /* ── PROCESS ── */
-    .process-grid { grid-template-columns: 1fr; border-left: none; }
-    .process-step { padding: 1.75rem 1.25rem; border-left: 3px solid var(--orange-dim); border-right: none; border-top: none; border-bottom: 1px solid var(--gray-dim); }
-    .process-step-num { font-size: 3rem; }
-
-    /* ── CONTACT/CTA ── */
-    .cta-section { grid-template-columns: 1fr; gap: 2.5rem; }
-    .form-row { grid-template-columns: 1fr; }
-    .cta-title { font-size: clamp(2.5rem, 10vw, 4rem); }
-
-    /* ── FOOTER ── */
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 0; }
-    footer { padding: 3rem 1.25rem 2rem; }
-    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-    .footer-partners { justify-content: center; }
-
-    /* ── SECTION TITLE ── */
-    .section-title { font-size: clamp(2.5rem, 10vw, 4rem); }
-  }
+/* ===== Page-specific CSS — winsymai.html (homepage) ===== */
+
+/* ---- Hero graph visual ---- */
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;}
+.graph-visual{width:100%;max-width:460px;height:auto;}
+.graph-visual circle.node{fill:var(--orange);}
+.graph-visual circle.node-dim{fill:var(--card-border);}
+.graph-visual line{stroke:var(--orange);stroke-opacity:0.35;stroke-width:1.4;}
+.graph-visual circle.pulse{fill:none;stroke:var(--orange);stroke-width:1.5;opacity:0;animation:graphPulse 4s ease-out infinite;}
+@keyframes graphPulse{0%{r:6;opacity:.9;}100%{r:64;opacity:0;}}
+@media (prefers-reduced-motion: reduce){.graph-visual circle.pulse{animation:none;display:none;}}
+.hero-stats{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap;}
+.hero-stat-num{font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--black);}
+.hero-stat-label{font-family:var(--font-mono);font-size:11.5px;color:var(--gray-light);}
+.hero-badge{position:absolute;bottom:-8px;left:0;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:10px 16px;box-shadow:var(--shadow-lg);font-size:13px;color:var(--gray);display:flex;align-items:center;gap:8px;}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0;}
+@media (max-width:920px){.hero-visual{margin-top:32px;}.hero-badge{position:static;margin-top:16px;display:inline-flex;}}
+
+/* ---- Ticker / marquee ---- */
+.ticker-wrap{background:var(--black);overflow:hidden;padding:18px 0;border-top:1px solid rgba(245,242,238,0.08);border-bottom:1px solid rgba(245,242,238,0.08);}
+.ticker-track{display:flex;width:max-content;animation:tickerScroll 32s linear infinite;}
+.ticker-item{display:flex;align-items:center;gap:14px;padding:0 28px;font-family:var(--font-mono);font-size:13px;color:#C9C2B6;white-space:nowrap;}
+.ticker-item .sep{color:var(--orange);}
+@keyframes tickerScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@media (prefers-reduced-motion: reduce){.ticker-track{animation:none;}}
+
+/* ---- About ---- */
+.about-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:center;}
+@media (max-width:920px){.about-grid{grid-template-columns:1fr;}}
+.about-visual{position:relative;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:28px;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;}
+.about-bar{height:10px;border-radius:6px;background:var(--orange);opacity:.85;}
+.about-bar:nth-child(odd){background:var(--black);opacity:.18;}
+.about-frame-label{font-family:var(--font-mono);font-size:11.5px;color:var(--gray-light);margin-top:18px;}
+.about-accent-box{position:absolute;top:-16px;right:-16px;background:var(--orange-cta);color:var(--white);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-mono);font-size:11.5px;box-shadow:var(--shadow-orange);}
+.pull-quote{font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--black);border-left:3px solid var(--orange);padding-left:18px;margin:20px 0;}
+.cred-row{display:flex;flex-wrap:wrap;gap:18px;margin:24px 0;font-family:var(--font-mono);font-size:12.5px;color:var(--gray-light);}
+.cred-row span{color:var(--orange);}
+.numbers-row{display:flex;gap:36px;margin-top:8px;flex-wrap:wrap;}
+.numbers-row .num{font-family:var(--font-display);font-weight:800;font-size:28px;color:var(--black);}
+.numbers-row .label{font-family:var(--font-mono);font-size:11.5px;color:var(--gray-light);}
+
+/* ---- Pillars / CORTEX feature ---- */
+.cortex-feature{background:var(--black);border-radius:var(--radius-lg);padding:40px;color:var(--cream);margin-bottom:28px;}
+.cortex-feature .ws-badge{margin-bottom:18px;}
+.cortex-feature h3{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,2.6vw,30px);color:var(--white);margin-bottom:14px;}
+.cortex-feature p{color:#C9C2B6;max-width:620px;margin-bottom:24px;}
+.layer-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;}
+.layer-chip{font-family:var(--font-mono);font-size:12px;color:#E8E3DA;border:1px solid rgba(245,242,238,0.18);border-radius:var(--radius-full);padding:7px 14px;}
+.pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media (max-width:1000px){.pillars-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.pillars-grid{grid-template-columns:1fr;}}
+.pillar-card-num{font-family:var(--font-mono);font-size:12px;color:var(--orange);margin-bottom:12px;}
+.pillar-card h4{font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:10px;}
+.pillar-card p{font-size:14px;color:var(--gray);margin-bottom:14px;}
+.pillar-card .powered-by{font-family:var(--font-mono);font-size:11.5px;color:var(--gray-light);border-top:1px solid var(--card-border);padding-top:12px;}
+
+/* ---- Speaking ---- */
+.speaking-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:start;}
+@media (max-width:920px){.speaking-grid{grid-template-columns:1fr;}}
+.speaking-item{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--card-border);}
+.speaking-item:first-child{padding-top:0;}
+.speaking-num{font-family:var(--font-mono);font-size:13px;color:var(--orange);flex-shrink:0;width:32px;}
+.speaking-item h4{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:6px;}
+.speaking-item p{font-size:14px;color:var(--gray);}
+.speaking-quote-card{background:var(--black);color:var(--cream);border-radius:var(--radius-lg);padding:28px;margin-bottom:20px;}
+.speaking-quote-card p{font-family:var(--font-display);font-style:italic;font-size:16px;color:#E8E3DA;}
+.speaking-quote-card .cap{font-family:var(--font-mono);font-size:11.5px;color:#8A8278;margin-top:14px;}
+.speaking-format-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.speaking-format{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:16px;}
+.speaking-format .name{font-weight:600;font-size:14px;color:var(--black);}
+.speaking-format .desc{font-size:12.5px;color:var(--gray-light);}
+
+/* ---- Brain flow ---- */
+.brain-head{text-align:center;max-width:680px;margin:0 auto 48px;}
+.brain-flow{display:flex;gap:8px;align-items:stretch;margin-bottom:56px;}
+.brain-step{flex:1;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:22px 16px;text-align:center;}
+.brain-step .n{font-family:var(--font-mono);font-size:12px;color:var(--orange);margin-bottom:10px;}
+.brain-step h4{font-family:var(--font-display);font-weight:700;font-size:15.5px;margin-bottom:6px;}
+.brain-step p{font-size:12.5px;color:var(--gray-light);}
+.brain-arrow{display:flex;align-items:center;color:var(--card-border);font-size:18px;flex-shrink:0;}
+@media (max-width:880px){.brain-flow{flex-direction:column;}.brain-arrow{transform:rotate(90deg);justify-content:center;padding:2px 0;}}
+.cortex-values{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media (max-width:880px){.cortex-values{grid-template-columns:1fr;}}
+
+/* ---- Process ---- */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media (max-width:1000px){.process-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.process-grid{grid-template-columns:1fr;}}
+.process-card .step-no{font-family:var(--font-mono);font-size:12px;color:var(--orange);margin-bottom:12px;}
+.process-card h4{font-family:var(--font-display);font-weight:700;font-size:16.5px;margin-bottom:8px;}
+.process-card .when{font-family:var(--font-mono);font-size:11px;color:var(--gray-light);text-transform:uppercase;margin-top:12px;}
+
+/* ---- Quiz / calculator ---- */
+.calc-wrap{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:36px;}
+.quiz-progress{display:flex;gap:6px;margin-bottom:28px;}
+.quiz-progress-seg{flex:1;height:4px;border-radius:2px;background:var(--card-border);}
+.quiz-progress-seg.done{background:var(--orange);}
+.quiz-step-label{font-family:var(--font-mono);font-size:12px;color:var(--gray-light);margin-bottom:6px;text-transform:uppercase;}
+.quiz-step{display:none;}
+.quiz-step.active{display:block;}
+.quiz-step h3{font-family:var(--font-display);font-weight:700;font-size:22px;margin-bottom:22px;}
+.quiz-options-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:600px){.quiz-options-grid{grid-template-columns:1fr;}}
+.quiz-option{background:var(--cream);border:1.5px solid var(--card-border);border-radius:var(--radius-md);padding:18px;cursor:pointer;transition:border-color var(--duration-fast) var(--ease),background var(--duration-fast) var(--ease);}
+.quiz-option:hover{border-color:var(--orange);}
+.quiz-option.selected{border-color:var(--orange-cta);background:var(--orange-faint);}
+.quiz-option .t{font-weight:700;font-size:15px;color:var(--black);margin-bottom:4px;}
+.quiz-option .d{font-size:13px;color:var(--gray-light);}
+.quiz-chips-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.quiz-chip{border:1.5px solid var(--card-border);border-radius:var(--radius-full);padding:10px 18px;font-size:13.5px;color:var(--gray);cursor:pointer;background:var(--cream);transition:all var(--duration-fast) var(--ease);}
+.quiz-chip:hover{border-color:var(--orange);}
+.quiz-chip.selected{background:var(--orange-cta);border-color:var(--orange-cta);color:var(--white);}
+.quiz-chip.disabled{opacity:.4;cursor:not-allowed;}
+.quiz-addons-grid{display:flex;flex-direction:column;gap:12px;}
+.quiz-addon{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1.5px solid var(--card-border);border-radius:var(--radius-md);padding:16px 18px;cursor:pointer;background:var(--cream);}
+.quiz-addon:hover{border-color:var(--orange);}
+.quiz-addon.selected{border-color:var(--orange-cta);background:var(--orange-faint);}
+.quiz-addon .t{font-weight:600;font-size:14.5px;color:var(--black);}
+.quiz-addon .p{font-family:var(--font-mono);font-size:13px;color:var(--orange);flex-shrink:0;}
+.quiz-nav{display:flex;justify-content:space-between;margin-top:28px;}
+.calc-result{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:32px;margin-top:28px;}
+.calc-result-empty{font-size:14px;color:var(--gray-light);text-align:center;padding:24px 0;}
+.result-tier-name{font-family:var(--font-display);font-weight:800;font-size:24px;color:var(--black);}
+.result-tier-target{font-family:var(--font-mono);font-size:12px;color:var(--orange);margin-bottom:10px;}
+.result-tier-desc{font-size:14px;color:var(--gray);margin-bottom:18px;}
+.result-row{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--card-border);font-size:14px;}
+.result-row .v{font-weight:700;color:var(--black);}
+.result-total .v{font-family:var(--font-display);font-size:22px;color:var(--orange-cta);}
+.result-addons{margin-top:14px;font-size:13px;color:var(--gray-light);}
+
+/* ---- Academy teaser ---- */
+.academy-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
+@media (max-width:920px){.academy-grid{grid-template-columns:1fr;}}
+.academy-modules{list-style:none;display:flex;flex-direction:column;gap:10px;margin:20px 0 28px;}
+.academy-modules li{display:flex;gap:10px;font-size:14.5px;color:var(--gray);}
+.academy-modules .check{color:var(--orange);flex-shrink:0;}
+.academy-visual{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:28px;}
+.academy-step-preview{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--card-border);align-items:center;}
+.academy-step-preview:last-child{border-bottom:none;}
+.academy-step-preview .num{font-family:var(--font-mono);font-size:13px;color:var(--orange);width:24px;flex-shrink:0;}
+.academy-step-preview .t{font-size:14px;color:var(--black);font-weight:600;}
+
+/* ---- Contact ---- */
+.contact-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:56px;align-items:flex-start;}
+@media (max-width:920px){.contact-grid{grid-template-columns:1fr;}}
+.contact-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--card-border);}
+.contact-row svg{flex-shrink:0;color:var(--orange);}
+.contact-row a{color:var(--black);font-weight:500;}
+.contact-row a:hover{color:var(--orange);}
+.contact-form-wrap{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:32px;}
+
+/* ---- Misc section heads ---- */
+.section-head-center{max-width:680px;margin:0 auto 48px;text-align:center;}
 </style>
 </head>
 <body>
 
-<!-- MOBILE MENU OVERLAY -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="winsymai.html" class="active">Home</a>
-  <a href="karim-identity.html">About Karim</a>
-  <a href="projects-showcase.html">Projects</a>
-  <a href="courses.html">Academy</a>
-  <div class="mobile-menu-divider"></div>
-  <div class="mobile-menu-sub">
-    <a href="#cortex">CORTEX</a>
-    <a href="#speaking">Speaking</a>
-    <a href="#calculator">Work with me</a>
-    <a href="#contact">Contact</a>
+<header class="ws-header">
+<nav class="ws-nav">
+<a href="/" class="ws-nav-logo">
+  <span class="brand-mark">win<span class="accent">sym</span>.ai</span>
+  <span class="brand-tag" data-i18n="nav.tag">AI Operating Systems</span>
+</a>
+<ul class="ws-nav-links" id="wsNavLinks">
+  <li><a href="/" class="ws-nav-link" aria-current="page" data-i18n="nav.home">Home</a></li>
+  <li><a href="/cortex.html" class="ws-nav-link" data-i18n="nav.cortex">CORTEX</a></li>
+  <li><a href="/about" class="ws-nav-link" data-i18n="nav.about">About</a></li>
+  <li><a href="/projects" class="ws-nav-link" data-i18n="nav.projects">Projects</a></li>
+  <li><a href="academy.html" class="ws-nav-link" data-i18n="nav.academy">Academy</a></li>
+  <li><a href="#contact" class="ws-nav-link" data-i18n="nav.contact">Contact</a></li>
+  <li class="ws-lang-switch">
+    <button class="ws-lang-btn" type="button" aria-label="Change language">
+      <span class="ws-lang-btn-text">EN</span>
+    </button>
+    <div class="ws-lang-menu" role="listbox">
+      <button class="ws-lang-option" type="button" data-lang="en" role="option">English<span>EN</span></button>
+      <button class="ws-lang-option" type="button" data-lang="de" role="option">Deutsch<span>DE</span></button>
+    </div>
+  </li>
+</ul>
+<div class="ws-nav-ctas" id="navAuthArea">
+  <a href="auth.html" class="btn btn-ghost btn-sm" id="navLoginBtn" data-i18n="nav.login">Log in</a>
+  <a href="#contact" class="btn btn-primary btn-sm" data-i18n="nav.bookSession">Book a session →</a>
+</div>
+<button class="nav-burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="wsNavLinks">
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+</button>
+</nav>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="wrap hero-grid">
+  <div class="hero-copy fade-up">
+    <span class="eyebrow" data-i18n="hero.eyebrow">AI Coach · CORTEX Architect · Speaker</span>
+    <h1 data-i18n="hero.h1" data-i18n-attr="html">Winning Systems.<br>Backed by a <span class="text-orange">Brain</span>.</h1>
+    <p class="lead" data-i18n="hero.lead">winsym.ai installs CORTEX — a governed AI Brain your business runs on. Not another chatbot. A system that remembers, decides, and scales with you.</p>
+    <div class="hero-ctas">
+      <a href="#calculator" class="btn btn-primary" data-i18n="hero.cta1">Find my CORTEX tier →</a>
+      <a href="#speaking" class="btn btn-ghost" data-i18n="hero.cta2">Speaking topics</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">200+</div><div class="hero-stat-label" data-i18n="hero.stat1">Businesses coached</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">10+</div><div class="hero-stat-label" data-i18n="hero.stat2">Years in marketing</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-label" data-i18n="hero.stat3">Certified partnerships</div></div>
+    </div>
+  </div>
+  <div class="hero-visual fade-up">
+    <svg class="graph-visual" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <line x1="240" y1="240" x2="120" y2="140"/><line x1="240" y1="240" x2="360" y2="120"/>
+      <line x1="240" y1="240" x2="100" y2="320"/><line x1="240" y1="240" x2="380" y2="330"/>
+      <line x1="240" y1="240" x2="240" y2="90"/><line x1="240" y1="240" x2="240" y2="400"/>
+      <line x1="120" y1="140" x2="240" y2="90"/><line x1="360" y1="120" x2="240" y2="90"/>
+      <line x1="100" y1="320" x2="240" y2="400"/><line x1="380" y1="330" x2="240" y2="400"/>
+      <circle class="pulse" cx="240" cy="240" r="6"/>
+      <circle class="node" cx="240" cy="240" r="13"/>
+      <circle class="node" cx="120" cy="140" r="8"/><circle class="node" cx="360" cy="120" r="8"/>
+      <circle class="node" cx="100" cy="320" r="8"/><circle class="node" cx="380" cy="330" r="8"/>
+      <circle class="node-dim" cx="240" cy="90" r="6"/><circle class="node-dim" cx="240" cy="400" r="6"/>
+    </svg>
+    <div class="hero-badge"><span class="dot"></span><span data-i18n="hero.badge">Based in KL, Malaysia</span></div>
   </div>
 </div>
-
-<!-- NAV -->
-<nav>
-  <a href="winsymai.html" class="nav-logo">win<span>sym</span>.ai</a>
-  <ul class="nav-links">
-    <li><a href="winsymai.html" class="active">Home</a></li>
-    <li><a href="karim-identity.html">About Karim</a></li>
-    <li><a href="projects-showcase.html">Projects</a></li>
-    <li><a href="courses.html">Academy</a></li>
-    <li><a href="#speaking">Speaking</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <div style="display:flex;align-items:center;gap:0.5rem;">
-    <div id="navAuthArea" style="display:none;">
-      <a href="dashboard.html" class="nav-auth-btn"><span class="nav-auth-avatar" id="navAuthAvatar"></span>Dashboard</a>
-    </div>
-    <a href="auth.html" id="navLoginBtn" class="nav-auth-btn" style="display:none;">Login</a>
-    <a href="#contact" class="nav-cta">Book a session →</a>
-  </div>
-  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- HERO -->
-<section class="hero" style="padding: 0; max-width: 100%;">
-  <div class="hero-left">
-    <div class="hero-eyebrow">AI Coach · CORTEX Architect · Speaker</div>
-    <h1 class="hero-name">
-      Karim
-      <span class="last">Azzaoui</span>
-    </h1>
-    <div class="hero-title">Winning Systems · Backed by a Brain</div>
-    <p class="hero-desc">
-      Your company already has a brain — it's just scattered across people, files and apps. I install CORTEX: the governed AI Brain that captures what your business knows, runs how it works, and helps it decide. Everything else I do is built on top of it.
-    </p>
-    <div class="hero-actions">
-      <a href="#calculator" class="btn-primary">Find my CORTEX tier</a>
-      <a href="#speaking" class="btn-ghost">Speaking topics</a>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-visual">
-      <div class="hero-photo-layer" aria-hidden="true">
-        <img src="images/karim-speaking.jpg" alt="" class="hero-photo-img">
-      </div>
-      <div class="bar-container">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </div>
-      <div class="hero-stats">
-        <div>
-          <div class="hero-stat-num">200+</div>
-          <div class="hero-stat-label">Businesses coached</div>
-        </div>
-        <div>
-          <div class="hero-stat-num">10+</div>
-          <div class="hero-stat-label">Years in marketing</div>
-        </div>
-        <div>
-          <div class="hero-stat-num">2</div>
-          <div class="hero-stat-label">Certified partnerships</div>
-        </div>
-      </div>
-      <div class="hero-badge">
-        <div class="hero-badge-label">Based in</div>
-        <div class="hero-badge-text">KL, Malaysia</div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-divider"></div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
-    <span class="ticker-item">CORTEX — The Brain<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Meta Partner<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Kuala Lumpur · Malaysia<span class="ticker-dot"></span></span>
-    <span class="ticker-item">AI Coach<span class="ticker-dot"></span></span>
-    <span class="ticker-item">CORTEX — The Brain<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Winning Systems<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Rapid AI Integration<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Google Partner<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Meta Partner<span class="ticker-dot"></span></span>
-    <span class="ticker-item">Kuala Lumpur · Malaysia<span class="ticker-dot"></span></span>
-  </div>
+<div class="ticker-wrap" aria-hidden="true">
+<div class="ticker-track" id="tickerTrack">
+  <span class="ticker-item" data-i18n="ticker.item1">AI Coach</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item2">CORTEX — The Brain</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item3">Winning Systems</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item4">Rapid AI Integration</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item5">Google Partner</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item6">Meta Partner</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item7">Kuala Lumpur · Malaysia</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item1">AI Coach</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item2">CORTEX — The Brain</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item3">Winning Systems</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item4">Rapid AI Integration</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item5">Google Partner</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item6">Meta Partner</span><span class="ticker-item sep">·</span>
+  <span class="ticker-item" data-i18n="ticker.item7">Kuala Lumpur · Malaysia</span><span class="ticker-item sep">·</span>
+</div>
 </div>
 
-<!-- ABOUT -->
-<div class="about-section fade-up" id="about">
-  <div class="about-visual">
-    <div class="about-frame">
-      <div class="about-frame-bars">
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-        <div class="about-bar"></div>
-      </div>
-      <div class="about-frame-overlay"></div>
-      <div class="about-frame-label">
-        <div class="about-frame-name">KARIM<br>AZZAOUI</div>
-        <div class="about-frame-role">AI Coach · Speaker · winsym.ai</div>
-      </div>
-    </div>
-    <div class="about-accent-box"></div>
-    <div class="about-accent-box2"></div>
+<div class="dark-strip">
+<div class="wrap dark-strip-row">
+  <p class="dark-strip-quote" data-i18n="trust.quote">"We don't sell a chatbot. We install the brain your company runs on."</p>
+  <div class="badges-row">
+    <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Google Partner</span>
+    <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Meta Partner</span>
   </div>
-  <div class="about-content">
-    <div class="section-tag">About Karim</div>
-    <h2 class="section-title">I translate<br><span class="accent">Business</span><br>into AI</h2>
-    <p class="about-quote">"Most companies don't need more AI tools — they need someone who can build the right system around their real business goals."</p>
-    <p class="about-body">
-      With over a decade in marketing, design and digital systems — and certified partnerships with both Google and Meta — I've seen exactly where companies get stuck when trying to adopt AI. It's never about the technology. It's about the translation layer between business logic and AI capability.<br><br>
-      I work with KMUs across Malaysia and Asia to install what I call CORTEX: a governed AI Brain that captures what your business knows, runs how it works, and helps it decide — the foundation every other AI system gets built on top of.
-    </p>
-    <div class="credential-row">
-      <div class="credential">✦ Google Partner</div>
-      <div class="credential">✦ Meta Partner</div>
-      <div class="credential">✦ AI Integration</div>
-      <div class="credential">✦ KL · Germany</div>
+</div>
+</div>
+
+<section class="section">
+<div class="wrap about-grid">
+  <div class="about-visual fade-up">
+    <div class="about-accent-box" data-i18n="about.boxLabel">CORTEX-built</div>
+    <div class="about-bar" style="width:88%"></div>
+    <div class="about-bar" style="width:62%"></div>
+    <div class="about-bar" style="width:74%"></div>
+    <div class="about-bar" style="width:50%"></div>
+    <div class="about-bar" style="width:80%"></div>
+    <div class="about-frame-label" data-i18n="about.frameLabel">KARIM AZZAOUI / AI Coach · Speaker · winsym.ai</div>
+  </div>
+  <div class="about-content fade-up">
+    <span class="eyebrow" data-i18n="about.tag">About Karim</span>
+    <h2 data-i18n="about.heading" data-i18n-attr="html">I translate<br><span class="text-orange">Business</span><br>into AI</h2>
+    <p class="pull-quote" data-i18n="about.quote">You don't need more AI tools. You need one Brain that connects the ones you already have.</p>
+    <p data-i18n="about.body">10 years across marketing, design and digital systems — now focused on building AI Operating Systems for non-technical leaders. Certified Google Partner and Meta Partner. CORTEX is the method: an AI Brain your business runs on, not just another app bolted to the side.</p>
+    <div class="cred-row">
+      <span>✦ <span data-i18n="about.cred1">Google Partner</span></span>
+      <span>✦ <span data-i18n="about.cred2">Meta Partner</span></span>
+      <span>✦ <span data-i18n="about.cred3">AI Integration</span></span>
+      <span>✦ <span data-i18n="about.cred4">KL · Germany</span></span>
     </div>
-    <div class="about-numbers">
-      <div>
-        <div class="about-num">10+</div>
-        <div class="about-num-label">Years experience</div>
-      </div>
-      <div>
-        <div class="about-num">3</div>
-        <div class="about-num-label">Markets served</div>
-      </div>
-      <div>
-        <div class="about-num">∞</div>
-        <div class="about-num-label">Systems built</div>
-      </div>
+    <div class="numbers-row">
+      <div><div class="num">10+</div><div class="label" data-i18n="about.num1">Years experience</div></div>
+      <div><div class="num">3</div><div class="label" data-i18n="about.num2">Markets served</div></div>
+      <div><div class="num">∞</div><div class="label" data-i18n="about.num3">Systems built</div></div>
     </div>
   </div>
 </div>
+</section>
 
-<div class="glow-line"></div>
+<section class="section" style="background:var(--white);">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="pillars.tag">How it all fits together</span>
+    <h2 data-i18n="pillars.heading" data-i18n-attr="html">One Brain.<br>Everything else<br><span class="text-orange">plugs in</span>.</h2>
+    <p data-i18n="pillars.intro" style="margin-top:14px;color:var(--gray);">Four service pillars, one connected Brain underneath. Every engagement strengthens the same system instead of starting from zero.</p>
+  </div>
 
-<!-- PILLARS / WHAT I DO -->
-<div class="pillars-section" id="services">
-  <div class="pillars-inner">
-    <div class="pillars-header fade-up">
-      <div>
-        <div class="section-tag">How it all fits together</div>
-        <h2 class="section-title">One Brain.<br>Everything else<br><span class="accent">plugs in</span></h2>
-      </div>
-      <div style="padding-bottom: 0.5rem;">
-        <p style="color: #999; font-size: 0.95rem; line-height: 1.9;">
-          CORTEX is the foundation — the governed Brain every engagement starts with. Coaching, design, web, and marketing are built to run on top of it, not around it. Not isolated projects. One winning system.
-        </p>
-      </div>
+  <div class="cortex-feature fade-up">
+    <span class="ws-badge ws-badge-orange"><span class="dot"></span><span data-i18n="pillars.cortexBadge">00 / The Brain Build</span></span>
+    <h3 data-i18n="pillars.cortexTitle">CORTEX — The Brain Build</h3>
+    <p data-i18n="pillars.cortexDesc">A governed AI Operating System built around your business — knowledge, operations, marketing, sales, customer, decision, risk and automation, all wired into one Brain.</p>
+    <div class="layer-chips">
+      <span class="layer-chip" data-i18n="pillars.layer1">Knowledge</span>
+      <span class="layer-chip" data-i18n="pillars.layer2">Operations</span>
+      <span class="layer-chip" data-i18n="pillars.layer3">Marketing</span>
+      <span class="layer-chip" data-i18n="pillars.layer4">Sales</span>
+      <span class="layer-chip" data-i18n="pillars.layer5">Customer</span>
+      <span class="layer-chip" data-i18n="pillars.layer6">Decision</span>
+      <span class="layer-chip" data-i18n="pillars.layer7">Risk</span>
+      <span class="layer-chip" data-i18n="pillars.layer8">Automation</span>
     </div>
+    <a href="#calculator" class="btn btn-primary" data-i18n="pillars.cortexCta">Find my tier →</a>
+  </div>
 
-    <div class="cortex-feature fade-up">
-      <div class="cortex-feature-num">00</div>
-      <div>
-        <div class="cortex-feature-tag">Start here — every engagement begins with this</div>
-        <div class="cortex-feature-title">CORTEX — The Brain Build</div>
-        <p class="cortex-feature-desc">Your company already has a brain — it's just scattered across people, files, and apps. CORTEX captures it: one governed source of truth that knows your business, runs how you work, and helps you decide. Nothing below this works without it first.</p>
-        <div class="cortex-layer-chips">
-          <span>Knowledge</span><span>Operations</span><span>Marketing</span><span>Sales</span><span>Customer</span><span>Decision</span><span>Risk</span><span>Automation</span>
-        </div>
-      </div>
-      <a href="#calculator" class="cortex-feature-cta">Find my tier →</a>
+  <div class="pillars-grid">
+    <div class="pillar-card ws-card fade-up">
+      <div class="pillar-card-num">01</div>
+      <h4 data-i18n="pillars.card1Title">AI Coaching &amp; Strategy</h4>
+      <p data-i18n="pillars.card1Desc">1:1 and team coaching that turns AI from a buzzword into a working part of how you run the business.</p>
+      <div class="powered-by" data-i18n="pillars.card1Note">↳ Powered by your Brain's Decision layer</div>
     </div>
-
-    <div class="pillars-grid fade-up">
-      <div class="pillar-card">
-        <div class="pillar-num">01</div>
-        <div class="pillar-icon"></div>
-        <div class="pillar-title">AI Coaching & Strategy</div>
-        <p class="pillar-desc">Build your personal AI muscle. From zero to confident — I coach you and your team to think, plan, and execute with AI as a core tool.</p>
-        <div class="pillar-powered">↳ Trains your team to run the Brain</div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">02</div>
-        <div class="pillar-icon"></div>
-        <div class="pillar-title">Commercial Design & Animation</div>
-        <p class="pillar-desc">AI-powered creative production. Campaigns, visuals, motion — built faster, smarter, and with a coherent brand identity.</p>
-        <div class="pillar-powered">↳ Powered by your Brain's Content layer</div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">03</div>
-        <div class="pillar-icon"></div>
-        <div class="pillar-title">Web Development & Apps</div>
-        <p class="pillar-desc">From websites to web apps — built with AI-assisted development that cuts timelines and costs without cutting quality.</p>
-        <div class="pillar-powered">↳ Powered by your Brain's Automation layer</div>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-num">04</div>
-        <div class="pillar-icon"></div>
-        <div class="pillar-title">Marketing Hub Leadership</div>
-        <p class="pillar-desc">As a certified Google and Meta partner, I connect your AI systems to your paid channels for a fully integrated marketing machine.</p>
-        <div class="pillar-powered">↳ Powered by your Brain's Sales & Marketing layer</div>
-      </div>
+    <div class="pillar-card ws-card fade-up">
+      <div class="pillar-card-num">02</div>
+      <h4 data-i18n="pillars.card2Title">Commercial Design &amp; Animation</h4>
+      <p data-i18n="pillars.card2Desc">On-brand design and motion content that ships fast because your Brain already knows your brand.</p>
+      <div class="powered-by" data-i18n="pillars.card2Note">↳ Powered by your Brain's Marketing layer</div>
+    </div>
+    <div class="pillar-card ws-card fade-up">
+      <div class="pillar-card-num">03</div>
+      <h4 data-i18n="pillars.card3Title">Web Development &amp; Apps</h4>
+      <p data-i18n="pillars.card3Desc">Websites and apps wired directly into your Brain, not bolted-on forms that go nowhere.</p>
+      <div class="powered-by" data-i18n="pillars.card3Note">↳ Powered by your Brain's Operations layer</div>
+    </div>
+    <div class="pillar-card ws-card fade-up">
+      <div class="pillar-card-num">04</div>
+      <h4 data-i18n="pillars.card4Title">Marketing Hub Leadership</h4>
+      <p data-i18n="pillars.card4Desc">Fractional marketing leadership that runs on evidence from your Brain, not guesswork.</p>
+      <div class="powered-by" data-i18n="pillars.card4Note">↳ Powered by your Brain's Customer layer</div>
     </div>
   </div>
 </div>
+</section>
 
-<!-- SPEAKING -->
-<div class="speaking-section fade-up" id="speaking">
-  <div>
-    <div class="section-tag">Speaking & Training</div>
-    <h2 class="section-title">Book Karim<br>for your<br><span class="accent">event</span></h2>
-    <p style="color: #999; font-size: 0.95rem; line-height: 1.9; margin: 1.5rem 0 2rem;">
-      I speak at corporate events, summits, and private workshops — in English and German — helping business leaders understand AI in practical, non-technical terms.
-    </p>
-    <div class="speaking-list">
-      <div class="speaking-item">
-        <div class="speaking-num">01</div>
-        <div class="speaking-item-body">
-          <div class="speaking-item-title">CORTEX — Building Your Company's AI Brain</div>
-          <div class="speaking-item-desc">A practical framework for SMEs to install a governed AI Brain across every layer of their business.</div>
-        </div>
-        <div class="speaking-item-arrow">→</div>
-      </div>
-      <div class="speaking-item">
-        <div class="speaking-num">02</div>
-        <div class="speaking-item-body">
-          <div class="speaking-item-title">AI for Non-Technical Leaders</div>
-          <div class="speaking-item-desc">How CEOs and managers can lead AI adoption without needing to understand the technology.</div>
-        </div>
-        <div class="speaking-item-arrow">→</div>
-      </div>
-      <div class="speaking-item">
-        <div class="speaking-num">03</div>
-        <div class="speaking-item-body">
-          <div class="speaking-item-title">From Prompt to Profit — AI in Marketing</div>
-          <div class="speaking-item-desc">Combining Google/Meta advertising intelligence with AI-powered creative to dominate digital channels.</div>
-        </div>
-        <div class="speaking-item-arrow">→</div>
-      </div>
-      <div class="speaking-item">
-        <div class="speaking-num">04</div>
-        <div class="speaking-item-body">
-          <div class="speaking-item-title">Rapid AI Integration Workshop</div>
-          <div class="speaking-item-desc">A full-day hands-on workshop where teams build their first AI workflows from scratch.</div>
-        </div>
-        <div class="speaking-item-arrow">→</div>
-      </div>
+<section class="section" id="speaking">
+<div class="wrap speaking-grid">
+  <div class="fade-up">
+    <span class="eyebrow" data-i18n="speaking.tag">Speaking &amp; Training</span>
+    <h2 data-i18n="speaking.heading" data-i18n-attr="html" style="margin-bottom:14px;">Book Karim<br>for your<br><span class="text-orange">event</span></h2>
+    <p style="color:var(--gray);margin-bottom:30px;" data-i18n="speaking.intro">Talks and workshops on AI, built for non-technical leaders — in English or German, with zero jargon and zero hype.</p>
+
+    <div class="speaking-item">
+      <div class="speaking-num">01</div>
+      <div><h4 data-i18n="speaking.item1Title">CORTEX — Building Your Company's AI Brain</h4><p data-i18n="speaking.item1Desc">How to turn scattered tools and tribal knowledge into one governed AI system.</p></div>
+    </div>
+    <div class="speaking-item">
+      <div class="speaking-num">02</div>
+      <div><h4 data-i18n="speaking.item2Title">AI for Non-Technical Leaders</h4><p data-i18n="speaking.item2Desc">A practical map of what AI can do for your business — no engineering degree required.</p></div>
+    </div>
+    <div class="speaking-item">
+      <div class="speaking-num">03</div>
+      <div><h4 data-i18n="speaking.item3Title">From Prompt to Profit — AI in Marketing</h4><p data-i18n="speaking.item3Desc">Turning AI experiments into a marketing function that actually moves revenue.</p></div>
+    </div>
+    <div class="speaking-item">
+      <div class="speaking-num">04</div>
+      <div><h4 data-i18n="speaking.item4Title">Rapid AI Integration Workshop</h4><p data-i18n="speaking.item4Desc">A hands-on session that gets your team using AI safely and effectively within a day.</p></div>
     </div>
   </div>
-  <div class="speaking-visual">
-    <div class="speaking-card">
-      <p class="speaking-quote">"Karim doesn't just explain AI — he shows you exactly how to build systems that work for your business from day one."</p>
-      <div class="speaking-meta">Corporate Event · Kuala Lumpur 2024</div>
+
+  <div class="fade-up">
+    <div class="speaking-quote-card">
+      <p data-i18n="speaking.quoteText">"Finally someone who explains AI in business terms, not engineering terms."</p>
+      <div class="cap" data-i18n="speaking.quoteCaption">Corporate Event · Kuala Lumpur 2024</div>
     </div>
-    <div class="speaking-formats">
-      <div class="speaking-format">
-        <div class="speaking-format-icon">◈</div>
-        <div class="speaking-format-title">Keynote</div>
-        <div class="speaking-format-desc">45–90 min. English or German. Corporate & conferences.</div>
-      </div>
-      <div class="speaking-format">
-        <div class="speaking-format-icon">◉</div>
-        <div class="speaking-format-title">Workshop</div>
-        <div class="speaking-format-desc">Half or full day. Hands-on. Max 30 participants.</div>
-      </div>
-      <div class="speaking-format">
-        <div class="speaking-format-icon">◫</div>
-        <div class="speaking-format-title">Panel</div>
-        <div class="speaking-format-desc">AI, marketing & business transformation topics.</div>
-      </div>
-      <div class="speaking-format">
-        <div class="speaking-format-icon">◬</div>
-        <div class="speaking-format-title">Private Training</div>
-        <div class="speaking-format-desc">Leadership teams. Customized to your business.</div>
-      </div>
+    <div class="speaking-format-grid">
+      <div class="speaking-format"><div class="name" data-i18n="speaking.format1Name">Keynote</div><div class="desc" data-i18n="speaking.format1Desc">45–90 min</div></div>
+      <div class="speaking-format"><div class="name" data-i18n="speaking.format2Name">Workshop</div><div class="desc" data-i18n="speaking.format2Desc">Half / full day</div></div>
+      <div class="speaking-format"><div class="name" data-i18n="speaking.format3Name">Panel</div><div class="desc" data-i18n="speaking.format3Desc">30–60 min</div></div>
+      <div class="speaking-format"><div class="name" data-i18n="speaking.format4Name">Private Training</div><div class="desc" data-i18n="speaking.format4Desc">Custom</div></div>
     </div>
-    <div style="margin-top: 1.5rem; text-align: center;">
-      <a href="#contact" class="btn-primary" style="display: inline-block;">Book a speaking slot →</a>
-    </div>
+    <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;" data-i18n="speaking.cta">Book a speaking slot →</a>
   </div>
 </div>
+</section>
 
-<div class="glow-line"></div>
-
-<!-- COMPANY BRAIN -->
-<div class="brain-section fade-up" id="cortex">
-  <div class="brain-header">
-    <div class="section-tag" style="justify-content: center;">The CORTEX Method</div>
-    <h2 class="section-title" style="text-align: center;">The <span class="accent">CORTEX</span> Method</h2>
-    <p style="color: #999; font-size: 0.9rem; line-height: 1.9; text-align: center; margin-top: 1rem;">A proven 5-phase process for installing your governed AI Brain — from audit to autonomous operation.</p>
-    <p class="cortex-quote" style="margin-top: 2rem;">"We don't sell a chatbot. We install <span>the brain your company runs on.</span>"</p>
+<section class="section dark-section" style="background:var(--black);">
+<div class="wrap">
+  <div class="brain-head fade-up">
+    <span class="eyebrow" data-i18n="brain.tag">The Method</span>
+    <h2 data-i18n="brain.heading">The CORTEX Method</h2>
+    <p class="closing-line" style="border-top:none;margin-top:14px;" data-i18n="brain.quote">"We don't sell a chatbot. We install the brain your company runs on."</p>
   </div>
-  <div class="brain-flow">
-    <div class="brain-step">
-      <div class="brain-step-num">01</div>
-      <div class="brain-step-title">Audit</div>
-      <div class="brain-step-desc">Map your business processes, data flows, and team structure to find the highest-value AI opportunities.</div>
-    </div>
+
+  <div class="brain-flow fade-up">
+    <div class="brain-step"><div class="n">01</div><h4 data-i18n="brain.step1Title">Audit</h4><p data-i18n="brain.step1Desc">Map what you know, what you don't, and where the business actually loses time.</p></div>
     <div class="brain-arrow">→</div>
-    <div class="brain-step">
-      <div class="brain-step-num">02</div>
-      <div class="brain-step-title">Blueprint</div>
-      <div class="brain-step-desc">Design your custom CORTEX Brain — which layers, which workflows, which knowledge gets captured first.</div>
-    </div>
+    <div class="brain-step"><div class="n">02</div><h4 data-i18n="brain.step2Title">Blueprint</h4><p data-i18n="brain.step2Desc">Design the Brain's architecture around your real workflows, not a generic template.</p></div>
     <div class="brain-arrow">→</div>
-    <div class="brain-step">
-      <div class="brain-step-num">03</div>
-      <div class="brain-step-title">Build</div>
-      <div class="brain-step-desc">We build together — knowledge base, automations, AI assistants, design pipelines, and integrations.</div>
-    </div>
+    <div class="brain-step"><div class="n">03</div><h4 data-i18n="brain.step3Title">Build</h4><p data-i18n="brain.step3Desc">Wire the layers together — knowledge, operations, marketing, sales, decisions.</p></div>
     <div class="brain-arrow">→</div>
-    <div class="brain-step">
-      <div class="brain-step-num">04</div>
-      <div class="brain-step-title">Train</div>
-      <div class="brain-step-desc">Your team learns to use, adapt, and extend the system. No dependency on external consultants.</div>
-    </div>
+    <div class="brain-step"><div class="n">04</div><h4 data-i18n="brain.step4Title">Train</h4><p data-i18n="brain.step4Desc">Get your team using the Brain daily, with governance and guardrails in place.</p></div>
     <div class="brain-arrow">→</div>
-    <div class="brain-step">
-      <div class="brain-step-num">05</div>
-      <div class="brain-step-title">Scale</div>
-      <div class="brain-step-desc">Monthly optimization, new layers, and expanding the Brain as your business grows.</div>
-    </div>
+    <div class="brain-step"><div class="n">05</div><h4 data-i18n="brain.step5Title">Scale</h4><p data-i18n="brain.step5Desc">Extend the Brain into new layers and teams as the business grows.</p></div>
   </div>
-  <div class="cortex-values">
-    <div class="cortex-value">
-      <div class="cortex-value-icon">◆</div>
-      <div class="cortex-value-title">Never lose knowledge again</div>
-      <div class="cortex-value-desc">One governed source of truth — not scattered across people, files, chats, and apps.</div>
+
+  <div class="cortex-values fade-up">
+    <div class="ws-card" style="background:#262220;border-color:rgba(245,242,238,0.1);">
+      <h4 style="color:var(--white);font-family:var(--font-display);font-size:17px;margin-bottom:8px;" data-i18n="brain.value1Title">Never lose knowledge again</h4>
+      <p style="color:#C9C2B6;font-size:14px;" data-i18n="brain.value1Desc">Every decision and process lives in the Brain, not in someone's head.</p>
     </div>
-    <div class="cortex-value">
-      <div class="cortex-value-icon">◆</div>
-      <div class="cortex-value-title">Decisions on evidence, not opinion</div>
-      <div class="cortex-value-desc">Every answer sourced and confidence-rated — no fabrication, ever.</div>
+    <div class="ws-card" style="background:#262220;border-color:rgba(245,242,238,0.1);">
+      <h4 style="color:var(--white);font-family:var(--font-display);font-size:17px;margin-bottom:8px;" data-i18n="brain.value2Title">Decisions on evidence, not opinion</h4>
+      <p style="color:#C9C2B6;font-size:14px;" data-i18n="brain.value2Desc">The Brain surfaces what's actually happening in the business — not gut feel.</p>
     </div>
-    <div class="cortex-value">
-      <div class="cortex-value-icon">◆</div>
-      <div class="cortex-value-title">Built for trust</div>
-      <div class="cortex-value-desc">Full access control and human approval on every high-stakes output.</div>
+    <div class="ws-card" style="background:#262220;border-color:rgba(245,242,238,0.1);">
+      <h4 style="color:var(--white);font-family:var(--font-display);font-size:17px;margin-bottom:8px;" data-i18n="brain.value3Title">Built for trust</h4>
+      <p style="color:#C9C2B6;font-size:14px;" data-i18n="brain.value3Desc">Governed, auditable, and safe — not a black box you have to hope works.</p>
     </div>
   </div>
 </div>
+</section>
 
-<!-- PROCESS / HOW WE WORK -->
-<div class="process-section" id="process">
-  <div class="process-inner">
-    <div class="fade-up">
-      <div class="section-tag">How we work</div>
-      <h2 class="section-title">From first call<br>to <span class="accent">live system</span></h2>
+<section class="section" style="background:var(--white);">
+<div class="wrap">
+  <div class="section-head fade-up">
+    <span class="eyebrow" data-i18n="process.tag">How we work</span>
+    <h2 data-i18n="process.heading" data-i18n-attr="html">From first call<br>to <span class="text-orange">live system</span></h2>
+  </div>
+  <div class="process-grid">
+    <div class="process-card ws-card fade-up">
+      <div class="step-no">1</div>
+      <h4 data-i18n="process.step1Title">Discovery Call</h4>
+      <p data-i18n="process.step1Desc" style="font-size:14px;color:var(--gray);">A free 30-minute call to understand where the business stands today.</p>
+      <div class="when" data-i18n="process.step1When">Week 1</div>
     </div>
-    <div class="process-grid fade-up">
-      <div class="process-step">
-        <div class="process-step-num">1</div>
-        <div class="process-step-tag">Week 1</div>
-        <div class="process-step-title">Discovery Call</div>
-        <div class="process-step-desc">Free 30-minute session. I understand your business, your team, and your biggest pain points. No pitch — just listening.</div>
-      </div>
-      <div class="process-step">
-        <div class="process-step-num">2</div>
-        <div class="process-step-tag">Week 1–2</div>
-        <div class="process-step-title">AI Audit & Blueprint</div>
-        <div class="process-step-desc">Deep dive into your operations. I map your processes and deliver a custom AI OS blueprint with clear priorities.</div>
-      </div>
-      <div class="process-step">
-        <div class="process-step-num">3</div>
-        <div class="process-step-tag">Week 2–5</div>
-        <div class="process-step-title">Build Together</div>
-        <div class="process-step-desc">We build your CORTEX Brain in real time. Weekly sessions, async support, and constant iteration.</div>
-      </div>
-      <div class="process-step">
-        <div class="process-step-num">4</div>
-        <div class="process-step-tag">Ongoing</div>
-        <div class="process-step-title">Launch & Grow</div>
-        <div class="process-step-desc">Your system goes live. Optional retainer for ongoing optimization, new automations, and team coaching.</div>
-      </div>
+    <div class="process-card ws-card fade-up">
+      <div class="step-no">2</div>
+      <h4 data-i18n="process.step2Title">AI Audit &amp; Blueprint</h4>
+      <p data-i18n="process.step2Desc" style="font-size:14px;color:var(--gray);">We map your workflows and design the Brain's architecture.</p>
+      <div class="when" data-i18n="process.step2When">Week 1–2</div>
+    </div>
+    <div class="process-card ws-card fade-up">
+      <div class="step-no">3</div>
+      <h4 data-i18n="process.step3Title">Build Together</h4>
+      <p data-i18n="process.step3Desc" style="font-size:14px;color:var(--gray);">We build and wire the Brain's layers, with your team involved at every step.</p>
+      <div class="when" data-i18n="process.step3When">Week 2–5</div>
+    </div>
+    <div class="process-card ws-card fade-up">
+      <div class="step-no">4</div>
+      <h4 data-i18n="process.step4Title">Launch &amp; Grow</h4>
+      <p data-i18n="process.step4Desc" style="font-size:14px;color:var(--gray);">The Brain goes live. We keep training, scaling and adding layers.</p>
+      <div class="when" data-i18n="process.step4When">Ongoing</div>
     </div>
   </div>
 </div>
+</section>
 
-<!-- PRICE CALCULATOR -->
-<div class="calculator-section" id="calculator">
-  <div class="calculator-inner">
-    <div class="calc-header fade-up">
-      <div>
-        <div class="section-tag">Free 2-minute assessment</div>
-        <h2 class="section-title">Find your<br><span class="accent">CORTEX</span> tier</h2>
-      </div>
-      <div>
-        <p class="calc-subtitle">
-          Answer 4 quick questions. We'll show you exactly which CORTEX tier fits your business, what it unlocks first, and what it costs — no guesswork, no generic quote.
-        </p>
+<section class="section" id="calculator">
+<div class="wrap">
+  <div class="section-head-center fade-up">
+    <span class="eyebrow" data-i18n="calc.tag">Find your fit</span>
+    <h2 data-i18n="calc.heading">What size is your CORTEX Brain?</h2>
+    <p style="color:var(--gray);margin-top:14px;" data-i18n="calc.intro">Four quick questions. Get a tier, a price range, and a clear next step.</p>
+  </div>
+
+  <div class="calc-wrap fade-up">
+    <div class="quiz-progress">
+      <div class="quiz-progress-seg done" data-seg="1"></div>
+      <div class="quiz-progress-seg" data-seg="2"></div>
+      <div class="quiz-progress-seg" data-seg="3"></div>
+      <div class="quiz-progress-seg" data-seg="4"></div>
+    </div>
+    <div class="quiz-step-label"><span data-i18n="calc.stepLabel">Step</span> <span id="quizStepNum">1</span> / 4</div>
+
+    <div class="quiz-step active" data-step="1">
+      <h3 data-i18n="calc.q1Title">How big is your team?</h3>
+      <div class="quiz-options-grid">
+        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="starter"><div class="t" data-i18n="calc.q1Opt1Title">Starter</div><div class="d" data-i18n="calc.q1Opt1Desc">Solo / micro team, 1–10 people</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="growth"><div class="t" data-i18n="calc.q1Opt2Title">Growth</div><div class="d" data-i18n="calc.q1Opt2Desc">Growing SME, 10–250 people</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="professional"><div class="t" data-i18n="calc.q1Opt3Title">Professional</div><div class="d" data-i18n="calc.q1Opt3Desc">Mid-market, 250–2,500 people</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'teamSize')" data-value="enterprise"><div class="t" data-i18n="calc.q1Opt4Title">Enterprise</div><div class="d" data-i18n="calc.q1Opt4Desc">Enterprise, 2,500+ people</div></div>
       </div>
     </div>
 
-    <div class="quiz-body fade-up">
-      <div class="quiz-panel">
-        <div class="quiz-progress">
-          <div class="quiz-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" id="quizProgressBar">
-            <div class="quiz-progress-fill" id="quizProgressFill"></div>
-          </div>
-          <div class="quiz-progress-label" id="quizProgressLabel">Step 1 of 4</div>
-        </div>
-
-        <!-- STEP 1 — TEAM SIZE -->
-        <div class="quiz-step active" data-step="1">
-          <div class="quiz-question">How big is your team?</div>
-          <div class="quiz-options" role="radiogroup" aria-label="Team size">
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="starter" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">Solo to 10 people</div>
-              <div class="quiz-option-desc">Founder-led, lean team — you need answers fast without hiring.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="growth" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">10–250 people</div>
-              <div class="quiz-option-desc">Growing SME — knowledge is starting to outrun your team's memory.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="professional" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">250–2,500 people</div>
-              <div class="quiz-option-desc">Mid-market — multiple departments, decisions need real evidence.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="enterprise" onclick="quizSelect(this,'teamSize')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">2,500+ people</div>
-              <div class="quiz-option-desc">Enterprise — the business needs to run on the Brain, not just use it.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 2 — MATURITY -->
-        <div class="quiz-step" data-step="2">
-          <div class="quiz-question">Where does your business stand today?</div>
-          <div class="quiz-options" role="radiogroup" aria-label="Current maturity">
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="1" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">We ask around to find answers</div>
-              <div class="quiz-option-desc">Knowledge lives in people's heads, scattered files, and chats.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="2" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">We have the docs, but not the trust</div>
-              <div class="quiz-option-desc">Information exists somewhere — finding and trusting it still takes time.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="3" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">We're connected, but decide on gut feel</div>
-              <div class="quiz-option-desc">Tools talk to each other. Decisions still don't run on evidence.</div>
-            </div>
-            <div class="quiz-option" tabindex="0" role="radio" aria-checked="false" data-value="4" onclick="quizSelect(this,'maturity')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-option-title">We have the data, just not the speed</div>
-              <div class="quiz-option-desc">Dashboards exist — turning them into a decision still takes days.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 3 — PAIN POINTS / LAYERS -->
-        <div class="quiz-step" data-step="3">
-          <div class="quiz-question">Where does it hurt most right now? <span class="quiz-question-hint">(pick up to 2)</span></div>
-          <div class="quiz-chips" role="group" aria-label="Pain points">
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Knowledge" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Knowledge<span>End "ask the veteran"</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Operations" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Operations<span>Meetings become assigned work</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Marketing" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Marketing & Content<span>On-brand at scale</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Sales" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Sales<span>Every rep performs like your best rep</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Customer" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Customer<span>One memory of every relationship</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Decision" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Decision<span>Score high-stakes choices</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Risk" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Intelligence & Risk<span>Live radar + crisis playbook</span></div>
-            <div class="quiz-chip" tabindex="0" role="checkbox" aria-checked="false" data-value="Automation" onclick="quizChip(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">Automation<span>The business runs on a cadence</span></div>
-          </div>
-        </div>
-
-        <!-- STEP 4 — ADD-ONS -->
-        <div class="quiz-step" data-step="4">
-          <div class="quiz-question">Want to add anything else? <span class="quiz-question-hint">(optional)</span></div>
-          <div class="quiz-toggle-group" role="group" aria-label="Optional add-ons">
-            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="jumpstart" data-price="2500" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-addon-check"></div>
-              <div><div class="quiz-addon-title">AI Jumpstart / Brain Diagnostic</div><div class="quiz-addon-desc">2-day pilot before you commit to a full build</div></div>
-              <span class="quiz-addon-price">MYR 2,500</span>
-            </div>
-            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="coaching" data-price="4800" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-addon-check"></div>
-              <div><div class="quiz-addon-title">Brain Coaching — 8 weeks</div><div class="quiz-addon-desc">Train your team to run and extend the Brain</div></div>
-              <span class="quiz-addon-price">MYR 4,800</span>
-            </div>
-            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="design" data-price="2000" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-addon-check"></div>
-              <div><div class="quiz-addon-title">AI Design & Content Pack</div><div class="quiz-addon-desc">Brand assets, campaign visuals, animation</div></div>
-              <span class="quiz-addon-price">MYR 2,000</span>
-            </div>
-            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="web" data-price="1500" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-addon-check"></div>
-              <div><div class="quiz-addon-title">Website or App Build</div><div class="quiz-addon-desc">The front door to your new Brain</div></div>
-              <span class="quiz-addon-price">from MYR 1,500</span>
-            </div>
-            <div class="quiz-addon" tabindex="0" role="checkbox" aria-checked="false" data-value="speaking" data-price="3000" onclick="quizAddon(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-              <div class="quiz-addon-check"></div>
-              <div><div class="quiz-addon-title">Speaking / Workshop Booking</div><div class="quiz-addon-desc">Bring the Brain framework to your team or event</div></div>
-              <span class="quiz-addon-price">from MYR 3,000</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="quiz-nav">
-          <button class="quiz-btn-back" id="quizBack" onclick="quizBack()" style="visibility:hidden;">← Back</button>
-          <button class="quiz-btn-next" id="quizNext" onclick="quizNext()" disabled>Next →</button>
-        </div>
+    <div class="quiz-step" data-step="2">
+      <h3 data-i18n="calc.q2Title">Where does your business stand today?</h3>
+      <div class="quiz-options-grid">
+        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="1"><div class="t" data-i18n="calc.q2Opt1Title">Just starting</div><div class="d" data-i18n="calc.q2Opt1Desc">Little to no AI in the business yet</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="2"><div class="t" data-i18n="calc.q2Opt2Title">A few tools</div><div class="d" data-i18n="calc.q2Opt2Desc">Some AI tools, but disconnected</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="3"><div class="t" data-i18n="calc.q2Opt3Title">Partially connected</div><div class="d" data-i18n="calc.q2Opt3Desc">Some systems talk to each other</div></div>
+        <div class="quiz-option" onclick="quizSelect(this,'maturity')" data-value="4"><div class="t" data-i18n="calc.q2Opt4Title">Advanced</div><div class="d" data-i18n="calc.q2Opt4Desc">Mature stack, ready to unify it</div></div>
       </div>
+    </div>
 
-      <!-- RESULT PANEL -->
-      <div class="calc-result" aria-live="polite">
-        <div class="result-label">Your CORTEX recommendation</div>
-        <div id="result-items">
-          <div class="result-empty">Answer the questions on the left —<br>your tier and price appear here.</div>
-        </div>
-        <div id="result-footer" style="display:none;">
-          <div class="result-gap" id="result-gap"></div>
-          <div class="result-tier-name" id="result-tier-name"></div>
-          <div class="result-tier-desc" id="result-tier-desc"></div>
-          <div class="result-layers" id="result-layers"></div>
-          <div class="result-total-row">
-            <div>
-              <div class="result-total-label">Setup investment</div>
-              <div class="result-total-curr">MYR</div>
-            </div>
-            <div class="result-total-num" id="result-total">0</div>
-          </div>
-          <div class="result-line" style="margin-top:0.5rem;">
-            <span class="result-line-name">+ Monthly platform fee</span>
-            <span class="result-line-price" id="result-monthly">—</span>
-          </div>
-          <div class="result-line">
-            <span class="result-line-name">Year-1 total</span>
-            <span class="result-line-price" id="result-year1">—</span>
-          </div>
-          <div id="result-addon-lines"></div>
-          <button class="result-cta" id="quizCta" onclick="submitQuiz()">
-            Book my Brain Diagnostic call →
-          </button>
-          <div class="result-cta-sub">Free 30-min call · we'll confirm your tier together</div>
-        </div>
+    <div class="quiz-step" data-step="3">
+      <h3 data-i18n="calc.q3Title">Where does it hurt most right now? (pick up to 2)</h3>
+      <div class="quiz-chips-grid">
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Knowledge" data-i18n="pillars.layer1">Knowledge</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Operations" data-i18n="pillars.layer2">Operations</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Marketing" data-i18n="pillars.layer3">Marketing</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Sales" data-i18n="pillars.layer4">Sales</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Customer" data-i18n="pillars.layer5">Customer</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Decision" data-i18n="pillars.layer6">Decision</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Risk" data-i18n="pillars.layer7">Risk</div>
+        <div class="quiz-chip" onclick="quizChip(this)" data-value="Automation" data-i18n="pillars.layer8">Automation</div>
+      </div>
+    </div>
+
+    <div class="quiz-step" data-step="4">
+      <h3 data-i18n="calc.q4Title">Want to add anything else? (optional)</h3>
+      <div class="quiz-addons-grid">
+        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="jumpstart" data-price="2500"><div class="t" data-i18n="calc.addon1">AI Jumpstart / Brain Diagnostic</div><div class="p">RM 2,500</div></div>
+        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="coaching" data-price="4800"><div class="t" data-i18n="calc.addon2">Brain Coaching — 8 weeks</div><div class="p">RM 4,800</div></div>
+        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="design" data-price="2000"><div class="t" data-i18n="calc.addon3">AI Design &amp; Content Pack</div><div class="p">RM 2,000</div></div>
+        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="web" data-price="1500"><div class="t" data-i18n="calc.addon4">Website / App Build</div><div class="p">RM 1,500</div></div>
+        <div class="quiz-addon" onclick="quizAddon(this)" data-addon="speaking" data-price="3000"><div class="t" data-i18n="calc.addon5">Speaking / Workshop Booking</div><div class="p">RM 3,000</div></div>
+      </div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn btn-ghost" id="quizBackBtn" onclick="quizBack()" style="visibility:hidden;" data-i18n="calc.back">← Back</button>
+      <button class="btn btn-primary" id="quizNextBtn" onclick="quizNext()" disabled data-i18n="calc.next">Next →</button>
+    </div>
+
+    <div class="calc-result" id="calcResult">
+      <div class="calc-result-empty" id="resultEmpty" data-i18n="calc.resultEmpty">Answer the questions to see your CORTEX tier and estimated investment.</div>
+      <div id="resultFooter" style="display:none;">
+        <div class="result-tier-name" id="resultTierName">Growth</div>
+        <div class="result-tier-target" id="resultTierTarget">Growing SMEs (10–250 people)</div>
+        <div class="result-tier-desc" id="resultTierDesc">—</div>
+        <div class="result-row"><span data-i18n="calc.layersLabel">Brain layers in scope</span><span class="v" id="resultLayers">—</span></div>
+        <div class="result-row"><span data-i18n="calc.gapLabel">Maturity gap</span><span class="v" id="resultGap">—</span></div>
+        <div class="result-row result-total"><span data-i18n="calc.totalLabel">Estimated setup</span><span class="v" id="resultTotal">RM 0</span></div>
+        <div class="result-row"><span data-i18n="calc.monthlyLabel">Monthly retainer</span><span class="v" id="resultMonthly">RM 0</span></div>
+        <div class="result-row"><span data-i18n="calc.year1Label">Year 1 total</span><span class="v" id="resultYear1">RM 0</span></div>
+        <div class="result-addons" id="resultAddonLines"></div>
+        <button class="btn btn-primary" id="quizCta" onclick="submitQuiz()" style="width:100%;justify-content:center;margin-top:20px;" data-i18n="calc.cta">Book my Brain Diagnostic call →</button>
       </div>
     </div>
   </div>
 </div>
+</section>
 
-<!-- ACADEMY TEASER -->
-<div class="academy-teaser fade-up">
-  <div class="academy-inner">
-    <div class="academy-content">
-      <div class="academy-tag">Free Coachings</div>
-      <h2 class="academy-heading">The<br><span class="accent">winsym.ai</span><br>Academy</h2>
-      <p class="academy-desc">
-        Two full coachings, free. Connect Claude with Higgsfield for AI content, or build pro websites with Claude Code — pick your track and start now.
-      </p>
-      <div class="academy-modules">
-        <div class="academy-module">
-          <span class="academy-module-num">01</span>
-          Higgsfield + Claude — your AI creative system
-        </div>
-        <div class="academy-module">
-          <span class="academy-module-num">02</span>
-          Pro Websites with Claude Code &amp; Claude Design
-        </div>
-        <div class="academy-module">
-          <span class="academy-module-num">··</span>
-          More coachings coming — automation, launches, video
-        </div>
-      </div>
-      <a href="courses.html" class="academy-cta">
-        Choose your coaching
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-    <div class="academy-visual">
-      <div class="academy-badge">2 Courses · Free</div>
-      <div class="academy-step-preview is-active">
-        <div class="academy-step-preview-num">01</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">Higgsfield + Claude</div>
-          <div class="academy-step-preview-desc">11 steps · automate your full content pipeline</div>
-        </div>
-      </div>
-      <div class="academy-step-preview is-active">
-        <div class="academy-step-preview-num">02</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">Pro Websites with Claude Code</div>
-          <div class="academy-step-preview-desc">10 steps · build &amp; deploy real sites, no code needed</div>
-        </div>
-      </div>
-      <div class="academy-step-preview">
-        <div class="academy-step-preview-num">··</div>
-        <div class="academy-step-preview-body">
-          <div class="academy-step-preview-title">More coachings soon</div>
-          <div class="academy-step-preview-desc">Automation, launches, video editing — same format</div>
-        </div>
-      </div>
+<section class="section" style="background:var(--white);">
+<div class="wrap academy-grid">
+  <div class="fade-up">
+    <span class="ws-badge ws-badge-orange"><span class="dot"></span><span data-i18n="academy.badge">2 Courses · Free</span></span>
+    <h2 style="margin-top:18px;" data-i18n="academy.heading" data-i18n-attr="html">The<br><span class="text-orange">winsym.ai</span><br>Academy</h2>
+    <p style="color:var(--gray);margin:16px 0;" data-i18n="academy.desc">Two free coachings to get you moving — no fluff, just the steps that matter.</p>
+    <ul class="academy-modules">
+      <li><span class="check">✓</span><span data-i18n="academy.mod1">Higgsfield + Claude — AI content production</span></li>
+      <li><span class="check">✓</span><span data-i18n="academy.mod2">Pro Websites with Claude Code — ship a real site</span></li>
+    </ul>
+    <a href="courses.html" class="btn btn-primary" data-i18n="academy.cta">Choose your coaching →</a>
+  </div>
+  <div class="academy-visual fade-up">
+    <div class="academy-step-preview"><span class="num">01</span><span class="t" data-i18n="academy.step1">Pick your coaching track</span></div>
+    <div class="academy-step-preview"><span class="num">02</span><span class="t" data-i18n="academy.step2">Work through it at your pace</span></div>
+    <div class="academy-step-preview"><span class="num">03</span><span class="t" data-i18n="academy.step3">Ship something real</span></div>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<div class="wrap">
+  <div class="final-cta fade-up">
+    <h2 data-i18n="cta.heading" data-i18n-attr="html">Ready to build<br>your <span style="color:inherit;">AI OS?</span></h2>
+    <p data-i18n="cta.body">Book a free 30-minute discovery call. We'll figure out where your Brain should start.</p>
+    <div class="cta-row">
+      <a href="#contact" class="btn btn-primary" data-i18n="cta.cta1">Book a discovery call →</a>
+      <a href="https://wa.me/491622035499?text=Hi%20Karim%2C%20I%27d%20like%20to%20talk%20about%20CORTEX%20for%20my%20business." class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="cta.cta2">Message on WhatsApp</a>
     </div>
   </div>
 </div>
+</section>
 
-<!-- CTA / CONTACT -->
-<div class="cta-section fade-up" id="contact">
-  <div>
-    <div class="section-tag">Let's talk</div>
-    <h2 class="cta-title">Ready to build<br>your <span class="accent">AI OS?</span></h2>
-    <p class="cta-body">
-      The first call is free. No pitch, no pressure — just a real conversation about where AI can create the most value in your business. We'll figure out together if and how I can help.
-    </p>
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
-        <span style="color: var(--orange);">✦</span> Karim@azzaoui.de
-      </div>
-      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
-        <span style="color: var(--orange);">✦</span> +60 112 4487055 (Malaysia)
-      </div>
-      <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: var(--gray);">
-        <span style="color: var(--orange);">✦</span>
-        <a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." target="_blank" rel="noopener" style="color: var(--gray); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          +49 162 2035499 <span style="font-size:0.75rem; opacity:0.6;">(WhatsApp only)</span>
-        </a>
-      </div>
+<section class="section" id="contact" style="background:var(--white);">
+<div class="wrap contact-grid">
+  <div class="fade-up">
+    <span class="eyebrow" data-i18n="contact.tag">Let's talk</span>
+    <h2 style="margin-bottom:18px;" data-i18n="contact.heading">Get in touch</h2>
+    <p style="color:var(--gray);margin-bottom:24px;" data-i18n="contact.body">Tell us where the business stands today — we'll come back with a clear next step, not a sales pitch.</p>
+    <div class="contact-row">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5l8 6 8-6M2 5v10h16V5" stroke="currentColor" stroke-width="1.4"/></svg>
+      <a href="mailto:Karim@azzaoui.de">Karim@azzaoui.de</a>
+    </div>
+    <div class="contact-row">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 2h3l2 5-2 1a10 10 0 005 5l1-2 5 2v3a2 2 0 01-2 2A16 16 0 014 4a2 2 0 012-2z" stroke="currentColor" stroke-width="1.4"/></svg>
+      <a href="tel:+601124487055">+60 112 4487055</a>
+    </div>
+    <div class="contact-row">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z" stroke="currentColor" stroke-width="1.4"/></svg>
+      <a href="https://wa.me/491622035499" target="_blank" rel="noopener">WhatsApp · +49 162 2035499</a>
     </div>
   </div>
-  <div>
-    <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">First name</label>
-          <input type="text" id="cf-name" class="form-input" placeholder="Ahmad" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Company</label>
-          <input type="text" id="cf-company" class="form-input" placeholder="Your company">
-        </div>
+
+  <div class="contact-form-wrap fade-up">
+    <form id="contact-form" onsubmit="handleContactSubmit(event)">
+      <div class="ws-form-group">
+        <label class="ws-label" for="cf-name" data-i18n="form.firstName">First name *</label>
+        <input class="ws-input" type="text" id="cf-name" name="firstName" required>
       </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="cf-email" class="form-input" placeholder="you@company.com" required>
+      <div class="ws-form-group">
+        <label class="ws-label" for="cf-company" data-i18n="form.company">Company</label>
+        <input class="ws-input" type="text" id="cf-company" name="company">
       </div>
-      <div class="form-group">
-        <label class="form-label">I'm interested in</label>
-        <select id="cf-service" class="form-select">
-          <option value="">Select a service...</option>
-          <option>CORTEX — Starter</option>
-          <option>CORTEX — Growth</option>
-          <option>CORTEX — Professional</option>
-          <option>CORTEX — Enterprise</option>
-          <option>AI Jumpstart / Brain Diagnostic</option>
-          <option>Brain Coaching — 8 Weeks</option>
-          <option>Speaking / Workshop</option>
-          <option>I'm not sure yet</option>
+      <div class="ws-form-group">
+        <label class="ws-label" for="cf-email" data-i18n="form.email">Email *</label>
+        <input class="ws-input" type="email" id="cf-email" name="email" required>
+      </div>
+      <div class="ws-form-group">
+        <label class="ws-label" for="cf-service" data-i18n="form.service">What are you interested in?</label>
+        <select class="ws-select" id="cf-service" name="service">
+          <option value="" data-i18n="form.serviceOpt0">I'm not sure yet</option>
+          <option value="CORTEX Starter" data-i18n="form.serviceOpt1">CORTEX Starter</option>
+          <option value="CORTEX Growth" data-i18n="form.serviceOpt2">CORTEX Growth</option>
+          <option value="CORTEX Professional" data-i18n="form.serviceOpt3">CORTEX Professional</option>
+          <option value="CORTEX Enterprise" data-i18n="form.serviceOpt4">CORTEX Enterprise</option>
+          <option value="AI Jumpstart" data-i18n="form.serviceOpt5">AI Jumpstart</option>
+          <option value="Brain Coaching" data-i18n="form.serviceOpt6">Brain Coaching</option>
+          <option value="Speaking/Workshop" data-i18n="form.serviceOpt7">Speaking / Workshop</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Tell me about your business</label>
-        <textarea id="cf-message" class="form-textarea" placeholder="What does your company do? What's your biggest challenge right now?"></textarea>
+      <div class="ws-form-group">
+        <label class="ws-label" for="cf-message" data-i18n="form.message">Message</label>
+        <textarea class="ws-textarea" id="cf-message" name="message" rows="4"></textarea>
       </div>
-      <button type="submit" class="form-submit" id="cf-submit">Send message →</button>
-      <div class="form-notice" id="cf-notice"></div>
+      <button class="btn btn-primary" type="submit" id="cf-submit" style="width:100%;justify-content:center;" data-i18n="form.submit">Send message →</button>
+      <div id="cf-notice" style="margin-top:14px;font-size:13.5px;"></div>
     </form>
   </div>
 </div>
+</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo">win<span>sym</span>.ai</div>
-      <p class="footer-tagline">Winning Systems Backed by AI. Helping Asian businesses build their AI Operating System — from concept to full integration.</p>
-      <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
-        <div class="partner-badge">Google Partner</div>
-        <div class="partner-badge">Meta Partner</div>
-      </div>
-    </div>
-    <div>
-      <div class="footer-col-title">Services</div>
-      <ul class="footer-links">
-        <li><a href="#cortex">CORTEX — The Brain</a></li>
-        <li><a href="#services">AI Coaching & Strategy</a></li>
-        <li><a href="#services">Design & Animation</a></li>
-        <li><a href="#services">Web Development & Apps</a></li>
-        <li><a href="#services">Marketing Hub Leadership</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Pages</div>
-      <ul class="footer-links">
-        <li><a href="winsymai.html">Home</a></li>
-        <li><a href="karim-identity.html">About Karim</a></li>
-        <li><a href="projects-showcase.html">Projects</a></li>
-        <li><a href="courses.html">Academy</a></li>
-        <li><a href="#speaking">Speaking</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Contact</div>
-      <ul class="footer-links">
-        <li><a href="mailto:Karim@azzaoui.de">Karim@azzaoui.de</a></li>
-        <li><a href="tel:+601124487055">+60 112 4487055</a></li>
-        <li><a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." target="_blank" rel="noopener">+49 162 2035499 (WhatsApp)</a></li>
-        <li><a href="winsymai.html">winsym.ai</a></li>
-      </ul>
+</main>
+
+<footer class="ws-footer">
+<div class="wrap footer-grid">
+  <div>
+    <span class="brand-mark" style="color:var(--cream);">win<span class="accent">sym</span>.ai</span>
+    <p style="margin-top:12px;font-size:14px;" data-i18n="footer.tagline">Winning Systems · Backed by AI</p>
+    <div class="badges-row" style="margin-top:18px;">
+      <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Google Partner</span>
+      <span class="ws-badge ws-badge-on-dark"><span class="dot"></span>Meta Partner</span>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2025 Karim Azzaoui · winsym.ai · All rights reserved</span>
-    <button class="theme-toggle-btn" onclick="toggleTheme()">
-      <span class="theme-icon">☀</span><span class="theme-label">Light Mode</span>
-    </button>
-    <span>Kuala Lumpur · Malaysia · Germany</span>
+  <div>
+    <h4 data-i18n="footer.servicesHead">Services</h4>
+    <ul>
+      <li><a href="#calculator" data-i18n="footer.servicesLink1">CORTEX — Company Brain</a></li>
+      <li><a href="courses.html" data-i18n="footer.servicesLink2">Academy</a></li>
+      <li><a href="#speaking" data-i18n="footer.servicesLink3">Speaking &amp; Training</a></li>
+    </ul>
   </div>
+  <div>
+    <h4 data-i18n="footer.pagesHead">Pages</h4>
+    <ul>
+      <li><a href="/" data-i18n="nav.home">Home</a></li>
+      <li><a href="/cortex.html" data-i18n="nav.cortex">CORTEX</a></li>
+      <li><a href="/about" data-i18n="nav.about">About</a></li>
+      <li><a href="/projects" data-i18n="nav.projects">Projects</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4 data-i18n="footer.contactHead">Contact</h4>
+    <ul>
+      <li><a href="mailto:Karim@azzaoui.de">Karim@azzaoui.de</a></li>
+      <li><a href="tel:+601124487055">+60 112 4487055</a></li>
+      <li><a href="https://wa.me/491622035499" target="_blank" rel="noopener">WhatsApp</a></li>
+    </ul>
+  </div>
+</div>
+<div class="wrap footer-bottom">
+  <span data-i18n="footer.copyright" data-i18n-attr="html">© 2026 winsym.ai — All rights reserved.</span>
+  <div class="footer-legal">
+    <span data-i18n="footer.location">Kuala Lumpur, Malaysia</span>
+  </div>
+</div>
 </footer>
 
-<script>
-  // HAMBURGER MENU
-  function toggleMenu() {
-    var menu = document.getElementById('mobileMenu');
-    var burger = document.getElementById('hamburger');
-    menu.classList.toggle('open');
-    burger.classList.toggle('open');
-    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-  }
-  // close on link click
-  document.querySelectorAll('.mobile-menu a').forEach(function(a) {
-    a.addEventListener('click', function() {
-      document.getElementById('mobileMenu').classList.remove('open');
-      document.getElementById('hamburger').classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // CORTEX DIAGNOSTIC
-  window.cortexQuiz = { step: 1, teamSize: null, maturity: null, painPoints: [], addons: {} };
-
-  var TIERS = {
-    starter:      { name: 'Starter',      target: 'Solo / micro teams (1–10 people)',  level: 2, setup: 6000,   monthly: 1200,  year1: 20400,  desc: 'A focused Brain build around your single biggest knowledge gap — live in weeks, not months.' },
-    growth:       { name: 'Growth',       target: 'Growing SMEs (10–250 people)',       level: 3, setup: 18000,  monthly: 3500,  year1: 60000,  desc: 'A connected Brain across the layers that hurt most — knowledge, ops and decisions working together.' },
-    professional: { name: 'Professional', target: 'Mid-market (250–2,500 people)',      level: 4, setup: 45000,  monthly: 8000,  year1: 141000, desc: 'A governed, evidence-driven Brain spanning most of the business, with risk and intelligence layers active.' },
-    enterprise:   { name: 'Enterprise',   target: 'Enterprise (2,500+ people)',          level: 5, setup: 120000, monthly: 18000, year1: 336000, desc: 'A fully autonomous Brain running across every layer — the business operates on it, not just with it.' }
-  };
-
-  var ADDON_LABELS = {
-    jumpstart: 'AI Jumpstart / Brain Diagnostic',
-    coaching: 'Brain Coaching — 8 weeks',
-    design: 'AI Design & Content Pack',
-    web: 'Website / App Build',
-    speaking: 'Speaking / Workshop Booking'
-  };
-
-  function quizSelect(el, field) {
-    var group = el.closest('.quiz-options');
-    group.querySelectorAll('.quiz-option').forEach(function(o) {
-      o.classList.remove('active');
-      o.setAttribute('aria-checked', 'false');
-    });
-    el.classList.add('active');
-    el.setAttribute('aria-checked', 'true');
-    window.cortexQuiz[field] = el.dataset.value;
-    document.getElementById('quizNext').disabled = false;
-  }
-
-  function quizChip(el) {
-    var value = el.dataset.value;
-    var idx = window.cortexQuiz.painPoints.indexOf(value);
-    if (idx > -1) {
-      window.cortexQuiz.painPoints.splice(idx, 1);
-      el.classList.remove('active');
-      el.setAttribute('aria-checked', 'false');
-    } else {
-      if (window.cortexQuiz.painPoints.length >= 2) return;
-      window.cortexQuiz.painPoints.push(value);
-      el.classList.add('active');
-      el.setAttribute('aria-checked', 'true');
-    }
-    var full = window.cortexQuiz.painPoints.length >= 2;
-    document.querySelectorAll('.quiz-chip').forEach(function(c) {
-      if (!c.classList.contains('active')) {
-        c.classList.toggle('disabled', full);
-      }
-    });
-    document.getElementById('quizNext').disabled = window.cortexQuiz.painPoints.length === 0;
-  }
-
-  function quizAddon(el) {
-    var value = el.dataset.value;
-    var price = parseInt(el.dataset.price, 10);
-    if (window.cortexQuiz.addons[value]) {
-      delete window.cortexQuiz.addons[value];
-      el.classList.remove('active');
-      el.setAttribute('aria-checked', 'false');
-    } else {
-      window.cortexQuiz.addons[value] = price;
-      el.classList.add('active');
-      el.setAttribute('aria-checked', 'true');
-    }
-    updateQuizResult();
-  }
-
-  function quizGoToStep(n) {
-    window.cortexQuiz.step = n;
-    document.querySelectorAll('.quiz-step').forEach(function(s) {
-      s.classList.toggle('active', parseInt(s.dataset.step, 10) === n);
-    });
-    document.getElementById('quizProgressFill').style.width = ((n - 1) / 3 * 100) + '%';
-    document.getElementById('quizProgressBar').setAttribute('aria-valuenow', n);
-    document.getElementById('quizProgressLabel').textContent = 'Step ' + n + ' of 4';
-    document.getElementById('quizBack').style.visibility = n === 1 ? 'hidden' : 'visible';
-
-    var nextBtn = document.getElementById('quizNext');
-    if (n === 1) { nextBtn.disabled = !window.cortexQuiz.teamSize; nextBtn.textContent = 'Next →'; }
-    if (n === 2) { nextBtn.disabled = !window.cortexQuiz.maturity; nextBtn.textContent = 'Next →'; }
-    if (n === 3) { nextBtn.disabled = window.cortexQuiz.painPoints.length === 0; nextBtn.textContent = 'Next →'; }
-    if (n === 4) { nextBtn.disabled = false; nextBtn.textContent = 'See my result ↓'; updateQuizResult(); }
-  }
-
-  function quizNext() {
-    if (window.cortexQuiz.step >= 4) {
-      updateQuizResult();
-      var resultPanel = document.querySelector('.calc-result');
-      if (resultPanel) resultPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    quizGoToStep(window.cortexQuiz.step + 1);
-  }
-
-  function quizBack() {
-    if (window.cortexQuiz.step <= 1) return;
-    quizGoToStep(window.cortexQuiz.step - 1);
-  }
-
-  function updateQuizResult() {
-    var q = window.cortexQuiz;
-    if (!q.teamSize) return;
-
-    var tier = TIERS[q.teamSize];
-    var itemsEl = document.getElementById('result-items');
-    var footerEl = document.getElementById('result-footer');
-
-    itemsEl.style.display = 'none';
-    footerEl.style.display = 'block';
-
-    var gapEl = document.getElementById('result-gap');
-    if (q.maturity) {
-      var gap = tier.level - parseInt(q.maturity, 10);
-      if (gap > 0) {
-        gapEl.innerHTML = 'You\'re roughly <strong>' + gap + ' level' + (gap > 1 ? 's' : '') + '</strong> below where a business your size should be.';
-      } else {
-        gapEl.innerHTML = 'You\'re already operating <strong>at or above</strong> the typical level for your size — CORTEX locks it in and scales it.';
-      }
-    } else {
-      gapEl.innerHTML = '';
-    }
-
-    document.getElementById('result-tier-name').textContent = 'CORTEX — ' + tier.name;
-    document.getElementById('result-tier-desc').textContent = tier.desc + ' Built for: ' + tier.target + '.';
-
-    var layersEl = document.getElementById('result-layers');
-    layersEl.innerHTML = q.painPoints.length > 0
-      ? 'Priority layers: ' + q.painPoints.map(function(p) { return '<span>' + p + '</span>'; }).join('')
-      : '';
-
-    document.getElementById('result-total').textContent = tier.setup.toLocaleString();
-    document.getElementById('result-monthly').textContent = 'MYR ' + tier.monthly.toLocaleString() + '/mo';
-    document.getElementById('result-year1').textContent = 'MYR ' + tier.year1.toLocaleString();
-
-    var addonKeys = Object.keys(q.addons);
-    var addonLinesEl = document.getElementById('result-addon-lines');
-    addonLinesEl.innerHTML = addonKeys.length > 0
-      ? addonKeys.map(function(k) {
-          return '<div class="result-line"><span class="result-line-name">+ ' + ADDON_LABELS[k] + '</span><span class="result-line-price">MYR ' + q.addons[k].toLocaleString() + '</span></div>';
-        }).join('')
-      : '';
-  }
-
-  async function submitQuiz() {
-    var q = window.cortexQuiz;
-    if (!q.teamSize) return;
-    var tier = TIERS[q.teamSize];
-    var btn = document.getElementById('quizCta');
-    var addonTotal = Object.keys(q.addons).reduce(function(sum, k) { return sum + q.addons[k]; }, 0);
-    var packageTotal = tier.setup + addonTotal;
-    var packageItems = Object.assign({ tier: q.teamSize, maturity: q.maturity, painPoints: q.painPoints }, q.addons);
-
-    var tierLabel = 'CORTEX — ' + tier.name;
-    var serviceSelect = document.getElementById('cf-service');
-    Array.prototype.forEach.call(serviceSelect.options, function(o) {
-      if (o.textContent.trim() === tierLabel) serviceSelect.value = tierLabel;
-    });
-
-    var msgEl = document.getElementById('cf-message');
-    if (!msgEl.value.trim()) {
-      msgEl.value = 'CORTEX diagnostic result: ' + tierLabel + ' (team size: ' + tier.target + (q.painPoints.length ? ', priority layers: ' + q.painPoints.join(', ') : '') + ').';
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Saving your result…';
-
-    try {
-      await submitBooking({
-        name: 'CORTEX Diagnostic Lead',
-        email: 'unknown@pending.com',
-        service: tierLabel,
-        packageTotal: packageTotal,
-        packageItems: packageItems
-      });
-      trackEvent('home', 'cortex_quiz_complete', { tier: q.teamSize, total: packageTotal });
-    } catch (err) {
-      console.error('Quiz booking save error:', err);
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Book my Brain Diagnostic call →';
-    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // SCROLL ANIMATIONS
-  const observers = document.querySelectorAll('.fade-up');
-  const io = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  observers.forEach(function(el) { io.observe(el); });
-
-  // NAV: scrolled background + hide-on-scroll-down
-  const navEl = document.querySelector('nav');
-  let lastScrollY = window.scrollY;
-  let ticking = false;
-  window.addEventListener('scroll', function() {
-    if (!ticking) {
-      window.requestAnimationFrame(function() {
-        const current = window.scrollY;
-        if (current > 50) {
-          navEl.classList.add('scrolled');
-        } else {
-          navEl.classList.remove('scrolled');
-        }
-        if (current > lastScrollY && current > 80) {
-          navEl.classList.add('nav-hidden');
-        } else {
-          navEl.classList.remove('nav-hidden');
-        }
-        lastScrollY = current;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-</script>
-
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/4916220354499?text=Hi%20Karim%2C%20ich%20interessiere%20mich%20f%C3%BCr%20deine%20AI-Coaching%20Services." class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-  <span class="wa-float-label">Chat on WhatsApp</span>
+<a href="https://wa.me/491622035499?text=Hi%20Karim%2C%20I%27d%20like%20to%20talk%20about%20CORTEX%20for%20my%20business." class="wa-float" target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 00-8.5 15.2L2 22l4.9-1.5A10 10 0 1012 2z" stroke="white" stroke-width="1.4"/><path d="M8 9.5c0 4 3.5 7 7 7" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
 </a>
 
-<!-- Supabase Client -->
+<div class="ws-toast-region" id="toastRegion"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase-client.js"></script>
-
 <script>
-  // ── CONTACT FORM HANDLER ──────────────────────────────────
-  async function handleContactSubmit(e) {
-    e.preventDefault();
-    var btn    = document.getElementById('cf-submit');
-    var notice = document.getElementById('cf-notice');
-
-    var firstName = document.getElementById('cf-name').value.trim();
-    var company   = document.getElementById('cf-company').value.trim();
-    var email     = document.getElementById('cf-email').value.trim();
-    var service   = document.getElementById('cf-service').value;
-    var message   = document.getElementById('cf-message').value.trim();
-
-    if (!firstName || !email) return;
-
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    notice.className = 'form-notice';
-    notice.style.display = 'none';
-
-    try {
-      await submitContact({ firstName, company, email, service, message });
-      trackEvent('home', 'form_submit', { service: service });
-
-      notice.className = 'form-notice success';
-      notice.textContent = '✦ Message sent. I\'ll be in touch within 24 hours.';
-      document.getElementById('contact-form').reset();
-    } catch (err) {
-      notice.className = 'form-notice error';
-      notice.textContent = '✦ Something went wrong. Please email Karim@azzaoui.de directly.';
-      console.error('Contact form error:', err);
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Send message →';
-  }
-
-  // ── CTA CLICK TRACKING ────────────────────────────────────
-  document.querySelectorAll('.btn-primary, .btn-ghost, .nav-cta').forEach(function(el) {
-    el.addEventListener('click', function() {
-      trackEvent('home', 'cta_click', { text: el.textContent.trim() });
-    });
+/* ---------- Mobile nav ---------- */
+(function(){
+  var burger = document.getElementById('navBurger');
+  var links = document.getElementById('wsNavLinks');
+  if(!burger || !links) return;
+  burger.addEventListener('click', function(){
+    var open = links.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
+  links.querySelectorAll('a.ws-nav-link').forEach(function(a){
+    a.addEventListener('click', function(){ links.classList.remove('open'); burger.setAttribute('aria-expanded','false'); });
+  });
+})();
 
-  // ── AUTH NAV ─────────────────────────────────────────────
-  (async function() {
-    try {
-      const user = await getUser();
-      const authArea  = document.getElementById('navAuthArea');
-      const loginBtn  = document.getElementById('navLoginBtn');
-      const avatar    = document.getElementById('navAuthAvatar');
-      if (user) {
-        const name = user.user_metadata?.full_name || user.email || '';
-        avatar.textContent = name.charAt(0).toUpperCase();
-        authArea.style.display = 'block';
-      } else {
-        loginBtn.style.display = 'inline-flex';
-      }
-    } catch(e) {}
-  })();
+/* ---------- Fade-up reveal ---------- */
+(function(){
+  if(!('IntersectionObserver' in window)){ document.querySelectorAll('.fade-up').forEach(function(el){ el.style.opacity=1; }); return; }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){ entry.target.classList.add('is-visible'); obs.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(function(el){ obs.observe(el); });
+})();
+
+/* ---------- Toast ---------- */
+function showToast(message, type){
+  var region = document.getElementById('toastRegion');
+  if(!region) return;
+  var t = document.createElement('div');
+  t.className = 'ws-toast';
+  var dot = document.createElement('span');
+  dot.className = 'ws-toast-dot' + (type === 'danger' ? ' ws-toast-dot-danger' : ' ws-toast-dot-success');
+  t.appendChild(dot);
+  var span = document.createElement('span');
+  span.textContent = message;
+  t.appendChild(span);
+  region.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 4500);
+}
+
+/* ---------- CORTEX quiz ---------- */
+var TIERS = {
+  starter:      { name: 'Starter',      target: 'Solo / micro teams (1–10 people)',  level: 2, setup: 6000,   monthly: 1200,  year1: 20400 },
+  growth:       { name: 'Growth',       target: 'Growing SMEs (10–250 people)',       level: 3, setup: 18000,  monthly: 3500,  year1: 60000 },
+  professional: { name: 'Professional', target: 'Mid-market (250–2,500 people)',      level: 4, setup: 45000,  monthly: 8000,  year1: 141000 },
+  enterprise:   { name: 'Enterprise',   target: 'Enterprise (2,500+ people)',          level: 5, setup: 120000, monthly: 18000, year1: 336000 }
+};
+var TIERS_I18N = {
+  en: {
+    starter: { name:'Starter', target:'Solo / micro teams (1–10 people)', desc:'A focused Brain build around your single biggest knowledge gap — live in weeks, not months.' },
+    growth: { name:'Growth', target:'Growing SMEs (10–250 people)', desc:'A connected Brain across the layers that hurt most — knowledge, ops and decisions working together.' },
+    professional: { name:'Professional', target:'Mid-market (250–2,500 people)', desc:'A governed, evidence-driven Brain spanning most of the business, with risk and intelligence layers active.' },
+    enterprise: { name:'Enterprise', target:'Enterprise (2,500+ people)', desc:'A fully autonomous Brain running across every layer — the business operates on it, not just with it.' }
+  },
+  de: {
+    starter: { name:'Starter', target:'Solo / Kleinstteams (1–10 Personen)', desc:'Ein fokussierter Brain-Build rund um Ihre größte Wissenslücke — live in Wochen, nicht Monaten.' },
+    growth: { name:'Growth', target:'Wachsende KMU (10–250 Personen)', desc:'Ein vernetztes Brain über die Ebenen, die am meisten schmerzen — Wissen, Betrieb und Entscheidungen im Zusammenspiel.' },
+    professional: { name:'Professional', target:'Mid-Market (250–2.500 Personen)', desc:'Ein governanceorientiertes, evidenzbasiertes Brain über weite Teile des Unternehmens, mit aktiven Risiko- und Intelligence-Ebenen.' },
+    enterprise: { name:'Enterprise', target:'Enterprise (2.500+ Personen)', desc:'Ein vollständig autonomes Brain über alle Ebenen — das Unternehmen läuft damit, nicht nur mit ihm.' }
+  },
+  zh: {
+    starter: { name:'入门版', target:'个人 / 微团队（1–10人）', desc:'围绕你最大的知识缺口构建一个聚焦的 Brain ——几周内上线，而不是几个月。' },
+    growth: { name:'成长版', target:'成长型中小企业（10–250人）', desc:'连接最痛的几个层级——知识、运营与决策协同运作的 Brain。' },
+    professional: { name:'专业版', target:'中型市场企业（250–2,500人）', desc:'一个受治理、以证据驱动的 Brain，覆盖企业大部分业务，并激活风险与智能层。' },
+    enterprise: { name:'企业版', target:'大型企业（2,500人以上）', desc:'一个在每一层都自主运行的 Brain——企业由它运转，而不仅仅是借助它。' }
+  }
+};
+var ADDON_LABELS = {
+  en: { jumpstart:'AI Jumpstart / Brain Diagnostic', coaching:'Brain Coaching — 8 weeks', design:'AI Design & Content Pack', web:'Website / App Build', speaking:'Speaking / Workshop Booking' },
+  de: { jumpstart:'AI Jumpstart / Brain-Diagnose', coaching:'Brain Coaching — 8 Wochen', design:'AI Design- & Content-Paket', web:'Website- / App-Build', speaking:'Speaking- / Workshop-Buchung' },
+  zh: { jumpstart:'AI 启动诊断', coaching:'Brain 教练辅导 — 8 周', design:'AI 设计与内容套餐', web:'网站 / 应用搭建', speaking:'演讲 / 工作坊预订' }
+};
+var LAYER_LABELS = {
+  en: { Knowledge:'Knowledge', Operations:'Operations', Marketing:'Marketing', Sales:'Sales', Customer:'Customer', Decision:'Decision', Risk:'Risk', Automation:'Automation' },
+  de: { Knowledge:'Wissen', Operations:'Betrieb', Marketing:'Marketing', Sales:'Vertrieb', Customer:'Kunde', Decision:'Entscheidung', Risk:'Risiko', Automation:'Automatisierung' },
+  zh: { Knowledge:'知识', Operations:'运营', Marketing:'市场', Sales:'销售', Customer:'客户', Decision:'决策', Risk:'风险', Automation:'自动化' }
+};
+
+function currentLang(){ return (window.winsymI18n && window.winsymI18n.getLanguage()) || 'en'; }
+
+window.cortexQuiz = { step: 1, teamSize: null, maturity: null, painPoints: [], addons: {} };
+
+function quizSelect(el, field){
+  var group = el.parentElement;
+  group.querySelectorAll('.quiz-option').forEach(function(o){ o.classList.remove('selected'); });
+  el.classList.add('selected');
+  window.cortexQuiz[field] = field === 'maturity' ? parseInt(el.getAttribute('data-value'), 10) : el.getAttribute('data-value');
+  document.getElementById('quizNextBtn').disabled = false;
+}
+
+function quizChip(el){
+  var value = el.getAttribute('data-value');
+  var q = window.cortexQuiz;
+  var idx = q.painPoints.indexOf(value);
+  if(idx > -1){
+    q.painPoints.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    if(q.painPoints.length >= 2) return;
+    q.painPoints.push(value);
+    el.classList.add('selected');
+  }
+  var group = el.parentElement;
+  var full = q.painPoints.length >= 2;
+  group.querySelectorAll('.quiz-chip').forEach(function(c){
+    if(!c.classList.contains('selected')) c.classList.toggle('disabled', full);
+  });
+  document.getElementById('quizNextBtn').disabled = q.painPoints.length === 0;
+}
+
+function quizAddon(el){
+  var addon = el.getAttribute('data-addon');
+  var price = parseInt(el.getAttribute('data-price'), 10);
+  var q = window.cortexQuiz;
+  if(q.addons[addon]){
+    delete q.addons[addon];
+    el.classList.remove('selected');
+  } else {
+    q.addons[addon] = price;
+    el.classList.add('selected');
+  }
+}
+
+function quizGoToStep(n){
+  window.cortexQuiz.step = n;
+  document.querySelectorAll('.quiz-step').forEach(function(s){ s.classList.toggle('active', parseInt(s.getAttribute('data-step'),10) === n); });
+  document.querySelectorAll('.quiz-progress-seg').forEach(function(seg){ seg.classList.toggle('done', parseInt(seg.getAttribute('data-seg'),10) <= n); });
+  document.getElementById('quizStepNum').textContent = n;
+  document.getElementById('quizBackBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  var nextBtn = document.getElementById('quizNextBtn');
+  var q = window.cortexQuiz;
+  if(n === 1) nextBtn.disabled = !q.teamSize;
+  if(n === 2) nextBtn.disabled = !q.maturity;
+  if(n === 3) nextBtn.disabled = q.painPoints.length === 0;
+  if(n === 4){ nextBtn.style.display = 'none'; updateQuizResult(); } else { nextBtn.style.display = ''; }
+}
+
+function quizNext(){
+  if(window.cortexQuiz.step < 4) quizGoToStep(window.cortexQuiz.step + 1);
+}
+function quizBack(){
+  if(window.cortexQuiz.step > 1) quizGoToStep(window.cortexQuiz.step - 1);
+}
+
+function updateQuizResult(){
+  var q = window.cortexQuiz;
+  var lang = currentLang();
+  var tier = TIERS[q.teamSize];
+  var tierI18n = (TIERS_I18N[lang] || TIERS_I18N.en)[q.teamSize];
+  if(!tier) return;
+  document.getElementById('resultEmpty').style.display = 'none';
+  document.getElementById('resultFooter').style.display = 'block';
+  document.getElementById('resultTierName').textContent = tierI18n.name;
+  document.getElementById('resultTierTarget').textContent = tierI18n.target;
+  document.getElementById('resultTierDesc').textContent = tierI18n.desc;
+  var layerLabels = LAYER_LABELS[lang] || LAYER_LABELS.en;
+  document.getElementById('resultLayers').textContent = q.painPoints.map(function(p){ return layerLabels[p] || p; }).join(', ');
+  var gap = Math.max(0, tier.level - (q.maturity || 1));
+  document.getElementById('resultGap').textContent = gap + ' / 4';
+  var addonTotal = Object.keys(q.addons).reduce(function(sum,k){ return sum + q.addons[k]; }, 0);
+  document.getElementById('resultTotal').textContent = 'RM ' + (tier.setup + addonTotal).toLocaleString();
+  document.getElementById('resultMonthly').textContent = 'RM ' + tier.monthly.toLocaleString() + ' /mo';
+  document.getElementById('resultYear1').textContent = 'RM ' + (tier.year1 + addonTotal).toLocaleString();
+  var addonLabels = ADDON_LABELS[lang] || ADDON_LABELS.en;
+  var lines = Object.keys(q.addons).map(function(k){ return '+ ' + (addonLabels[k]||k) + ' (RM ' + q.addons[k].toLocaleString() + ')'; });
+  document.getElementById('resultAddonLines').innerHTML = lines.join('<br>');
+}
+
+document.addEventListener('winsym:langchange', function(){
+  if(window.cortexQuiz.step === 4 && window.cortexQuiz.teamSize) updateQuizResult();
+});
+
+async function submitQuiz(){
+  var q = window.cortexQuiz;
+  var tier = TIERS[q.teamSize];
+  if(!tier) return;
+  var addonTotal = Object.keys(q.addons).reduce(function(sum,k){ return sum + q.addons[k]; }, 0);
+  var packageTotal = tier.setup + addonTotal;
+  var packageItems = Object.assign({ tier: q.teamSize, painPoints: q.painPoints, maturity: q.maturity }, q.addons);
+  var serviceSelect = document.getElementById('cf-service');
+  var messageField = document.getElementById('cf-message');
+  if(serviceSelect && !serviceSelect.value) serviceSelect.value = 'CORTEX ' + (tier.name || q.teamSize);
+  if(messageField && !messageField.value) messageField.value = 'CORTEX tier match: ' + tier.name + '. Pain points: ' + q.painPoints.join(', ') + '.';
+  try{
+    if(window.submitBooking){
+      await window.submitBooking({ name: '', email: '', company: '', service: 'CORTEX ' + tier.name, packageTotal: packageTotal, packageItems: packageItems, notes: 'Calculator submission' });
+    }
+    if(window.trackEvent) window.trackEvent('home', 'cortex_quiz_complete', { tier: q.teamSize, total: packageTotal });
+  } catch(e){ /* non-blocking */ }
+  document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ---------- Contact form ---------- */
+async function handleContactSubmit(e){
+  e.preventDefault();
+  var firstName = document.getElementById('cf-name').value.trim();
+  var company = document.getElementById('cf-company').value.trim();
+  var email = document.getElementById('cf-email').value.trim();
+  var service = document.getElementById('cf-service').value;
+  var message = document.getElementById('cf-message').value.trim();
+  var notice = document.getElementById('cf-notice');
+  if(!firstName || !email){
+    notice.style.color = 'var(--danger)';
+    notice.textContent = 'Please fill in your name and email.';
+    return;
+  }
+  var submitBtn = document.getElementById('cf-submit');
+  submitBtn.disabled = true;
+  try{
+    if(window.submitContact) await window.submitContact({ firstName: firstName, company: company, email: email, service: service, message: message });
+    if(window.trackEvent) window.trackEvent('home', 'form_submit', { service: service });
+    notice.style.color = 'var(--success)';
+    notice.textContent = 'Thanks — we\'ll be in touch within one business day.';
+    showToast('Message sent', 'success');
+    document.getElementById('contact-form').reset();
+  } catch(err){
+    notice.style.color = 'var(--danger)';
+    notice.textContent = 'Something went wrong. Please try again or email us directly.';
+    showToast('Could not send message', 'danger');
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+/* ---------- CTA click tracking ---------- */
+document.addEventListener('click', function(e){
+  var el = e.target.closest('.btn-primary, .btn-ghost');
+  if(el && window.trackEvent) window.trackEvent('home', 'cta_click', { label: el.textContent.trim() });
+});
+
+/* ---------- Auth-aware nav ---------- */
+(async function(){
+  if(!window.getUser) return;
+  try{
+    var user = await window.getUser();
+    var area = document.getElementById('navAuthArea');
+    var loginBtn = document.getElementById('navLoginBtn');
+    if(user && area && loginBtn){
+      loginBtn.textContent = (user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name.split(' ')[0] : user.email;
+      loginBtn.setAttribute('href', 'dashboard.html');
+    }
+  } catch(e){ /* not signed in */ }
+})();
+</script>
+
+<!-- SECTION:NEXT -->
+
+</main>
+<script>
+window.I18N = window.I18N || {};
+window.I18N.de = Object.assign({}, window.I18N.de, {
+  // ---- Meta ----
+  'meta.title': 'winsym.ai — Company Brain · KI-Betriebssysteme für Unternehmen',
+  'meta.desc': 'winsym.ai baut das KI-Brain, auf dem Ihr Unternehmen läuft. Company-Brain-Build, KI-Coaching und Academy-Programme für nicht-technische Führungskräfte in Kuala Lumpur und im DACH-Raum.',
+  // ---- Nav ----
+  'nav.tag': 'KI-Betriebssysteme',
+  'nav.home': 'Start',
+  'nav.cortex': 'CORTEX',
+  'nav.about': 'Über',
+  'nav.projects': 'Projekte',
+  'nav.academy': 'Academy',
+  'nav.contact': 'Kontakt',
+  'nav.login': 'Anmelden',
+  'nav.bookSession': 'Termin buchen →',
+  // ---- Hero ----
+  'hero.h1': 'Winning Systems.<br>Angetrieben von einem <span class="text-orange">Brain</span>.',
+  'hero.eyebrow': 'KI-Coach · CORTEX-Architekt · Speaker',
+  'hero.lead': 'winsym.ai installiert CORTEX — ein gesteuertes KI-Brain, auf dem Ihr Unternehmen läuft. Kein weiterer Chatbot. Ein System, das sich erinnert, entscheidet und mit Ihnen wächst.',
+  'hero.cta1': 'Meine CORTEX-Stufe finden →',
+  'hero.cta2': 'Vortragsthemen',
+  'hero.badge': 'Ansässig in KL, Malaysia',
+  'hero.stat1': 'Unternehmen gecoacht',
+  'hero.stat2': 'Jahre im Marketing',
+  'hero.stat3': 'Zertifizierte Partnerschaften',
+  // ---- Ticker ----
+  'ticker.item1': 'KI-Coach',
+  'ticker.item2': 'CORTEX — Das Brain',
+  'ticker.item3': 'Winning Systems',
+  'ticker.item4': 'Schnelle KI-Integration',
+  'ticker.item5': 'Google Partner',
+  'ticker.item6': 'Meta Partner',
+  'ticker.item7': 'Kuala Lumpur · Malaysia',
+  // ---- About ----
+  'about.heading': 'Ich übersetze<br><span class="text-orange">Business</span><br>in KI',
+  'about.tag': 'Über Karim',
+  'about.body': '10 Jahre in Marketing, Design und digitalen Systemen — heute fokussiert auf den Aufbau von KI-Betriebssystemen für nicht-technische Führungskräfte. Zertifizierter Google- und Meta-Partner. CORTEX ist die Methode: ein KI-Brain, auf dem Ihr Unternehmen läuft — keine weitere App, die seitlich angeschraubt wird.',
+  'about.quote': 'Sie brauchen nicht mehr KI-Tools. Sie brauchen ein Brain, das die verbindet, die Sie bereits haben.',
+  'about.boxLabel': 'CORTEX-gebaut',
+  'about.frameLabel': 'KARIM AZZAOUI / KI-Coach · Speaker · winsym.ai',
+  'about.cred1': 'Google Partner',
+  'about.cred2': 'Meta Partner',
+  'about.cred3': 'KI-Integration',
+  'about.cred4': 'KL · Deutschland',
+  'about.num1': 'Jahre Erfahrung',
+  'about.num2': 'Märkte betreut',
+  'about.num3': 'Systeme gebaut',
+  // ---- Pillars / CORTEX feature ----
+  'pillars.heading': 'Ein Brain.<br>Alles andere<br><span class="text-orange">dockt an</span>.',
+  'pillars.tag': 'Wie alles zusammenpasst',
+  'pillars.intro': 'Vier Service-Säulen, ein verbundenes Brain darunter. Jedes Projekt stärkt dasselbe System, statt bei null zu beginnen.',
+  'pillars.cortexBadge': '00 / Der Brain-Build',
+  'pillars.cortexTitle': 'CORTEX — Der Brain-Build',
+  'pillars.cortexDesc': 'Ein gesteuertes KI-Betriebssystem rund um Ihr Unternehmen — Wissen, Betrieb, Marketing, Vertrieb, Kunde, Entscheidung, Risiko und Automatisierung, alles in einem Brain verdrahtet.',
+  'pillars.cortexCta': 'Meine Stufe finden →',
+  'pillars.layer1': 'Wissen',
+  'pillars.layer2': 'Betrieb',
+  'pillars.layer3': 'Marketing',
+  'pillars.layer4': 'Vertrieb',
+  'pillars.layer5': 'Kunde',
+  'pillars.layer6': 'Entscheidung',
+  'pillars.layer7': 'Risiko',
+  'pillars.layer8': 'Automatisierung',
+  'pillars.card1Title': 'KI-Coaching & Strategie',
+  'pillars.card1Desc': '1:1- und Team-Coaching, das KI vom Buzzword zu einem funktionierenden Teil Ihrer Unternehmensführung macht.',
+  'pillars.card1Note': '↳ Angetrieben von der Entscheidungs-Ebene Ihres Brains',
+  'pillars.card2Title': 'Kommerzielles Design & Animation',
+  'pillars.card2Desc': 'Markenkonformes Design und Motion-Content, der schnell liefert, weil Ihr Brain Ihre Marke bereits kennt.',
+  'pillars.card2Note': '↳ Angetrieben von der Marketing-Ebene Ihres Brains',
+  'pillars.card3Title': 'Web-Entwicklung & Apps',
+  'pillars.card3Desc': 'Websites und Apps, direkt in Ihr Brain verdrahtet — keine aufgesetzten Formulare, die ins Leere laufen.',
+  'pillars.card3Note': '↳ Angetrieben von der Betriebs-Ebene Ihres Brains',
+  'pillars.card4Title': 'Marketing-Hub-Leitung',
+  'pillars.card4Desc': 'Fraktionale Marketing-Führung, die auf Evidenz aus Ihrem Brain läuft — nicht auf Vermutungen.',
+  'pillars.card4Note': '↳ Angetrieben von der Kunden-Ebene Ihres Brains',
+  // ---- Process heading (html) ----
+  'process.heading': 'Vom ersten Call<br>zum <span class="text-orange">Live-System</span>',
+  // ---- Brain method ----
+  'brain.tag': 'Die Methode',
+  'brain.heading': 'Die CORTEX-Methode',
+  'brain.quote': '„Wir verkaufen keinen Chatbot. Wir installieren das Brain, auf dem Ihr Unternehmen läuft."',
+  'brain.step1Title': 'Audit',
+  'brain.step1Desc': 'Erfassen, was Sie wissen, was nicht, und wo das Unternehmen tatsächlich Zeit verliert.',
+  'brain.step2Title': 'Blueprint',
+  'brain.step2Desc': 'Die Architektur des Brains rund um Ihre echten Workflows entwerfen — keine generische Vorlage.',
+  'brain.step3Title': 'Build',
+  'brain.step3Desc': 'Die Ebenen verdrahten — Wissen, Betrieb, Marketing, Vertrieb, Entscheidungen.',
+  'brain.step4Title': 'Train',
+  'brain.step4Desc': 'Ihr Team nutzt das Brain täglich — mit Governance und Leitplanken.',
+  'brain.step5Title': 'Scale',
+  'brain.step5Desc': 'Das Brain auf neue Ebenen und Teams erweitern, während das Unternehmen wächst.',
+  'brain.value1Title': 'Nie wieder Wissen verlieren',
+  'brain.value1Desc': 'Jede Entscheidung und jeder Prozess lebt im Brain — nicht im Kopf einer einzelnen Person.',
+  'brain.value2Title': 'Entscheidungen auf Evidenz, nicht Meinung',
+  'brain.value2Desc': 'Das Brain zeigt, was im Unternehmen wirklich passiert — kein Bauchgefühl.',
+  'brain.value3Title': 'Auf Vertrauen gebaut',
+  'brain.value3Desc': 'Gesteuert, prüfbar und sicher — keine Blackbox, auf deren Funktion Sie hoffen müssen.',
+  'trust.quote': '„Wir verkaufen keinen Chatbot. Wir installieren das Brain, auf dem Ihr Unternehmen läuft."',
+  // ---- Process ----
+  'process.tag': 'Wie wir arbeiten',
+  'process.step1Title': 'Discovery-Call',
+  'process.step1Desc': 'Ein kostenloser 30-Minuten-Call, um zu verstehen, wo das Unternehmen heute steht.',
+  'process.step1When': 'Woche 1',
+  'process.step2Title': 'KI-Audit & Blueprint',
+  'process.step2Desc': 'Wir erfassen Ihre Workflows und entwerfen die Architektur des Brains.',
+  'process.step2When': 'Woche 1–2',
+  'process.step3Title': 'Gemeinsam bauen',
+  'process.step3Desc': 'Wir bauen und verdrahten die Ebenen des Brains — Ihr Team bei jedem Schritt dabei.',
+  'process.step3When': 'Woche 2–5',
+  'process.step4Title': 'Launch & Wachstum',
+  'process.step4Desc': 'Das Brain geht live. Wir trainieren, skalieren und ergänzen weiter Ebenen.',
+  'process.step4When': 'Laufend',
+  // ---- Calculator ----
+  'calc.tag': 'Finden Sie Ihre Passung',
+  'calc.heading': 'Welche Größe hat Ihr CORTEX-Brain?',
+  'calc.intro': 'Vier kurze Fragen. Erhalten Sie eine Stufe, eine Preisspanne und einen klaren nächsten Schritt.',
+  'calc.stepLabel': 'Schritt',
+  'calc.back': '← Zurück',
+  'calc.next': 'Weiter →',
+  'calc.q1Title': 'Wie groß ist Ihr Team?',
+  'calc.q1Opt1Title': 'Starter',
+  'calc.q1Opt1Desc': 'Solo / Kleinstteam, 1–10 Personen',
+  'calc.q1Opt2Title': 'Growth',
+  'calc.q1Opt2Desc': 'Wachsendes KMU, 10–250 Personen',
+  'calc.q1Opt3Title': 'Professional',
+  'calc.q1Opt3Desc': 'Mid-Market, 250–2.500 Personen',
+  'calc.q1Opt4Title': 'Enterprise',
+  'calc.q1Opt4Desc': 'Enterprise, 2.500+ Personen',
+  'calc.q2Title': 'Wo steht Ihr Unternehmen heute?',
+  'calc.q2Opt1Title': 'Ganz am Anfang',
+  'calc.q2Opt1Desc': 'Noch wenig bis keine KI im Unternehmen',
+  'calc.q2Opt2Title': 'Ein paar Tools',
+  'calc.q2Opt2Desc': 'Einige KI-Tools, aber unverbunden',
+  'calc.q2Opt3Title': 'Teilweise verbunden',
+  'calc.q2Opt3Desc': 'Einige Systeme sprechen miteinander',
+  'calc.q2Opt4Title': 'Fortgeschritten',
+  'calc.q2Opt4Desc': 'Reifer Stack, bereit zur Vereinheitlichung',
+  'calc.q3Title': 'Wo tut es gerade am meisten weh? (bis zu 2 wählen)',
+  'calc.q4Title': 'Möchten Sie noch etwas ergänzen? (optional)',
+  'calc.addon1': 'KI-Jumpstart / Brain-Diagnose',
+  'calc.addon2': 'Brain-Coaching — 8 Wochen',
+  'calc.addon3': 'KI-Design- & Content-Paket',
+  'calc.addon4': 'Website / App-Build',
+  'calc.addon5': 'Speaking / Workshop-Buchung',
+  'calc.resultEmpty': 'Beantworten Sie die Fragen, um Ihre CORTEX-Stufe und die geschätzte Investition zu sehen.',
+  'calc.gapLabel': 'Reifegrad-Lücke',
+  'calc.layersLabel': 'Brain-Ebenen im Umfang',
+  'calc.totalLabel': 'Geschätztes Setup',
+  'calc.monthlyLabel': 'Monatlicher Retainer',
+  'calc.year1Label': 'Gesamt Jahr 1',
+  'calc.cta': 'Meinen Brain-Diagnose-Call buchen →',
+  // ---- Speaking ----
+  'speaking.heading': 'Buchen Sie Karim<br>für Ihr<br><span class="text-orange">Event</span>',
+  'speaking.tag': 'Speaking & Training',
+  'speaking.intro': 'Vorträge und Workshops zu KI, gemacht für nicht-technische Führungskräfte — auf Englisch oder Deutsch, ohne Jargon, ohne Hype.',
+  'speaking.item1Title': 'CORTEX — Das KI-Brain Ihres Unternehmens bauen',
+  'speaking.item1Desc': 'Wie Sie verstreute Tools und implizites Wissen in ein gesteuertes KI-System verwandeln.',
+  'speaking.item2Title': 'KI für nicht-technische Führungskräfte',
+  'speaking.item2Desc': 'Eine praktische Landkarte dessen, was KI für Ihr Unternehmen leisten kann — ohne Ingenieurabschluss.',
+  'speaking.item3Title': 'Vom Prompt zum Profit — KI im Marketing',
+  'speaking.item3Desc': 'KI-Experimente in eine Marketing-Funktion verwandeln, die wirklich Umsatz bewegt.',
+  'speaking.item4Title': 'Workshop: Schnelle KI-Integration',
+  'speaking.item4Desc': 'Eine praxisnahe Session, die Ihr Team innerhalb eines Tages sicher und effektiv mit KI arbeiten lässt.',
+  'speaking.quoteText': '„Endlich jemand, der KI in unternehmerischen Begriffen erklärt, nicht in technischen."',
+  'speaking.quoteCaption': 'Firmenevent · Kuala Lumpur 2024',
+  'speaking.format1Name': 'Keynote',
+  'speaking.format1Desc': '45–90 Min',
+  'speaking.format2Name': 'Workshop',
+  'speaking.format2Desc': 'Halb- / Ganztags',
+  'speaking.format3Name': 'Panel',
+  'speaking.format3Desc': '30–60 Min',
+  'speaking.format4Name': 'Privates Training',
+  'speaking.format4Desc': 'Individuell',
+  'speaking.cta': 'Speaking-Slot buchen →',
+  // ---- Academy teaser ----
+  'academy.heading': 'Die<br><span class="text-orange">winsym.ai</span><br>Academy',
+  'academy.tag': 'Academy',
+  'academy.badge': '2 Kurse · Kostenlos',
+  'academy.desc': 'Zwei kostenlose Coachings, die Sie in Bewegung bringen — kein Füllmaterial, nur die Schritte, die zählen.',
+  'academy.mod1': 'Higgsfield + Claude — KI-Content-Produktion',
+  'academy.mod2': 'Pro-Websites mit Claude Code — eine echte Seite veröffentlichen',
+  'academy.step1': 'Wählen Sie Ihren Coaching-Track',
+  'academy.step2': 'Arbeiten Sie ihn in Ihrem Tempo durch',
+  'academy.step3': 'Veröffentlichen Sie etwas Echtes',
+  'academy.cta': 'Coaching wählen →',
+  // ---- Final CTA ----
+  'cta.heading': 'Bereit, Ihr<br><span style="color:inherit;">KI-OS zu bauen?</span>',
+  'cta.body': 'Buchen Sie einen kostenlosen 30-Minuten-Discovery-Call. Wir finden heraus, wo Ihr Brain beginnen sollte.',
+  'cta.cta1': 'Discovery-Call buchen →',
+  'cta.cta2': 'Auf WhatsApp schreiben',
+  // ---- Contact ----
+  'contact.tag': 'Sprechen wir',
+  'contact.heading': 'Kontakt aufnehmen',
+  'contact.body': 'Sagen Sie uns, wo das Unternehmen heute steht — wir melden uns mit einem klaren nächsten Schritt zurück, nicht mit einem Verkaufsgespräch.',
+  'form.firstName': 'Vorname *',
+  'form.company': 'Unternehmen',
+  'form.email': 'E-Mail *',
+  'form.service': 'Woran sind Sie interessiert?',
+  'form.serviceOpt0': 'Bin mir noch nicht sicher',
+  'form.serviceOpt1': 'CORTEX Starter',
+  'form.serviceOpt2': 'CORTEX Growth',
+  'form.serviceOpt3': 'CORTEX Professional',
+  'form.serviceOpt4': 'CORTEX Enterprise',
+  'form.serviceOpt5': 'KI-Jumpstart',
+  'form.serviceOpt6': 'Brain-Coaching',
+  'form.serviceOpt7': 'Speaking / Workshop',
+  'form.message': 'Nachricht',
+  'form.submit': 'Nachricht senden →',
+  // ---- Footer ----
+  'footer.tagline': 'Winning Systems · Backed by AI',
+  'footer.servicesHead': 'Leistungen',
+  'footer.servicesLink1': 'CORTEX — Company Brain',
+  'footer.servicesLink2': 'Academy',
+  'footer.servicesLink3': 'Speaking & Training',
+  'footer.pagesHead': 'Seiten',
+  'footer.contactHead': 'Kontakt',
+  'footer.copyright': '© 2026 winsym.ai — Alle Rechte vorbehalten.',
+  'footer.location': 'Kuala Lumpur, Malaysia'
+});
 </script>
 </body>
 </html>

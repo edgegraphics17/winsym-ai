@@ -7,9 +7,12 @@
     { "src": "/",                   "dest": "/winsymai.html" },
     { "src": "/about",              "dest": "/karim-identity.html" },
     { "src": "/projects",           "dest": "/projects-showcase.html" },
+    { "src": "/cortex",             "dest": "/cortex.html" },
+    { "src": "/academy",            "dest": "/academy.html" },
     { "src": "/winsymai",           "dest": "/winsymai.html" },
     { "src": "/karim",              "dest": "/karim-identity.html" },
     { "src": "/(.*)\\.html",        "dest": "/$1.html" },
+    { "src": "/css/(.*)",           "dest": "/css/$1" },
     { "src": "/js/(.*)",            "dest": "/js/$1" },
     { "src": "/supabase/(.*)",      "dest": "/supabase/$1" }
   ],
