@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="meta.title">Dashboard — winsym.ai Academy</title>
-<meta name="description" data-i18n="meta.desc" data-i18n-attr="content" content="Your winsym.ai Academy dashboard — track course progress, access tools and skills, and view your certificates.">
+<title>Dashboard — winsym.ai Academy</title>
+<meta name="description" content="Your winsym.ai Academy dashboard — track course progress, access tools and skills, and view your certificates.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,9 +144,9 @@
 <!-- NAV -->
 <nav class="dash-nav">
 <div class="dash-nav-inner">
-  <a href="/" class="dash-logo">win<span class="accent">sym</span>.ai</a>
+  <a href="/" class="dash-logo notranslate" translate="no">win<span class="accent">sym</span>.ai</a>
   <div class="dash-nav-right">
-    <a href="/" class="nav-home-link" data-i18n="nav.home">← Home</a>
+    <a href="/" class="nav-home-link">← Home</a>
     <div class="ws-lang-switch">
       <button class="ws-lang-btn" type="button" aria-label="Change language"><span class="ws-lang-btn-text">EN</span></button>
       <div class="ws-lang-menu" role="listbox">
@@ -157,8 +157,8 @@
     <div class="user-avatar" id="userAvatar" onclick="toggleMenu()"><span id="userAvatarLetter">?</span>
       <div class="user-menu" id="userMenu">
         <span class="user-menu-item" id="menuEmail" style="cursor:default;opacity:0.55;"></span>
-        <a href="/" class="user-menu-item" data-i18n="nav.home">Home</a>
-        <button class="user-menu-item danger" onclick="doSignOut()" data-i18n="dash.signOut">Sign Out</button>
+        <a href="/" class="user-menu-item">Home</a>
+        <button class="user-menu-item danger" onclick="doSignOut()">Sign Out</button>
       </div>
     </div>
   </div>
@@ -168,52 +168,52 @@
 <!-- LOADING -->
 <div class="dash-loading" id="dashLoading">
   <div class="dash-loading-spinner"></div>
-  <div class="dash-loading-label" data-i18n="dash.loading">Loading your dashboard…</div>
+  <div class="dash-loading-label">Loading your dashboard…</div>
 </div>
 
 <!-- CONTENT -->
 <main class="dash-page" id="dashContent" style="display:none;">
   <div class="welcome-row">
-    <div class="welcome-tag" data-i18n="dash.welcomeTag">— Your Academy</div>
-    <h1 class="welcome-name" data-i18n="dash.welcomeBack" style="font-weight:300;">Welcome back,</h1>
+    <div class="welcome-tag">— Your Academy</div>
+    <h1 class="welcome-name" style="font-weight:300;">Welcome back,</h1>
     <div class="welcome-user" id="welcomeUser">...</div>
-    <div class="welcome-sub" id="welcomeSub" data-i18n="dash.welcomeSub">Continue your AI journey, right where you left off.</div>
+    <div class="welcome-sub" id="welcomeSub">Continue your AI journey, right where you left off.</div>
   </div>
 
   <div class="stats-row" id="statsRow">
-    <div class="dash-stat-card"><div class="stat-num" id="statSteps">0</div><div class="stat-label" data-i18n="dash.statSteps">Steps completed</div></div>
-    <div class="dash-stat-card"><div class="stat-num" id="statCourses">0</div><div class="stat-label" data-i18n="dash.statCourses">Courses started</div></div>
-    <div class="dash-stat-card"><div class="stat-num" id="statCerts">0</div><div class="stat-label" data-i18n="dash.statCerts">Certificates earned</div></div>
+    <div class="dash-stat-card"><div class="stat-num" id="statSteps">0</div><div class="stat-label">Steps completed</div></div>
+    <div class="dash-stat-card"><div class="stat-num" id="statCourses">0</div><div class="stat-label">Courses started</div></div>
+    <div class="dash-stat-card"><div class="stat-num" id="statCerts">0</div><div class="stat-label">Certificates earned</div></div>
   </div>
 
   <div class="dash-section">
     <div class="dash-section-header">
-      <div class="dash-section-title" data-i18n="dash.coursesTitle">Your courses</div>
-      <div class="dash-section-sub" data-i18n="dash.coursesSub">Free access · self-paced</div>
+      <div class="dash-section-title">Your courses</div>
+      <div class="dash-section-sub">Free access · self-paced</div>
     </div>
     <div class="courses-grid" id="coursesGrid"></div>
   </div>
 
   <div class="dash-section">
     <div class="dash-section-header">
-      <div class="dash-section-title" data-i18n="dash.resTitle">Resources</div>
-      <div class="dash-section-sub" data-i18n="dash.resSub">Essential tools from the coachings</div>
+      <div class="dash-section-title">Resources</div>
+      <div class="dash-section-sub">Essential tools from the coachings</div>
     </div>
     <div class="resource-grid" id="resourceGrid"></div>
   </div>
 
   <div class="dash-section">
     <div class="dash-section-header">
-      <div class="dash-section-title" data-i18n="dash.skillsTitle">Skills</div>
-      <div class="dash-section-sub" data-i18n="dash.skillsSub">Click any skill to copy the install command</div>
+      <div class="dash-section-title">Skills</div>
+      <div class="dash-section-sub">Click any skill to copy the install command</div>
     </div>
     <div class="skill-grid" id="skillGrid"></div>
   </div>
 
   <div class="dash-section" id="certsSection">
     <div class="dash-section-header">
-      <div class="dash-section-title" data-i18n="dash.certsTitle">Certificates</div>
-      <div class="dash-section-sub" data-i18n="dash.certsSub">Earned on completion</div>
+      <div class="dash-section-title">Certificates</div>
+      <div class="dash-section-sub">Earned on completion</div>
     </div>
     <div id="certsContainer"></div>
   </div>
@@ -223,16 +223,16 @@
 <div class="cert-modal" id="certModal">
   <div class="cert-modal-inner" id="certModalInner">
     <button class="cert-modal-close" onclick="closeCertModal()" aria-label="Close">✕</button>
-    <div class="cm-label" data-i18n="dash.certLabel">Certificate of Completion</div>
+    <div class="cm-label">Certificate of Completion</div>
     <div class="cm-academy">WINSYM.AI ACADEMY</div>
     <div class="cm-rule"></div>
-    <div class="cm-sub" data-i18n="dash.certCertifies">This certifies that</div>
+    <div class="cm-sub">This certifies that</div>
     <div class="cm-name" id="certModalName"></div>
-    <div class="cm-sub" data-i18n="dash.certCompleted">has successfully completed</div>
+    <div class="cm-sub">has successfully completed</div>
     <div class="cm-course" id="certModalCourse"></div>
     <div class="cm-meta" id="certModalMeta"></div>
     <div style="margin-top:28px;">
-      <button class="cert-btn" onclick="printCert()" data-i18n="dash.certPrint">Print / Save PDF</button>
+      <button class="cert-btn" onclick="printCert()">Print / Save PDF</button>
     </div>
   </div>
 </div>
@@ -479,45 +479,7 @@ document.addEventListener('winsym:langchange',function(){
 
 <script>
 window.I18N = window.I18N || {};
-window.I18N.de = Object.assign({}, window.I18N.de, {
-  'meta.title': 'Dashboard — winsym.ai Academy',
-  'meta.desc': 'Ihr winsym.ai-Academy-Dashboard — Kursfortschritt verfolgen, auf Tools und Skills zugreifen und Ihre Zertifikate ansehen.',
-  'nav.home': '← Start',
-  'dash.signOut': 'Abmelden',
-  'dash.loading': 'Dashboard wird geladen…',
-  'dash.welcomeTag': '— Ihre Academy',
-  'dash.welcomeBack': 'Willkommen zurück,',
-  'dash.welcomeSub': 'Setzen Sie Ihre KI-Reise genau dort fort, wo Sie aufgehört haben.',
-  'dash.stepsDone': 'Schritte abgeschlossen · weiter so!',
-  'dash.statSteps': 'Schritte abgeschlossen', 'dash.statCourses': 'Kurse begonnen', 'dash.statCerts': 'Zertifikate erhalten',
-  'dash.coursesTitle': 'Ihre Kurse', 'dash.coursesSub': 'Kostenloser Zugang · selbstgesteuert',
-  'dash.resTitle': 'Ressourcen', 'dash.resSub': 'Essentielle Tools aus den Coachings',
-  'dash.skillsTitle': 'Skills', 'dash.skillsSub': 'Klicken Sie auf einen Skill, um den Install-Befehl zu kopieren',
-  'dash.certsTitle': 'Zertifikate', 'dash.certsSub': 'Bei Abschluss erhalten',
-  'dash.course': 'Kurs', 'dash.steps': 'Schritte',
-  'dash.badgeSoon': 'Bald', 'dash.badgeCertified': 'Zertifiziert', 'dash.badgeFree': 'Kostenlos',
-  'dash.ctaStart': 'Starten →', 'dash.ctaReview': 'Ansehen →', 'dash.ctaContinue': 'Fortsetzen →',
-  'dash.noCerts': 'Noch keine Zertifikate', 'dash.noCertsSub': 'Schließen Sie alle Schritte eines Kurses ab, um Ihr Zertifikat zu erhalten.',
-  'dash.issued': 'Ausgestellt', 'dash.code': 'Code', 'dash.viewCert': 'Zertifikat ansehen →',
-  'dash.copyCmd': 'Install-Befehl kopieren →', 'dash.copied': 'Kopiert!',
-  'dash.certLabel': 'Abschlusszertifikat', 'dash.certCertifies': 'Hiermit wird bestätigt, dass',
-  'dash.certCompleted': 'erfolgreich abgeschlossen hat', 'dash.certPrint': 'Drucken / Als PDF speichern',
-  'course.higgsfieldDesc': 'Automatisieren Sie Ihre gesamte KI-Content-Pipeline. Vom Prompt bis zur Veröffentlichung — 11 praktische Schritte.',
-  'course.proWebDesc': 'Bauen und deployen Sie echte Websites, ohne eine einzige Zeile von Hand zu schreiben.',
-  'course.soonTitle': 'Bald mehr Coachings',
-  'course.soonDesc': 'Automatisierungssysteme, Produkt-Launches, Videoschnitt-Workflows — gleiches Format, gleiche Tiefe.',
-  'res.higgsfield': 'KI-Video-, Bild- & UGC-Generierung', 'res.claude': 'Ihr KI-Kreativ- & Coding-Partner',
-  'res.claudeCode': 'Mit KI im Terminal bauen & deployen', 'res.vscode': 'Code-Editor — führt Claude Code aus',
-  'res.github': 'Versionskontrolle & Code-Hosting', 'res.vercel': 'Deployt Ihre Seite bei jedem Push automatisch',
-  'res.supabase': 'Auth, Datenbank & Backend in einem', 'res.capcut': 'Musik hinzufügen & KI-Videoclips schneiden',
-  'res.davinci': 'Professioneller Videoschnitt', 'res.sheets': 'Content-Tracking & Produktionsplanung',
-  'res.metaads': 'Werbekampagnen starten & verfolgen', 'res.anthropic': 'Claude-API, Modelle & Dokumentation',
-  'skill.typeCC': 'Claude-Code-Skill', 'skill.typeCustom': 'Custom Skill',
-  'skill.frontend': 'Bringt Claude dazu, professionelle, nicht KI-aussehende UIs zu schreiben. Für jedes Webprojekt unverzichtbar.',
-  'skill.uiux': 'Open Source (52k ★) — listet jedes KI-Design-Anti-Pattern auf. Mit Frontend Design kombinierbar.',
-  'skill.seedance': 'Schreibt optimierte Multi-Szenen-Seedance-2.0-Prompts mit Schnitten, Übergängen und Timing.',
-  'skill.hypermotion': 'Ihr individueller Higgsfield-Marketing-Studio-Skill — kodiert Ihren besten Prompt als wiederverwendbare Logik.'
-});
+window.I18N.de = window.I18N.de || {};
 </script>
 </body>
 </html>

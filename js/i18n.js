@@ -1,132 +1,108 @@
-/**
- * winsym.ai — i18n engine (v2 / CORTEX redesign)
- * ------------------------------------------------------------
- * One HTML file per page. Each page defines its own dictionary:
+/*
+ * winsym.ai — lightweight translate layer
+ * ----------------------------------------
+ * English is the single source of truth in the HTML.
+ * Translation is handled live by the Google Website Translate widget.
+ * The existing header language switcher (.ws-lang-switch with
+ * .ws-lang-option[data-lang]) drives it. No per-string i18n tables,
+ * no data-i18n maintenance — write English once, the button does the rest.
  *
- *   window.I18N = {
- *     en: { "nav.about": "About", "hero.title": "..." },
- *     de: { "nav.about": "Über uns", "hero.title": "..." },
- *     zh: { "nav.about": "关于我们", "hero.title": "..." }
- *   };
- *
- * Usage in markup:
- *   <a data-i18n="nav.about">About</a>                     -> textContent
- *   <input data-i18n="form.email" data-i18n-attr="placeholder">  -> attribute
- *   <img data-i18n="hero.imgAlt" data-i18n-attr="alt">
- *
- * Multiple data-i18n-attr targets can be comma-separated:
- *   data-i18n-attr="placeholder,aria-label"
- *
- * Language is persisted to localStorage under "winsym_lang".
- * Default language for first-time visitors is English ("en"),
- * regardless of browser locale, per winsym.ai content policy.
- *
- * No build step, no bundler — plain script, load after the DOM
- * (or with defer) and after window.I18N has been declared inline.
- * ------------------------------------------------------------
+ * To add a language later: add it to SUPPORTED + LANG_LABELS below and add
+ * a <button class="ws-lang-option" data-lang="xx"> to the switcher markup.
  */
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'winsym_lang';
   var DEFAULT_LANG = 'en';
-  var SUPPORTED = ['en', 'de'];
-  var LANG_LABELS = { en: 'EN', de: 'DE' };
+  var SUPPORTED    = ['en', 'de'];
+  var LANG_LABELS  = { en: 'EN', de: 'DE' };
+  var STORAGE_KEY  = 'winsym.lang';
+  var GT_COOKIE    = 'googtrans';
 
+  /* ---------- storage ---------- */
   function getStoredLang() {
-    try {
-      var v = localStorage.getItem(STORAGE_KEY);
-      return SUPPORTED.indexOf(v) !== -1 ? v : null;
-    } catch (e) {
-      return null;
-    }
+    try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
   }
-
   function setStoredLang(lang) {
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch (e) {
-      /* localStorage unavailable — fail silently, language still applies for this page view */
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+  }
+
+  /* ---------- google translate cookie ----------
+   * The widget reads the language from a "googtrans" cookie shaped /en/de.
+   * We set it on both the bare domain and the host so it survives reloads. */
+  function setGoogTrans(lang) {
+    var val = lang === DEFAULT_LANG ? '' : '/en/' + lang;
+    var host = location.hostname;
+    var paths = '; path=/';
+    // delete first
+    document.cookie = GT_COOKIE + '=' + paths;
+    document.cookie = GT_COOKIE + '=' + paths + '; domain=' + host;
+    document.cookie = GT_COOKIE + '=' + paths + '; domain=.' + host;
+    if (val) {
+      document.cookie = GT_COOKIE + '=' + val + paths;
+      document.cookie = GT_COOKIE + '=' + val + paths + '; domain=' + host;
+      document.cookie = GT_COOKIE + '=' + val + paths + '; domain=.' + host;
     }
   }
 
-  function resolveDict(lang) {
-    var table = window.I18N || {};
-    return table[lang] || table[DEFAULT_LANG] || {};
-  }
+  /* ---------- load the google widget once ---------- */
+  var widgetInjected = false;
+  function injectWidget() {
+    if (widgetInjected) return;
+    widgetInjected = true;
 
-  function lookup(dict, key) {
-    if (Object.prototype.hasOwnProperty.call(dict, key)) return dict[key];
-    // support dot-path fallback if dictionaries are ever nested instead of flat
-    var parts = key.split('.');
-    var node = dict;
-    for (var i = 0; i < parts.length; i++) {
-      if (node == null) return undefined;
-      node = node[parts[i]];
+    if (!document.getElementById('google_translate_element')) {
+      var holder = document.createElement('div');
+      holder.id = 'google_translate_element';
+      holder.style.display = 'none';
+      document.body.appendChild(holder);
     }
-    return typeof node === 'string' ? node : undefined;
+
+    window.googleTranslateElementInit = function () {
+      /* eslint-disable no-undef */
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: SUPPORTED.join(','),
+        autoDisplay: false
+      }, 'google_translate_element');
+    };
+
+    var s = document.createElement('script');
+    s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    s.async = true;
+    document.body.appendChild(s);
   }
 
-  function applyTranslations(lang) {
-    var dict = resolveDict(lang);
-    var nodes = document.querySelectorAll('[data-i18n]');
-    nodes.forEach(function (el) {
-      var key = el.getAttribute('data-i18n');
-      var value = lookup(dict, key);
-      if (value === undefined) return; // leave existing content untouched if key missing
-
-      var attrSpec = el.getAttribute('data-i18n-attr');
-      if (attrSpec) {
-        attrSpec.split(',').forEach(function (attr) {
-          attr = attr.trim();
-          if (!attr) return;
-          if (attr === 'html') {
-            el.innerHTML = value;
-          } else {
-            el.setAttribute(attr, value);
-          }
-        });
-      } else {
-        el.textContent = value;
-      }
-    });
-
-    document.documentElement.setAttribute('lang', lang);
+  /* ---------- public: change language ---------- */
+  function setLanguage(lang) {
+    if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT_LANG;
+    setStoredLang(lang);
+    setGoogTrans(lang);
     syncSwitchers(lang);
-
-    document.dispatchEvent(new CustomEvent('winsym:langchange', { detail: { lang: lang } }));
+    document.documentElement.setAttribute('lang', lang);
+    /* The widget only re-translates on load, so reload to apply cleanly.
+     * (This is by design — one click, one clean render, no flicker.) */
+    location.reload();
   }
 
+  /* ---------- reflect current language in the switcher UI ---------- */
   function syncSwitchers(lang) {
     document.querySelectorAll('.ws-lang-switch').forEach(function (switcher) {
-      var btn = switcher.querySelector('.ws-lang-btn');
-      if (btn) btn.textContent = LANG_LABELS[lang] || lang.toUpperCase();
+      var label = switcher.querySelector('.ws-lang-btn-text') || switcher.querySelector('.ws-lang-btn');
+      if (label) label.textContent = LANG_LABELS[lang] || lang.toUpperCase();
       switcher.querySelectorAll('.ws-lang-option').forEach(function (opt) {
-        var isActive = opt.getAttribute('data-lang') === lang;
-        opt.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        opt.setAttribute('aria-checked', opt.getAttribute('data-lang') === lang ? 'true' : 'false');
       });
     });
   }
 
-  function closeMenu(menu, btn) {
-    menu.classList.remove('open');
-    if (btn) btn.setAttribute('aria-expanded', 'false');
-  }
-
-  function openMenu(menu, btn) {
-    menu.classList.add('open');
-    if (btn) btn.setAttribute('aria-expanded', 'true');
-  }
-
-  function setLanguage(lang) {
-    if (SUPPORTED.indexOf(lang) === -1) lang = DEFAULT_LANG;
-    setStoredLang(lang);
-    applyTranslations(lang);
-  }
+  /* ---------- menu open/close + option wiring ---------- */
+  function closeMenu(menu, btn) { menu.classList.remove('open'); if (btn) btn.setAttribute('aria-expanded', 'false'); }
+  function openMenu(menu, btn)  { menu.classList.add('open');    if (btn) btn.setAttribute('aria-expanded', 'true');  }
 
   function wireSwitchers() {
     document.querySelectorAll('.ws-lang-switch').forEach(function (switcher) {
-      var btn = switcher.querySelector('.ws-lang-btn');
+      var btn  = switcher.querySelector('.ws-lang-btn');
       var menu = switcher.querySelector('.ws-lang-menu');
       if (!btn || !menu) return;
 
@@ -136,31 +112,23 @@
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
         var isOpen = menu.classList.contains('open');
-        // close any other open menus first
         document.querySelectorAll('.ws-lang-menu.open').forEach(function (m) {
           if (m !== menu) closeMenu(m, m.closest('.ws-lang-switch').querySelector('.ws-lang-btn'));
         });
-        if (isOpen) {
-          closeMenu(menu, btn);
-        } else {
-          openMenu(menu, btn);
-        }
+        isOpen ? closeMenu(menu, btn) : openMenu(menu, btn);
       });
 
       menu.querySelectorAll('.ws-lang-option').forEach(function (opt) {
         opt.setAttribute('role', 'option');
         opt.addEventListener('click', function () {
           var lang = opt.getAttribute('data-lang');
-          setLanguage(lang);
           closeMenu(menu, btn);
-          btn.focus();
+          setLanguage(lang);
         });
       });
-
       menu.setAttribute('role', 'listbox');
     });
 
-    // Global dismissal: outside click + Escape
     document.addEventListener('click', function () {
       document.querySelectorAll('.ws-lang-menu.open').forEach(function (m) {
         closeMenu(m, m.closest('.ws-lang-switch').querySelector('.ws-lang-btn'));
@@ -169,19 +137,23 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         document.querySelectorAll('.ws-lang-menu.open').forEach(function (m) {
-          var switcher = m.closest('.ws-lang-switch');
-          var btn = switcher.querySelector('.ws-lang-btn');
-          closeMenu(m, btn);
-          if (btn) btn.focus();
+          var s = m.closest('.ws-lang-switch'); var b = s.querySelector('.ws-lang-btn');
+          closeMenu(m, b); if (b) b.focus();
         });
       }
     });
   }
 
+  /* ---------- init ---------- */
   function init() {
     var lang = getStoredLang() || DEFAULT_LANG;
     wireSwitchers();
-    applyTranslations(lang);
+    syncSwitchers(lang);
+    document.documentElement.setAttribute('lang', lang);
+    if (lang !== DEFAULT_LANG) {
+      setGoogTrans(lang);
+      injectWidget();
+    }
   }
 
   if (document.readyState === 'loading') {
@@ -190,7 +162,7 @@
     init();
   }
 
-  // Expose a tiny public API in case a page needs to set language programmatically
+  /* ---------- public API (kept for backwards compat) ---------- */
   window.winsymI18n = {
     setLanguage: setLanguage,
     getLanguage: function () { return getStoredLang() || DEFAULT_LANG; },

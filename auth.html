@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="meta.title">Sign In — winsym.ai Academy</title>
-<meta name="description" data-i18n="meta.desc" data-i18n-attr="content" content="Sign in or create a free winsym.ai Academy account. Free access, no credit card required — your course progress is saved.">
+<title>Sign In — winsym.ai Academy</title>
+<meta name="description" content="Sign in or create a free winsym.ai Academy account. Free access, no credit card required — your course progress is saved.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,53 +55,53 @@
 
 <div class="auth-wrap">
   <div class="auth-card">
-    <a href="/" class="auth-back" data-i18n="auth.back">← Back to home</a>
+    <a href="/" class="auth-back">← Back to home</a>
     <div class="auth-top">
-      <span class="brand-mark">win<span class="accent">sym</span>.ai</span>
-      <h1 class="auth-eyebrow" data-i18n="auth.eyebrow" style="font-weight:inherit;">Academy Access</h1>
+      <span class="brand-mark notranslate" translate="no">win<span class="accent">sym</span>.ai</span>
+      <h1 class="auth-eyebrow" style="font-weight:inherit;">Academy Access</h1>
     </div>
 
     <div class="auth-tabs" role="tablist">
-      <button class="auth-tab active" id="tabLogin" role="tab" onclick="switchTab('login')" data-i18n="auth.tabLogin">Sign In</button>
-      <button class="auth-tab" id="tabSignup" role="tab" onclick="switchTab('signup')" data-i18n="auth.tabSignup">Create Account</button>
+      <button class="auth-tab active" id="tabLogin" role="tab" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" id="tabSignup" role="tab" onclick="switchTab('signup')">Create Account</button>
     </div>
 
     <!-- LOGIN -->
     <div class="auth-panel active" id="panelLogin" role="tabpanel">
       <div class="auth-msg" id="loginMsg"></div>
       <div class="ws-form-group">
-        <label class="ws-label" for="loginEmail" data-i18n="auth.email">Email</label>
-        <input class="ws-input" type="email" id="loginEmail" autocomplete="email" data-i18n="auth.emailPlaceholder" data-i18n-attr="placeholder" placeholder="you@company.com">
+        <label class="ws-label" for="loginEmail">Email</label>
+        <input class="ws-input" type="email" id="loginEmail" autocomplete="email" placeholder="you@company.com">
       </div>
       <div class="ws-form-group">
-        <label class="ws-label" for="loginPassword" data-i18n="auth.password">Password</label>
+        <label class="ws-label" for="loginPassword">Password</label>
         <input class="ws-input" type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••">
       </div>
-      <button class="btn btn-primary" id="loginBtn" style="width:100%;" onclick="doLogin()" data-i18n="auth.loginBtn">Sign In →</button>
-      <div class="auth-foot"><span data-i18n="auth.noAccount">No account?</span> <a href="#" role="button" onclick="switchTab('signup');return false;" data-i18n="auth.createOne">Create one free</a></div>
+      <button class="btn btn-primary" id="loginBtn" style="width:100%;" onclick="doLogin()">Sign In →</button>
+      <div class="auth-foot"><span>No account?</span> <a href="#" role="button" onclick="switchTab('signup');return false;">Create one free</a></div>
     </div>
 
     <!-- SIGNUP -->
     <div class="auth-panel" id="panelSignup" role="tabpanel">
       <div class="auth-msg" id="signupMsg"></div>
       <div class="ws-form-group">
-        <label class="ws-label" for="signupName" data-i18n="auth.fullName">Full Name</label>
-        <input class="ws-input" type="text" id="signupName" autocomplete="name" data-i18n="auth.namePlaceholder" data-i18n-attr="placeholder" placeholder="Your name">
+        <label class="ws-label" for="signupName">Full Name</label>
+        <input class="ws-input" type="text" id="signupName" autocomplete="name" placeholder="Your name">
       </div>
       <div class="ws-form-group">
-        <label class="ws-label" for="signupEmail" data-i18n="auth.email">Email</label>
-        <input class="ws-input" type="email" id="signupEmail" autocomplete="email" data-i18n="auth.emailPlaceholder" data-i18n-attr="placeholder" placeholder="you@company.com">
+        <label class="ws-label" for="signupEmail">Email</label>
+        <input class="ws-input" type="email" id="signupEmail" autocomplete="email" placeholder="you@company.com">
       </div>
       <div class="ws-form-group">
-        <label class="ws-label" for="signupPassword" data-i18n="auth.password">Password</label>
+        <label class="ws-label" for="signupPassword">Password</label>
         <input class="ws-input" type="password" id="signupPassword" autocomplete="new-password" oninput="checkPw(this.value)" placeholder="••••••••">
         <div class="pw-strength" id="pwStrength"><div class="pw-bar" id="pwBar"></div></div>
       </div>
-      <button class="btn btn-primary" id="signupBtn" style="width:100%;" onclick="doSignup()" data-i18n="auth.signupBtn">Create Account →</button>
-      <div class="auth-foot"><span data-i18n="auth.haveAccount">Already have an account?</span> <a href="#" role="button" onclick="switchTab('login');return false;" data-i18n="auth.signIn">Sign in</a></div>
+      <button class="btn btn-primary" id="signupBtn" style="width:100%;" onclick="doSignup()">Create Account →</button>
+      <div class="auth-foot"><span>Already have an account?</span> <a href="#" role="button" onclick="switchTab('login');return false;">Sign in</a></div>
     </div>
 
-    <div class="auth-note" data-i18n="auth.note">Free access · No credit card required · Your progress is saved</div>
+    <div class="auth-note">Free access · No credit card required · Your progress is saved</div>
   </div>
 </div>
 
@@ -196,27 +196,7 @@ document.addEventListener('winsym:langchange',function(){
 
 <script>
 window.I18N = window.I18N || {};
-window.I18N.de = Object.assign({}, window.I18N.de, {
-  'meta.title': 'Anmelden — winsym.ai Academy',
-  'meta.desc': 'Melden Sie sich an oder erstellen Sie ein kostenloses winsym.ai-Academy-Konto. Kostenloser Zugang, keine Kreditkarte nötig — Ihr Kursfortschritt wird gespeichert.',
-  'auth.back': '← Zurück zur Startseite',
-  'auth.eyebrow': 'Academy-Zugang',
-  'auth.tabLogin': 'Anmelden', 'auth.tabSignup': 'Konto erstellen',
-  'auth.email': 'E-Mail', 'auth.emailPlaceholder': 'sie@unternehmen.com',
-  'auth.password': 'Passwort',
-  'auth.fullName': 'Vollständiger Name', 'auth.namePlaceholder': 'Ihr Name',
-  'auth.loginBtn': 'Anmelden →', 'auth.signupBtn': 'Konto erstellen →',
-  'auth.noAccount': 'Noch kein Konto?', 'auth.createOne': 'Kostenlos erstellen',
-  'auth.haveAccount': 'Schon ein Konto?', 'auth.signIn': 'Anmelden',
-  'auth.note': 'Kostenloser Zugang · Keine Kreditkarte nötig · Ihr Fortschritt wird gespeichert',
-  'auth.pleaseWait': 'Bitte warten…',
-  'auth.errFields': 'Bitte füllen Sie alle Felder aus.',
-  'auth.errPwLen': 'Das Passwort muss mindestens 8 Zeichen haben.',
-  'auth.signingIn': 'Sie werden angemeldet…',
-  'auth.errLogin': 'Anmeldung fehlgeschlagen. Bitte erneut versuchen.',
-  'auth.created': 'Konto erstellt! Bestätigen Sie Ihre E-Mail und melden Sie sich dann an.',
-  'auth.errSignup': 'Registrierung fehlgeschlagen. Bitte erneut versuchen.'
-});
+window.I18N.de = window.I18N.de || {};
 </script>
 </body>
 </html>
